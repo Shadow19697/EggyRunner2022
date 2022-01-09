@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 19174764}
   - component: {fileID: 19174763}
   m_Layer: 5
-  m_Name: Puntaje
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -431,7 +431,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: c1e6e41529e6ef2458e854beef137e0d, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5692,7 +5691,7 @@ GameObject:
   - component: {fileID: 898164306}
   - component: {fileID: 898164311}
   m_Layer: 0
-  m_Name: Jugador
+  m_Name: Eggy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5856,7 +5855,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 959a947b3c3aab54da93d21690fc00b8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8b1db3380de38d142a7b19b19e0090f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5876,7 +5875,7 @@ Transform:
   m_GameObject: {fileID: 898164304}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1.3}
+  m_LocalScale: {x: 1, y: 1, z: 1.3}
   m_Children:
   - {fileID: 1307477298}
   - {fileID: 1389985996}
@@ -5912,8 +5911,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.1, y: -0.1}
-  m_Size: {x: 16, y: 10}
+  m_Offset: {x: -0.05, y: 0}
+  m_Size: {x: 3, y: 2}
   m_Direction: 1
 --- !u!1 &1154530797
 GameObject:
@@ -6483,7 +6482,7 @@ GameObject:
   - component: {fileID: 1307477297}
   - component: {fileID: 1307477296}
   m_Layer: 0
-  m_Name: Nubes
+  m_Name: Cloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11476,7 +11475,7 @@ GameObject:
   - component: {fileID: 1389985995}
   - component: {fileID: 1389985994}
   m_Layer: 0
-  m_Name: Webo
+  m_Name: SickEggy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11504,7 +11503,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 7e6a8b17c1fbef645b7c74868f3f0de6, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16353,7 +16351,7 @@ GameObject:
   - component: {fileID: 1403958297}
   - component: {fileID: 1403958296}
   m_Layer: 5
-  m_Name: FechaHora
+  m_Name: DateTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
