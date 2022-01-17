@@ -1,4 +1,6 @@
+using Scripts.Enums;
 using Scripts.Managers;
+using Scripts.WorldTimeAPI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,15 +10,16 @@ namespace Scripts.Controllers
 {
     public class MainController : MonoBehaviour
     {
-        public LocalLoggerManager _logger;
         public MenuController _menu;
         public SoundManager _sound;
         public DataManager _data;
-
+        
+        private SpecialDateEnum specialEnum;
 
         void Start()
         {
-            _logger.CreateLocalLog();
+            LocalLoggerManager.CreateLocalLog();
+            specialEnum = SpecialDate.WichSpecialIs();
         }
 
         // Update is called once per frame

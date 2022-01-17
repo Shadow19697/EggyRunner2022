@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Scripts.Managers
 {
-    public class LocalLoggerManager
+    public static class LocalLoggerManager
     {
-        private string path = Application.dataPath + "/Log.txt";
-        public void CreateLocalLog()
+        private static string path = Application.dataPath + "/Log.txt";
+        public static void CreateLocalLog()
         {
             if (!File.Exists(path))
             {
@@ -14,14 +14,14 @@ namespace Scripts.Managers
             }
         }
 
-        public void EditLocalLog(int levelScore)
+        public static void EditLocalLog(int levelScore)
         {
             int totalScore = PlayerPrefs.GetInt("TotalScore", 0);
             PlayerPrefs.SetInt("TotalScore", totalScore + levelScore);
             File.AppendAllText(path, "Score: " + levelScore + "\t- " + WorldTimeAPI.WorldTimeAPI.Instance.GetCurrentDateTime().ToString() + "\n");
         }
 
-        public void ResetLocalLog()
+        public static void ResetLocalLog()
         {
             if (File.Exists(path))
             {
@@ -31,7 +31,7 @@ namespace Scripts.Managers
             }
         }
 
-        public int ShowTotalScore()
+        public static int ShowTotalScore()
         {
             return PlayerPrefs.GetInt("TotalScore", 0);
         }
