@@ -16,7 +16,7 @@ namespace Scripts.Controllers
         public ObstacleManager _obstacle;
         public BenefitManager _benefit;
         public InGame.PlataformController _plataform;
-        public MusicManager _music;
+        public SoundManager _sound;
 
         private readonly float counter;
         private LevelStateEnum _state;
@@ -26,7 +26,7 @@ namespace Scripts.Controllers
         void Start()
         {
             _plataform.Start(id);
-            _music.PlayLevelMusic(id);
+            _sound.PlayLevelMusic(id);
             _ui.SetHighScore();
             _state = LevelStateEnum.IdleStart;
         }

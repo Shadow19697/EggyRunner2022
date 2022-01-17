@@ -10,13 +10,13 @@ namespace Scripts.Controllers
     {
         public LocalLoggerManager _logger;
         public MenuController _menu;
-        public MusicManager _music;
+        public SoundManager _sound;
         public DataManager _data;
 
 
         void Start()
         {
-            _logger.CreateText();
+            _logger.CreateLocalLog();
         }
 
         // Update is called once per frame
