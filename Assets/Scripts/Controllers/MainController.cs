@@ -12,7 +12,7 @@ namespace Scripts.Controllers
     {
         public MenuController _menu;
         public SoundManager _sound;
-        public DataManager _data;
+        //public DataManager _data;
         
         private SpecialDateEnum specialEnum;
 

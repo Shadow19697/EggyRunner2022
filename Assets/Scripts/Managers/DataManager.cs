@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Scripts.Managers
 {
-    public class DataManager
+    public static class DataManager
     {
 
     } 

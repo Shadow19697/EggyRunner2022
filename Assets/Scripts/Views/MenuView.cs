@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    LoadSceneParameters parameters;
+    
+    public void QuitButton()
     {
-        
+        Debug.LogError("Quit");
+        Application.Quit();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LevelButton(int id)
     {
-        
+        //IMPLEMENTAR ID EN PARAMETERS
+        SceneManager.LoadScene("Level"/*, parameters*/);
     }
 }
