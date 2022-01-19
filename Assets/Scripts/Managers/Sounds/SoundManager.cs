@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Audio;
 
-namespace Scripts.Managers
+namespace Scripts.Managers.Sounds
 {
     public class SoundManager : MonoBehaviour
     {
@@ -15,7 +18,6 @@ namespace Scripts.Managers
         public AudioSource _jumpSound;
         public AudioSource _landSound;
         public AudioSource _benefitSound;
-
 
         public void StopAllMusic()
         {

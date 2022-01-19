@@ -1,4 +1,4 @@
-using Scripts.Managers;
+using Scripts.Managers.Sounds;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

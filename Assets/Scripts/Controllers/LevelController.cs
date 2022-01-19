@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using Scripts.Managers.InGame;
-using Scripts.Managers;
+using Scripts.Managers.Sounds;
 using System;
 using Scripts.Enums;
 
