@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-
+using Scripts.Managers;
 
 namespace Scripts.Views
 {
@@ -13,39 +13,48 @@ namespace Scripts.Views
         public Slider _musicSlider;
         public Slider _soundEffectsSlider;
         public Dropdown _resolutionDropdown;
+        public Dropdown _qualityDropdown;
+        public Toggle _fullscreenToggle;
         Resolution[] _resolutions;
 
         private void Start()
         {
-            _musicSlider.value = PlayerPrefs.GetFloat("MusicValue", 1f);
-            _soundEffectsSlider.value = PlayerPrefs.GetFloat("SoundEffectsValue", 1f);
+            _musicSlider.value = PlayerPrefsManager.GetMusicValue();
+            _soundEffectsSlider.value = PlayerPrefsManager.GetSoundEffectsValue();
+            _qualityDropdown.value = PlayerPrefsManager.GetQualityIndex();
+            _qualityDropdown.RefreshShownValue();
+            _fullscreenToggle.isOn = PlayerPrefsManager.IsFullScreen();
             ResolutionInit();
         }
         public void updateMusicVolume(float sliderValue)
         {
             _audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderValue) * 20);
-            PlayerPrefs.SetFloat("MusicValue", sliderValue);
+            PlayerPrefsManager.UpdateMusicValue(sliderValue);
         }
         public void updateSoundEffectsVolume(float sliderValue)
         {
             _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(sliderValue) * 20);
-            PlayerPrefs.SetFloat("SoundEffectsValue", sliderValue);
+            PlayerPrefsManager.UpdateSoundEffectsValue(sliderValue);
         }
 
         public void SetQuality (int qualityIndex)
         {
             QualitySettings.SetQualityLevel(qualityIndex);
+            PlayerPrefsManager.UpdateQualityIndex(qualityIndex);
         }
 
         public void SetFullscreen (bool isFullscreen)
         {
             Screen.fullScreen = isFullscreen;
+            if (isFullscreen) PlayerPrefsManager.UpdateFullScreen(1);
+            else PlayerPrefsManager.UpdateFullScreen(0);
         }
 
         public void SetResolution (int resolutionIndex)
         {
             Resolution resolution = _resolutions[resolutionIndex];
             Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+            PlayerPrefsManager.UpdateResolutionIndex(resolutionIndex);
         }
 
         private void ResolutionInit()
@@ -62,8 +71,18 @@ namespace Scripts.Views
                     currentResolutionIndex = i;
             }
             _resolutionDropdown.AddOptions(options);
-            _resolutionDropdown.value = currentResolutionIndex;
-            _resolutionDropdown.RefreshShownValue();
+            if (PlayerPrefsManager.IsFirstLoad())
+            {
+                _resolutionDropdown.value = currentResolutionIndex;
+                PlayerPrefsManager.UpdateResolutionIndex(currentResolutionIndex);
+                _resolutionDropdown.RefreshShownValue();
+                PlayerPrefsManager.UpdateFirstLoad();
+            }
+            else
+            {
+                _resolutionDropdown.value = PlayerPrefsManager.GetResolutionIndex();
+                _resolutionDropdown.RefreshShownValue();
+            }
         }
     }
 }

@@ -16,8 +16,7 @@ namespace Scripts.Managers
 
         public static void EditLocalLog(int levelScore)
         {
-            int totalScore = PlayerPrefs.GetInt("TotalScore", 0);
-            PlayerPrefs.SetInt("TotalScore", totalScore + levelScore);
+            PlayerPrefsManager.UpdateTotalScore(levelScore); 
             File.AppendAllText(path, "Score: " + levelScore + "\t- " + WorldTimeAPI.WorldTimeAPI.Instance.GetCurrentDateTime().ToString() + "\n");
         }
 
@@ -26,15 +25,9 @@ namespace Scripts.Managers
             if (File.Exists(path))
             {
                 File.Delete(path);
-                PlayerPrefs.DeleteAll();
+                PlayerPrefsManager.ResetTotalScore();
                 CreateLocalLog();
             }
         }
-
-        public static int ShowTotalScore()
-        {
-            return PlayerPrefs.GetInt("TotalScore", 0);
-        }
     }
-
 }
