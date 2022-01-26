@@ -15,7 +15,7 @@ namespace Scripts.Views
         public Dropdown _resolutionDropdown;
         public Dropdown _qualityDropdown;
         public Toggle _fullscreenToggle;
-        Resolution[] _resolutions;
+        //Resolution[] _resolutions;
 
         private void Start()
         {
@@ -26,12 +26,12 @@ namespace Scripts.Views
             _fullscreenToggle.isOn = PlayerPrefsManager.IsFullScreen();
             ResolutionInit();
         }
-        public void updateMusicVolume(float sliderValue)
+        public void UpdateMusicVolume(float sliderValue)
         {
             _audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderValue) * 20);
             PlayerPrefsManager.UpdateMusicValue(sliderValue);
         }
-        public void updateSoundEffectsVolume(float sliderValue)
+        public void UpdateSoundEffectsVolume(float sliderValue)
         {
             _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(sliderValue) * 20);
             PlayerPrefsManager.UpdateSoundEffectsValue(sliderValue);
@@ -52,37 +52,25 @@ namespace Scripts.Views
 
         public void SetResolution (int resolutionIndex)
         {
-            Resolution resolution = _resolutions[resolutionIndex];
+            Resolution resolution = PlayerPrefsManager.Resolutions[resolutionIndex];
             Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
             PlayerPrefsManager.UpdateResolutionIndex(resolutionIndex);
+            PlayerPrefsManager.UpdateHeight(resolution.height);
+            PlayerPrefsManager.UpdateWidth(resolution.width);
         }
 
         private void ResolutionInit()
         {
-            _resolutions = Screen.resolutions;
             _resolutionDropdown.ClearOptions();
-            List<string> options = new List<string>();
-            int currentResolutionIndex = 0;
-            for (int i = 0; i < _resolutions.Length; i++)
-            {
-                string option = _resolutions[i].width + " x " + _resolutions[i].height;
-                options.Add(option);
-                if (_resolutions[i].width == Screen.currentResolution.width && _resolutions[i].height == Screen.currentResolution.height)
-                    currentResolutionIndex = i;
-            }
-            _resolutionDropdown.AddOptions(options);
-            if (PlayerPrefsManager.IsFirstLoad())
-            {
-                _resolutionDropdown.value = currentResolutionIndex;
-                PlayerPrefsManager.UpdateResolutionIndex(currentResolutionIndex);
-                _resolutionDropdown.RefreshShownValue();
-                PlayerPrefsManager.UpdateFirstLoad();
-            }
-            else
-            {
-                _resolutionDropdown.value = PlayerPrefsManager.GetResolutionIndex();
-                _resolutionDropdown.RefreshShownValue();
-            }
+            _resolutionDropdown.AddOptions(PlayerPrefsManager.ListResolutions);
+            _resolutionDropdown.value = PlayerPrefsManager.GetResolutionIndex();
+            _resolutionDropdown.RefreshShownValue();
+        }
+
+        public void ResetScore()
+        {
+            PlayerPrefsManager.ResetTotalScore();
+            Debug.LogError("Se borró el puntaje" + PlayerPrefsManager.GetTotalScore());
         }
     }
 }

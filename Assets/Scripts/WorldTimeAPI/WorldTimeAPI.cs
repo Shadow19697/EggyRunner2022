@@ -43,8 +43,15 @@ namespace Scripts.WorldTimeAPI
         {
             UnityWebRequest webRequest = UnityWebRequest.Get(apiUrl);
             yield return webRequest.SendWebRequest();
-            TimeData timeData = JsonUtility.FromJson<TimeData>(webRequest.downloadHandler.text);
-            currentDateTime = ParseDateTime(timeData.datetime);
+            try
+            {
+                TimeData timeData = JsonUtility.FromJson<TimeData>(webRequest.downloadHandler.text);
+                currentDateTime = ParseDateTime(timeData.datetime);
+            }
+            catch (Exception)
+            {
+                Debug.LogError("No hay conexión a internet");
+            }
         }
 
         DateTime ParseDateTime(string datetime)

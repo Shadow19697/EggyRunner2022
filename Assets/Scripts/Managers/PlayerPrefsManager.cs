@@ -18,7 +18,12 @@ namespace Scripts.Managers
                                 QualityIndex = "QualityIndex",
                                 FullScreen = "FullScreen",
                                 FromPlaying = "FromPlaying",
-                                LevelSelected = "LevelSelected";
+                                LevelSelected = "LevelSelected",
+                                Height = "Height",
+                                Width = "Width";
+
+        public static Resolution[] Resolutions;
+        public static List<string> ListResolutions = new List<string>();
 
         /*public static void InitPlayerPrefs()
         {
@@ -39,7 +44,12 @@ namespace Scripts.Managers
         public static void UpdateFirstLoad()
         {
             PlayerPrefs.SetInt(FirstLoad, 0);
-        } 
+        }
+
+        public static void ResetFirstLoad()
+        {
+            PlayerPrefs.SetInt(FirstLoad, 1);
+        }
         #endregion
 
         #region TotalScore Methods
@@ -141,7 +151,30 @@ namespace Scripts.Managers
         public static void UpdateLevelSelected(int level)
         {
             PlayerPrefs.SetInt(LevelSelected, level);
-        } 
+        }
         #endregion
+
+        #region Height & Width Methods
+        public static int GetHeight()
+        {
+            return PlayerPrefs.GetInt(Height, 0);
+        }
+
+        public static int GetWidth()
+        {
+            return PlayerPrefs.GetInt(Width, 0);
+        }
+
+        public static void UpdateHeight(int value)
+        {
+            PlayerPrefs.SetInt(Height, value);
+        }
+
+        public static void UpdateWidth(int value)
+        {
+            PlayerPrefs.SetInt(Width, value);
+        }
+        #endregion
+
     }
 }
