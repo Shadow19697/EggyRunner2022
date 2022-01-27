@@ -9,46 +9,76 @@ namespace Scripts.Managers
 {
     public static class PlayerPrefsManager
     {
-        private static PlayerPrefsModel _model;
-        private static string   FirstLoad = "FirstLoad",
-                                TotalScore = "TotalScore",
-                                MusicValue = "MusicValue",
-                                SoundEffectsValue = "SoundEffectsValue",
-                                ResolutionIndex = "ResolutionIndex",
-                                QualityIndex = "QualityIndex",
-                                FullScreen = "FullScreen",
-                                FromPlaying = "FromPlaying",
-                                LevelSelected = "LevelSelected",
-                                Height = "Height",
-                                Width = "Width";
+        private static PlayerPrefsModel _model = new PlayerPrefsModel();
+        private static string   FirstLoad = "firstLoad",
+                                TotalScore = "totalScore",
+                                MusicValue = "musicValue",
+                                SoundEffectsValue = "soundEffectsValue",
+                                ResolutionIndex = "resolutionIndex",
+                                QualityIndex = "qualityIndex",
+                                FullScreen = "fullScreen",
+                                FromPlaying = "fromPlaying",
+                                LevelSelected = "levelSelected",
+                                Height = "height",
+                                Width = "width";
 
         public static Resolution[] Resolutions;
         public static List<string> ListResolutions = new List<string>();
-
-        /*public static void InitPlayerPrefs()
+        
+        public static void InitPlayerPrefs()
         {
-            StreamReader file = new StreamReader(Application.dataPath + "/config.txt");
-            var Json = file.ReadToEnd();
-            Debug.Log(Json);
-            _model = JsonConvert.DeserializeObject<PlayerPrefsModel>(Json);
-            file.Close();
-        }*/
-
+            if (LocalLoggerManager.ExistsPlayerPrefsLog())
+            {
+                StreamReader file = new StreamReader(LocalLoggerManager.playerPrefsPath);
+                var Json = file.ReadToEnd();
+                Debug.Log(Json);
+                _model = JsonConvert.DeserializeObject<PlayerPrefsModel>(Json);
+                file.Close();
+                Debug.Log("Se leyó el archivo player prefs");
+            }
+            else
+            {
+                _model.firstLoad = GetFirstLoad();
+                _model.totalScore = GetTotalScore();
+                _model.musicValue = GetMusicValue();
+                _model.soundEffectsValue = GetSoundEffectsValue();
+                _model.resolutionIndex = GetResolutionIndex();
+                _model.qualityIndex = GetQualityIndex();
+                _model.fullScreen = GetFullScreen();
+                _model.fromPlaying = GetFromPlaying();
+                _model.levelSelected = GetLevelSelected();
+                _model.height = GetHeight();
+                _model.width = GetWidth();
+                _model.resolutions = new List<string>();
+                ListResolutions.ForEach(resolution => _model.resolutions.Add(resolution));
+                LocalLoggerManager.UpdatePlayerPrefsLog(_model);
+                Debug.Log("Se creó archivo player prefs");
+            }
+        }
+        
         #region FirstLoad Methods
         public static bool IsFirstLoad()
         {
-            if (PlayerPrefs.GetInt(FirstLoad, 1) == 1) return true;
+            if (GetFirstLoad() == 1) return true;
             else return false;
         }
 
         public static void UpdateFirstLoad()
         {
             PlayerPrefs.SetInt(FirstLoad, 0);
+            _model.firstLoad = 0;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
 
         public static void ResetFirstLoad()
         {
             PlayerPrefs.SetInt(FirstLoad, 1);
+            _model.firstLoad = 1;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
+        }
+        public static int GetFirstLoad()
+        {
+            return PlayerPrefs.GetInt(FirstLoad, 1);
         }
         #endregion
 
@@ -57,11 +87,15 @@ namespace Scripts.Managers
         {
             int totalScore = PlayerPrefs.GetInt(TotalScore, 0);
             PlayerPrefs.SetInt(TotalScore, totalScore + levelScore);
+            _model.totalScore = totalScore + levelScore;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
 
         public static void ResetTotalScore()
         {
             PlayerPrefs.SetInt(TotalScore, 0);
+            _model.totalScore = 0;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
 
         public static int GetTotalScore()
@@ -84,11 +118,15 @@ namespace Scripts.Managers
         public static void UpdateMusicValue(float value)
         {
             PlayerPrefs.SetFloat(MusicValue, value);
+            _model.musicValue = value;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
 
         public static void UpdateSoundEffectsValue(float value)
         {
             PlayerPrefs.SetFloat(SoundEffectsValue, value);
+            _model.soundEffectsValue = value;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
         #endregion
 
@@ -101,6 +139,8 @@ namespace Scripts.Managers
         public static void UpdateResolutionIndex(int value)
         {
             PlayerPrefs.SetInt(ResolutionIndex, value);
+            _model.resolutionIndex = value;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
         #endregion
 
@@ -113,32 +153,46 @@ namespace Scripts.Managers
         public static void UpdateQualityIndex(int value)
         {
             PlayerPrefs.SetInt(QualityIndex, value);
+            _model.qualityIndex = value;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
         #endregion
 
         #region FullScreen Methods
         public static bool IsFullScreen()
         {
-            if (PlayerPrefs.GetInt(FullScreen, 1) == 1) return true;
+            if (GetFullScreen() == 1) return true;
             else return false;
         }
 
         public static void UpdateFullScreen(int value)
         {
             PlayerPrefs.SetInt(FullScreen, value);
+            _model.fullScreen = value;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
+        }
+
+        public static int GetFullScreen()
+        {
+            return PlayerPrefs.GetInt(FullScreen, 1);
         }
         #endregion
 
         #region FromPlaying Methods
         public static bool IsFromPlaying()
         {
-            if (PlayerPrefs.GetInt(FromPlaying, 0) == 0) return false;
+            if (GetFromPlaying() == 0) return false;
             else return true;
         }
-
         public static void UpdateFromPlaying()
         {
             PlayerPrefs.SetInt(FromPlaying, 1);
+            _model.fromPlaying = 1;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
+        }
+        public static int GetFromPlaying()
+        {
+            return PlayerPrefs.GetInt(FromPlaying, 0);
         }
         #endregion
 
@@ -151,6 +205,8 @@ namespace Scripts.Managers
         public static void UpdateLevelSelected(int level)
         {
             PlayerPrefs.SetInt(LevelSelected, level);
+            _model.levelSelected = level;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
         #endregion
 
@@ -168,11 +224,15 @@ namespace Scripts.Managers
         public static void UpdateHeight(int value)
         {
             PlayerPrefs.SetInt(Height, value);
+            _model.height = value;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
 
         public static void UpdateWidth(int value)
         {
             PlayerPrefs.SetInt(Width, value);
+            _model.width = value;
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
         #endregion
 

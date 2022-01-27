@@ -15,7 +15,6 @@ namespace Scripts.Views
         public Dropdown _resolutionDropdown;
         public Dropdown _qualityDropdown;
         public Toggle _fullscreenToggle;
-        //Resolution[] _resolutions;
 
         private void Start()
         {
@@ -26,6 +25,7 @@ namespace Scripts.Views
             _fullscreenToggle.isOn = PlayerPrefsManager.IsFullScreen();
             ResolutionInit();
         }
+
         public void UpdateMusicVolume(float sliderValue)
         {
             _audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderValue) * 20);
@@ -36,20 +36,17 @@ namespace Scripts.Views
             _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(sliderValue) * 20);
             PlayerPrefsManager.UpdateSoundEffectsValue(sliderValue);
         }
-
         public void SetQuality (int qualityIndex)
         {
             QualitySettings.SetQualityLevel(qualityIndex);
             PlayerPrefsManager.UpdateQualityIndex(qualityIndex);
         }
-
         public void SetFullscreen (bool isFullscreen)
         {
             Screen.fullScreen = isFullscreen;
             if (isFullscreen) PlayerPrefsManager.UpdateFullScreen(1);
             else PlayerPrefsManager.UpdateFullScreen(0);
         }
-
         public void SetResolution (int resolutionIndex)
         {
             Resolution resolution = PlayerPrefsManager.Resolutions[resolutionIndex];
@@ -58,7 +55,6 @@ namespace Scripts.Views
             PlayerPrefsManager.UpdateHeight(resolution.height);
             PlayerPrefsManager.UpdateWidth(resolution.width);
         }
-
         private void ResolutionInit()
         {
             _resolutionDropdown.ClearOptions();
@@ -66,10 +62,10 @@ namespace Scripts.Views
             _resolutionDropdown.value = PlayerPrefsManager.GetResolutionIndex();
             _resolutionDropdown.RefreshShownValue();
         }
-
         public void ResetScore()
         {
             PlayerPrefsManager.ResetTotalScore();
+            LocalLoggerManager.ResetLocalLog();
             Debug.LogError("Se borró el puntaje" + PlayerPrefsManager.GetTotalScore());
         }
     }

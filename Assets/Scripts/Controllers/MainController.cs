@@ -22,12 +22,12 @@ namespace Scripts.Controllers
             SetVisualSettings();
             LocalLoggerManager.CreateLocalLog();
             specialEnum = SpecialDate.WichSpecialIs();
-
             Debug.Log("Is First Load? " + PlayerPrefsManager.IsFirstLoad() + " - Is From Playing? " + PlayerPrefsManager.IsFromPlaying()
                 + "\nResolution: " + PlayerPrefsManager.GetWidth() + " x " + PlayerPrefsManager.GetHeight() + " - Resolution Index: " + PlayerPrefsManager.GetResolutionIndex() + " - FullScreen: " + PlayerPrefsManager.IsFullScreen()
                 + "\nLevel Selected: " + PlayerPrefsManager.GetLevelSelected() + " - Special Date: " + specialEnum
                 + "\nMusic Value: " + PlayerPrefsManager.GetMusicValue() + " - Sound Value: " + PlayerPrefsManager.GetSoundEffectsValue()
                 + "\nQuality Index: " + PlayerPrefsManager.GetQualityIndex() + " - Total Score: " + PlayerPrefsManager.GetTotalScore());
+            PlayerPrefsManager.InitPlayerPrefs();
         }
 
         // Update is called once per frame
@@ -60,7 +60,7 @@ namespace Scripts.Controllers
                 if (PlayerPrefsManager.Resolutions[i].width == Screen.currentResolution.width && PlayerPrefsManager.Resolutions[i].height == Screen.currentResolution.height)
                     currentResolutionIndex = i;
             }
-            if (PlayerPrefsManager.IsFirstLoad())
+           if (PlayerPrefsManager.IsFirstLoad())
             {
                 Resolution resolution = PlayerPrefsManager.Resolutions[currentResolutionIndex];
                 Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
@@ -69,13 +69,13 @@ namespace Scripts.Controllers
                 PlayerPrefsManager.UpdateWidth(resolution.width);
                 PlayerPrefsManager.UpdateFirstLoad();
                 //****************************************************************************
-                PlayerPrefsManager.UpdateTotalScore(1000);
+                //PlayerPrefsManager.UpdateTotalScore(1000);
                 //****************************************************************************
             }
             else
             {
                 //****************************************************************************
-                PlayerPrefsManager.ResetFirstLoad();
+                //PlayerPrefsManager.ResetFirstLoad();
                 //****************************************************************************
                 Screen.SetResolution(PlayerPrefsManager.GetWidth(), PlayerPrefsManager.GetHeight(), Screen.fullScreen);
             }

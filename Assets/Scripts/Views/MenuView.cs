@@ -10,6 +10,7 @@ public class MenuView : MonoBehaviour
     public void QuitButton()
     {
         Debug.LogError("Quit");
+        //PlayerPrefs.DeleteAll();
         Application.Quit();
     }
 
