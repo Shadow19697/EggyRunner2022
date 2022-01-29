@@ -11,10 +11,8 @@ namespace Scripts.Models
         public int resolutionIndex;
         public int qualityIndex;
         public int fullScreen;
-        public int fromPlaying;
         public int levelSelected;
         public int height;
         public int width;
-        public List<string> resolutions;
     } 
 }

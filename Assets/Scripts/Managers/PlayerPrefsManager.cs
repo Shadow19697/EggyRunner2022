@@ -17,7 +17,6 @@ namespace Scripts.Managers
                                 ResolutionIndex = "resolutionIndex",
                                 QualityIndex = "qualityIndex",
                                 FullScreen = "fullScreen",
-                                FromPlaying = "fromPlaying",
                                 LevelSelected = "levelSelected",
                                 Height = "height",
                                 Width = "width";
@@ -45,14 +44,11 @@ namespace Scripts.Managers
                 _model.resolutionIndex = GetResolutionIndex();
                 _model.qualityIndex = GetQualityIndex();
                 _model.fullScreen = GetFullScreen();
-                _model.fromPlaying = GetFromPlaying();
                 _model.levelSelected = GetLevelSelected();
                 _model.height = GetHeight();
                 _model.width = GetWidth();
-                _model.resolutions = new List<string>();
-                ListResolutions.ForEach(resolution => _model.resolutions.Add(resolution));
-                LocalLoggerManager.UpdatePlayerPrefsLog(_model);
                 Debug.Log("Se creó archivo player prefs");
+                LocalLoggerManager.UpdatePlayerPrefsLog(_model);
             }
         }
         
@@ -175,24 +171,6 @@ namespace Scripts.Managers
         public static int GetFullScreen()
         {
             return PlayerPrefs.GetInt(FullScreen, 1);
-        }
-        #endregion
-
-        #region FromPlaying Methods
-        public static bool IsFromPlaying()
-        {
-            if (GetFromPlaying() == 0) return false;
-            else return true;
-        }
-        public static void UpdateFromPlaying()
-        {
-            PlayerPrefs.SetInt(FromPlaying, 1);
-            _model.fromPlaying = 1;
-            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
-        }
-        public static int GetFromPlaying()
-        {
-            return PlayerPrefs.GetInt(FromPlaying, 0);
         }
         #endregion
 
