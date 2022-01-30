@@ -25,6 +25,7 @@ public class MenuView : MonoBehaviour
         }
     }
 
+    [System.Obsolete]
     private void Update()
     {
         if(_levelMenuObject.active)
@@ -37,11 +38,5 @@ public class MenuView : MonoBehaviour
     {
         Debug.LogError("Quit");
         Application.Quit();
-    }
-
-    public void LevelButton(int id)
-    {
-        //IMPLEMENTAR ID EN PARAMETERS
-        SceneManager.LoadScene("Level"/*, parameters*/);
     }
 }

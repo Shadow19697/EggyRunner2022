@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Scripts.Managers
@@ -38,24 +39,31 @@ namespace Scripts.Managers
             if (score >= 2000 && score < 3000) levels = 3;
             if (score >= 3000 && score < 4000) levels = 4;
             if (score >= 4000) levels = 5;
-            for (int i = 0; i < levels; i++)
+            for (int i = 0; i < levels-1; i++)
                 _levelButtons[i].interactable = true;
         }
 
         private void UpdateButtonsLabels()
         {
-            int necesario = 1000;
+            int levelScore = 1000;
             int levelNumber = 2;
             _levelLabels.ForEach(label =>
             {
-                int left = necesario - PlayerPrefsManager.GetTotalScore();
+                int left = levelScore - PlayerPrefsManager.GetTotalScore();
                 if (left > 0)
                     label.text = left + " LEFT TO UNLOCK";
                 else
                     label.text = "LEVEL " + levelNumber;
-                necesario = necesario + 1000;
+                levelScore = levelScore + 1000;
                 levelNumber++;
             });
+        }
+
+        public void ButtonPressed(int id)
+        {
+            PlayerPrefsManager.UpdateLevelSelected(id);
+            Debug.LogWarning("Nivel seleccionado: " + id);
+            //SceneManager.LoadScene("Level");
         }
 
     }

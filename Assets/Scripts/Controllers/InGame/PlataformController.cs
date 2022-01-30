@@ -12,16 +12,16 @@ namespace Scripts.Controllers.InGame
         public void Stop()
         {
             //TO DO
-            _backgrounds.ForEach(background => background.active = false);
-            _streets.ForEach(street => street.active = false);
+            //_backgrounds.ForEach(background => background.active = false);
+            //_streets.ForEach(street => street.active = false);
         }
 
         public void Start(int id)
         {
             //TO DO
             Stop();
-            _backgrounds[id].active = true;
-            _streets[id].active = true;
+            //_backgrounds[id].active = true;
+            //_streets[id].active = true;
         }
     }
 }
