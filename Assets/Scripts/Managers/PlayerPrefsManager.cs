@@ -28,7 +28,7 @@ namespace Scripts.Managers
         {
             if (LocalLoggerManager.ExistsPlayerPrefsLog())
             {
-                StreamReader file = new StreamReader(LocalLoggerManager.playerPrefsPath);
+                StreamReader file = new StreamReader(LocalLoggerManager.GetPlayerPrefsPath());
                 var Json = file.ReadToEnd();
                 Debug.Log(Json);
                 _model = JsonConvert.DeserializeObject<PlayerPrefsModel>(Json);
