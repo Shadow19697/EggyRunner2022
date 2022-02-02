@@ -5,23 +5,19 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Scripts.Managers
 {
-    public static class DataManager
+    public static class DataManager 
     {
         private static List<GameModel> _allGames;
-
-        public static void LocalGamesInit()
-        {
-            _allGames = new List<GameModel>();
-            StreamReader file = new StreamReader(LocalLoggerManager.GetLocalHighScorePath());
-            var Json = file.ReadToEnd();
-            file.Close();
-            _allGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
-        }
-
-        public static void MakeGameModel()
+        private static List<GameModel> _gamesToUpload = new List<GameModel>();
+        private static bool wasUploaded;
+        private static HttpConnectionManager _httpConnectionManager = new HttpConnectionManager();
+        
+        
+        public static void MadeExampleGameModelList()
         {
             //_allGames = new List<GameModel>();
             for(int i=0; i<50; i++)
@@ -35,11 +31,43 @@ namespace Scripts.Managers
             LocalLoggerManager.UpdateLocalHighScoreLog(_sortedGames.ToList<GameModel>());
         }
 
-        public static void AddGame(string name, int score, int level)
+
+        public static void UploadGame(string name, int score, int level)
         {
             GameModel game = new GameModel(name, score, level);
             _allGames.Add(game);
             LocalLoggerManager.UpdateLocalHighScoreLog(_allGames);
+            string gameJson = JsonConvert.SerializeObject(game);
+            _httpConnectionManager.PostGame(gameJson, false);
+        }
+
+        public static void AddGameToUpload(string gameJson)
+        {
+            GameModel game = JsonConvert.DeserializeObject<GameModel>(gameJson);
+            _gamesToUpload.Add(game);
+        }
+
+        public static void ItWasUploaded(bool option)
+        {
+            wasUploaded = option;
+        }
+
+        public static void UploadRemainingGames()
+        {
+            List<GameModel> gamesUploaded = new List<GameModel>();
+            _gamesToUpload.ForEach(game =>
+            {
+                string gameJson = JsonConvert.SerializeObject(game);
+                _httpConnectionManager.PostGame(gameJson, true);
+                if(wasUploaded) gamesUploaded.Add(game);
+            });
+            gamesUploaded.ForEach(game => _gamesToUpload.Remove(game));
+        }
+
+        public static List<GameModel> ReturnGames(bool isLocal, bool isAll, int level)
+        {
+            if (isLocal) return ReturnLocalGames(isAll, level);
+            else /*TO DO*/ return ReturnLocalGames(isAll, level);
         }
 
         public static List<GameModel> ReturnLocalGames(bool isAll, int level)
@@ -61,10 +89,13 @@ namespace Scripts.Managers
             }
         }
 
-        public static List<GameModel> ReturnGames(bool isLocal, bool isAll, int level)
+        public static void LocalGamesInit()
         {
-            if (isLocal) return ReturnLocalGames(isAll, level);
-            else /*TO DO*/ return ReturnLocalGames(isAll, level);
+            _allGames = new List<GameModel>();
+            StreamReader file = new StreamReader(LocalLoggerManager.GetLocalHighScorePath());
+            var Json = file.ReadToEnd();
+            file.Close();
+            _allGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
         }
     } 
 }

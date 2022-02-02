@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
+using Scripts.Managers;
 
 namespace Scripts.WorldTimeAPI
 {
@@ -10,6 +11,7 @@ namespace Scripts.WorldTimeAPI
     {
         const string apiUrl = "http://worldtimeapi.org/api/ip";
         private DateTime currentDateTime;
+        private string errorMessage = "WorldTimeAPI - Error: No se pudo establecer conexión";
         struct TimeData
         {
             public string datetime;
@@ -50,7 +52,8 @@ namespace Scripts.WorldTimeAPI
             }
             catch (Exception)
             {
-                Debug.LogError("No hay conexión a internet");
+                LocalLoggerManager.UpdateErrorLog(errorMessage);
+                Debug.LogError(errorMessage);
             }
         }
 
