@@ -74,8 +74,8 @@ public class HighScoreView : MonoBehaviour
 
     private void LoadTable()
     {
-        FindHighScores();
         _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
+        FindHighScores();
         if (games != null)
             for (int i = 0; i < games.Count; i++)
                 _rowList[i].SetLabels((i + 1).ToString(), games[i].name, "Level " + games[i].level, games[i].score.ToString());
