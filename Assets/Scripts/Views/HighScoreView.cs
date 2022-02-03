@@ -14,6 +14,7 @@ public class HighScoreView : MonoBehaviour
     public ToggleController _allLevelToggle;
     public Dropdown _levelDropdown;
     public List<RowController> _rowList;
+    public GameObject _errorCanvas;
 
     private bool isLocal;
     private bool isAll;
@@ -30,6 +31,7 @@ public class HighScoreView : MonoBehaviour
     {
         LocalGlobalToggleSwitch();
         AllLevelToggleSwitch();
+        
     }
 
     public void SetLevel(int levelIndex)
@@ -74,8 +76,11 @@ public class HighScoreView : MonoBehaviour
     {
         FindHighScores();
         _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
-        for (int i = 0; i < games.Count; i++)
-            _rowList[i].SetLabels((i + 1).ToString(), games[i].name, "Level " + games[i].level, games[i].score.ToString());
+        if (games != null)
+            for (int i = 0; i < games.Count; i++)
+                _rowList[i].SetLabels((i + 1).ToString(), games[i].name, "Level " + games[i].level, games[i].score.ToString());
+        else
+            _errorCanvas.SetActive(true);
     }
 
     private void FindHighScores()

@@ -67,35 +67,48 @@ namespace Scripts.Managers
         public static List<GameModel> ReturnGames(bool isLocal, bool isAll, int level)
         {
             if (isLocal) return ReturnLocalGames(isAll, level);
-            else /*TO DO*/ return ReturnLocalGames(isAll, level);
+            else return ReturnGlobalGames(isAll, level);
         }
 
-        public static List<GameModel> ReturnLocalGames(bool isAll, int level)
+        private static List<GameModel> ReturnLocalGames(bool isAll, int level)
         {
             LocalGamesInit();
-            if (isAll)
-            {
-                var _sortedGames = (from game in _allGames
-                                    orderby game.score descending
-                                    select game).Take(10);
-                return _sortedGames.ToList<GameModel>();
-            }
-            else
-            {
-                var _sortedGames = (from game in _allGames where game.level.Equals(level)
-                                    orderby game.score descending
-                                    select game).Take(10);
-                return _sortedGames.ToList<GameModel>();
-            }
+            return SortGames(isAll, level, _allGames);
         }
 
-        public static void LocalGamesInit()
+        private static void LocalGamesInit()
         {
             _allGames = new List<GameModel>();
             StreamReader file = new StreamReader(LocalLoggerManager.GetLocalHighScorePath());
             var Json = file.ReadToEnd();
             file.Close();
             _allGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
+        }
+
+        private static List<GameModel> ReturnGlobalGames (bool isAll, int level)
+        {
+            List<GameModel> recoveredGames = _httpConnectionManager.GetGlobalGames();
+            if (recoveredGames != null) return SortGames(isAll, level, recoveredGames);
+            else return null;
+        }
+
+        private static List<GameModel> SortGames (bool isAll, int level, List<GameModel> games)
+        {
+            if (isAll)
+            {
+                var _sortedGames = (from game in games
+                                    orderby game.score descending
+                                    select game).Take(10);
+                return _sortedGames.ToList<GameModel>();
+            }
+            else
+            {
+                var _sortedGames = (from game in games
+                                    where game.level.Equals(level)
+                                    orderby game.score descending
+                                    select game).Take(10);
+                return _sortedGames.ToList<GameModel>();
+            }
         }
     } 
 }

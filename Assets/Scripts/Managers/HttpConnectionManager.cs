@@ -17,8 +17,15 @@ namespace Scripts.Managers
 
         public List<GameModel> GetGlobalGames()
         {
-            StartCoroutine(GetGamesFromAPI());
-            return globalGames;
+            try
+            {
+                StartCoroutine(GetGamesFromAPI());
+                return globalGames;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         IEnumerator GetGamesFromAPI()
@@ -31,6 +38,7 @@ namespace Scripts.Managers
             }
             catch (Exception)
             {
+                globalGames = null;
                 Debug.LogError("No hay conexión a internet");
             }
         }
