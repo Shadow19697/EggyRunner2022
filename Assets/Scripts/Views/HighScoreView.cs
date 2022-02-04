@@ -31,7 +31,6 @@ public class HighScoreView : MonoBehaviour
     {
         LocalGlobalToggleSwitch();
         AllLevelToggleSwitch();
-        
     }
 
     public void SetLevel(int levelIndex)
@@ -72,7 +71,7 @@ public class HighScoreView : MonoBehaviour
         }
     }
 
-    private void LoadTable()
+    public void LoadTable()
     {
         _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
         FindHighScores();
@@ -86,5 +85,18 @@ public class HighScoreView : MonoBehaviour
     private void FindHighScores()
     {
         games = DataManager.ReturnGames(isLocal, isAll, level);
+    }
+
+    public void AddGames()
+    {
+        DataManager.MadeExampleGameModelList();
+    }
+
+    public void ReloadView()
+    {
+        _localGlobalToggle.isOn = true;
+        _localGlobalToggle.Toggle(true);
+        _allLevelToggle.isOn = true;
+        _allLevelToggle.Toggle(true);
     }
 }

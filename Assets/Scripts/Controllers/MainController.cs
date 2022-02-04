@@ -69,15 +69,9 @@ namespace Scripts.Controllers
                 PlayerPrefsManager.UpdateHeight(resolution.height);
                 PlayerPrefsManager.UpdateWidth(resolution.width);
                 PlayerPrefsManager.UpdateFirstLoad();
-                //****************************************************************************
-                PlayerPrefsManager.UpdateTotalScore(750);
-                //****************************************************************************
             }
             else
             {
-                //****************************************************************************
-                PlayerPrefsManager.ResetFirstLoad();
-                //****************************************************************************
                 Screen.SetResolution(PlayerPrefsManager.GetWidth(), PlayerPrefsManager.GetHeight(), Screen.fullScreen);
             }
         }

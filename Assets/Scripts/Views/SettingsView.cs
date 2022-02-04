@@ -15,6 +15,7 @@ namespace Scripts.Views
         public Dropdown _resolutionDropdown;
         public Dropdown _qualityDropdown;
         public Toggle _fullscreenToggle;
+        public RectTransform _resDropdownList;
 
         private void Start()
         {
@@ -60,6 +61,7 @@ namespace Scripts.Views
             _resolutionDropdown.ClearOptions();
             _resolutionDropdown.AddOptions(PlayerPrefsManager.ListResolutions);
             _resolutionDropdown.value = PlayerPrefsManager.GetResolutionIndex();
+            _resDropdownList.sizeDelta = new Vector2(0, PlayerPrefsManager.ListResolutions.Count * 70);
             _resolutionDropdown.RefreshShownValue();
         }
         public void ResetScore()
@@ -67,6 +69,11 @@ namespace Scripts.Views
             PlayerPrefsManager.ResetTotalScore();
             LocalLoggerManager.ResetLocalLog();
             Debug.LogError("Se borró el puntaje" + PlayerPrefsManager.GetTotalScore());
+        }
+
+        public void AddScore()
+        {
+            PlayerPrefsManager.UpdateTotalScore(750);
         }
     }
 }

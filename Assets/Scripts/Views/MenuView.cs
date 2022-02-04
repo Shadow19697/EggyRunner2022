@@ -37,7 +37,11 @@ public class MenuView : MonoBehaviour
     public void QuitButton()
     {
         Debug.LogError("Quit");
-        DataManager.MadeExampleGameModelList();
         Application.Quit();
+    }
+
+    public void ToFirstLoad()
+    {
+        PlayerPrefsManager.ResetFirstLoad();
     }
 }
