@@ -1,102 +1,105 @@
-using Scripts.Controllers;
+using Scripts.Controllers.Extensions;
 using Scripts.Managers;
 using Scripts.Models;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HighScoreView : MonoBehaviour
+namespace Scripts.Views
 {
-    public ToggleController _localGlobalToggle;
-    public ToggleController _allLevelToggle;
-    public Dropdown _levelDropdown;
-    public List<RowController> _rowList;
-    public GameObject _errorCanvas;
-
-    private bool isLocal;
-    private bool isAll;
-    private int level;
-    private List<GameModel> games;
-
-    private void Start()
+    public class HighScoreView : MonoBehaviour
     {
-        VariablesInit();
-        LoadTable();
-    }
+        public ToggleController _localGlobalToggle;
+        public ToggleController _allLevelToggle;
+        public Dropdown _levelDropdown;
+        public List<RowController> _rowList;
+        public GameObject _errorCanvas;
 
-    private void Update()
-    {
-        LocalGlobalToggleSwitch();
-        AllLevelToggleSwitch();
-    }
+        private bool isLocal;
+        private bool isAll;
+        private int level;
+        private List<GameModel> games;
 
-    public void SetLevel(int levelIndex)
-    {
-        level = levelIndex+1;
-        LoadTable();
-    }
+        private void Start()
+        {
+            VariablesInit();
+            LoadTable();
+        }
 
-    private void VariablesInit()
-    {
-        isLocal = _localGlobalToggle.isOn;
-        isAll = _allLevelToggle.isOn;
-        _levelDropdown.interactable = false;
-    }
+        private void Update()
+        {
+            LocalGlobalToggleSwitch();
+            AllLevelToggleSwitch();
+        }
 
-    private void LocalGlobalToggleSwitch()
-    {
-        if (isLocal != _localGlobalToggle.isOn)
+        public void SetLevel(int levelIndex)
+        {
+            level = levelIndex + 1;
+            LoadTable();
+        }
+
+        private void VariablesInit()
         {
             isLocal = _localGlobalToggle.isOn;
-            LoadTable();
-        }
-    }
-
-    private void AllLevelToggleSwitch()
-    {
-        if (isAll != _allLevelToggle.isOn)
-        {
             isAll = _allLevelToggle.isOn;
-            if (isAll)
-            {
-                _levelDropdown.interactable = false;
-                _levelDropdown.value = 0;
-            }
-            else _levelDropdown.interactable = true;
-            level = _levelDropdown.value + 1;
-            LoadTable();
+            _levelDropdown.interactable = false;
         }
-    }
 
-    public void LoadTable()
-    {
-        _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
-        FindHighScores();
-        if (games != null)
-            for (int i = 0; i < games.Count; i++)
-                _rowList[i].SetLabels((i + 1).ToString(), games[i].name, "Level " + games[i].level, games[i].score.ToString());
-        else
-            _errorCanvas.SetActive(true);
-    }
+        private void LocalGlobalToggleSwitch()
+        {
+            if (isLocal != _localGlobalToggle.isOn)
+            {
+                isLocal = _localGlobalToggle.isOn;
+                LoadTable();
+            }
+        }
 
-    private void FindHighScores()
-    {
-        games = DataManager.ReturnGames(isLocal, isAll, level);
-    }
+        private void AllLevelToggleSwitch()
+        {
+            if (isAll != _allLevelToggle.isOn)
+            {
+                isAll = _allLevelToggle.isOn;
+                if (isAll)
+                {
+                    _levelDropdown.interactable = false;
+                    _levelDropdown.value = 0;
+                }
+                else _levelDropdown.interactable = true;
+                level = _levelDropdown.value + 1;
+                LoadTable();
+            }
+        }
 
-    public void AddGames()
-    {
-        DataManager.MadeExampleGameModelList();
-    }
+        public void LoadTable()
+        {
+            _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
+            FindHighScores();
+            if (games != null)
+                for (int i = 0; i < games.Count; i++)
+                    _rowList[i].SetLabels((i + 1).ToString(), games[i].name, "Level " + games[i].level, games[i].score.ToString());
+            else
+                _errorCanvas.SetActive(true);
+        }
 
-    public void ReloadView()
-    {
-        _localGlobalToggle.isOn = true;
-        _localGlobalToggle.Toggle(true);
-        _allLevelToggle.isOn = true;
-        _allLevelToggle.Toggle(true);
-    }
+        private void FindHighScores()
+        {
+            games = DataManager.ReturnGames(isLocal, isAll, level);
+        }
+
+        public void AddGames()
+        {
+            DataManager.MadeExampleGameModelList();
+        }
+
+        [System.Obsolete]
+        public void ReloadView()
+        {
+            _localGlobalToggle.isOn = true;
+            _localGlobalToggle.Toggle(true);
+            _allLevelToggle.isOn = true;
+            _allLevelToggle.Toggle(true);
+            _levelDropdown.value = 1;
+            _errorCanvas.SetActive(false);
+        }
+    } 
 }

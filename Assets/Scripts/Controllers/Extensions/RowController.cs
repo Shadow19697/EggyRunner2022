@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace Scripts.Controllers
+namespace Scripts.Controllers.Extensions
 {
     public class RowController : MonoBehaviour
     {

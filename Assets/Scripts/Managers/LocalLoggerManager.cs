@@ -13,7 +13,6 @@ namespace Scripts.Managers
         private static string playerPrefsPath = Application.dataPath + "/PlayerPrefs.txt";
         private static string localHighScorePath = Application.dataPath + "/LocalHighScore.txt";
 
-
         #region Get
         public static string GetLogPath()
         {

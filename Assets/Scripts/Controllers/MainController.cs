@@ -1,10 +1,6 @@
 using Scripts.Enums;
 using Scripts.Managers;
-using Scripts.Managers.Sounds;
 using Scripts.WorldTimeAPI;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -28,13 +24,6 @@ namespace Scripts.Controllers
                 + "\nLevel Selected: " + PlayerPrefsManager.GetLevelSelected() + " - Special Date: " + specialEnum
                 + "\nMusic Value: " + PlayerPrefsManager.GetMusicValue() + " - Sound Value: " + PlayerPrefsManager.GetSoundEffectsValue()
                 + "\nQuality Index: " + PlayerPrefsManager.GetQualityIndex() + " - Total Score: " + PlayerPrefsManager.GetTotalScore());
-            
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         public void SetVolume()
@@ -71,9 +60,7 @@ namespace Scripts.Controllers
                 PlayerPrefsManager.UpdateFirstLoad();
             }
             else
-            {
                 Screen.SetResolution(PlayerPrefsManager.GetWidth(), PlayerPrefsManager.GetHeight(), Screen.fullScreen);
-            }
         }
     }
 }

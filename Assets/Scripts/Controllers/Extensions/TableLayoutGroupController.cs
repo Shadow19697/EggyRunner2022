@@ -7,7 +7,7 @@ namespace UnityEngine.UI.Extensions
     /// Arranges child objects into a non-uniform grid, with fixed column widths and flexible row heights
     /// </summary>
     [AddComponentMenu("Layout/Extensions/Table Layout Group")]
-    public class TableLayoutGroup : LayoutGroup
+    public class TableLayoutGroupController : LayoutGroup
     {
         public enum Corner
         {

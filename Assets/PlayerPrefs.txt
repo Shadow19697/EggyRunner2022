@@ -1,1 +1,1 @@
-{"firstLoad":0,"totalScore":0,"musicValue":0.0,"soundEffectsValue":0.0,"resolutionIndex":4,"qualityIndex":0,"fullScreen":0,"levelSelected":0,"height":768,"width":1366}
+{"firstLoad":0,"totalScore":3000,"musicValue":0.07860167,"soundEffectsValue":0.367913127,"resolutionIndex":0,"qualityIndex":2,"fullScreen":0,"levelSelected":3,"height":480,"width":640}

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using TMPro;
 using Scripts.Managers;
 
@@ -21,7 +17,6 @@ public class MenuView : MonoBehaviour
             _mainMenuObject.SetActive(false);
             _levelMenuObject.SetActive(true);
             PlayerPrefsManager.UpdateLevelSelected(0);
-
         }
     }
 
@@ -40,8 +35,10 @@ public class MenuView : MonoBehaviour
         Application.Quit();
     }
 
+    /**************************************************************/
     public void ToFirstLoad()
     {
         PlayerPrefsManager.ResetFirstLoad();
     }
+    /**************************************************************/
 }

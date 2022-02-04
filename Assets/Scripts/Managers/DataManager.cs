@@ -1,11 +1,8 @@
 using Scripts.Models;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Scripts.Managers
 {
@@ -16,10 +13,9 @@ namespace Scripts.Managers
         private static bool wasUploaded;
         private static HttpConnectionManager _httpConnectionManager = new HttpConnectionManager();
         
-        
+        /*******************************************************************/
         public static void MadeExampleGameModelList()
         {
-            //_allGames = new List<GameModel>();
             for(int i=0; i<50; i++)
             {
                 GameModel game = new GameModel("Nombre " + (i + 1), (i+1 * 100), i+1);
@@ -30,8 +26,9 @@ namespace Scripts.Managers
                                 select game);
             LocalLoggerManager.UpdateLocalHighScoreLog(_sortedGames.ToList<GameModel>());
         }
+        /*******************************************************************/
 
-
+        #region Upload
         public static void UploadGame(string name, int score, int level)
         {
             GameModel game = new GameModel(name, score, level);
@@ -59,11 +56,14 @@ namespace Scripts.Managers
             {
                 string gameJson = JsonConvert.SerializeObject(game);
                 _httpConnectionManager.PostGame(gameJson, true);
-                if(wasUploaded) gamesUploaded.Add(game);
+                if (wasUploaded) gamesUploaded.Add(game);
             });
             gamesUploaded.ForEach(game => _gamesToUpload.Remove(game));
         }
 
+        #endregion
+
+        #region Download
         public static List<GameModel> ReturnGames(bool isLocal, bool isAll, int level)
         {
             if (isLocal) return ReturnLocalGames(isAll, level);
@@ -76,6 +76,13 @@ namespace Scripts.Managers
             return SortGames(isAll, level, _allGames);
         }
 
+        private static List<GameModel> ReturnGlobalGames(bool isAll, int level)
+        {
+            List<GameModel> recoveredGames = _httpConnectionManager.GetGlobalGames();
+            if (recoveredGames != null) return SortGames(isAll, level, recoveredGames);
+            else return null;
+        }
+
         private static void LocalGamesInit()
         {
             _allGames = new List<GameModel>();
@@ -85,14 +92,7 @@ namespace Scripts.Managers
             _allGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
         }
 
-        private static List<GameModel> ReturnGlobalGames (bool isAll, int level)
-        {
-            List<GameModel> recoveredGames = _httpConnectionManager.GetGlobalGames();
-            if (recoveredGames != null) return SortGames(isAll, level, recoveredGames);
-            else return null;
-        }
-
-        private static List<GameModel> SortGames (bool isAll, int level, List<GameModel> games)
+        private static List<GameModel> SortGames(bool isAll, int level, List<GameModel> games)
         {
             if (isAll)
             {
@@ -110,5 +110,6 @@ namespace Scripts.Managers
                 return _sortedGames.ToList<GameModel>();
             }
         }
+        #endregion
     } 
 }

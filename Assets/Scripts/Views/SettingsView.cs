@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -70,7 +68,6 @@ namespace Scripts.Views
             LocalLoggerManager.ResetLocalLog();
             Debug.LogError("Se borró el puntaje" + PlayerPrefsManager.GetTotalScore());
         }
-
         public void AddScore()
         {
             PlayerPrefsManager.UpdateTotalScore(750);

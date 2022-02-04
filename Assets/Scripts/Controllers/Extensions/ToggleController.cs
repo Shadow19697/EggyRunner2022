@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Controllers
+namespace Scripts.Controllers.Extensions
 {
     public class ToggleController : MonoBehaviour
     {

@@ -1,13 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Scripts.Managers;
 
-namespace Scripts.Managers
+namespace Scripts.Views
 {
-    public class LevelManager : MonoBehaviour
+    public class LevelView : MonoBehaviour
     {
         public List<Button> _levelButtons;
         public List<TextMeshProUGUI> _levelLabels;

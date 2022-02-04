@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using Scripts.Models;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -72,6 +71,7 @@ namespace Scripts.Managers
             _model.firstLoad = 1;
             LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
+
         public static int GetFirstLoad()
         {
             return PlayerPrefs.GetInt(FirstLoad, 1);
@@ -213,6 +213,5 @@ namespace Scripts.Managers
             LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
         #endregion
-
     }
 }
