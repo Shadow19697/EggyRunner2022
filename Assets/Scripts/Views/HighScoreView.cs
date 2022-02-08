@@ -3,6 +3,7 @@ using Scripts.Managers;
 using Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Scripts.Views
@@ -14,6 +15,7 @@ namespace Scripts.Views
         public Dropdown _levelDropdown;
         public List<RowController> _rowList;
         public GameObject _errorCanvas;
+        public GameObject _errorCanvasButton;
 
         private bool isLocal;
         private bool isAll;
@@ -78,7 +80,11 @@ namespace Scripts.Views
                 for (int i = 0; i < games.Count; i++)
                     _rowList[i].SetLabels((i + 1).ToString(), games[i].name, "Level " + games[i].level, games[i].score.ToString());
             else
+            {
                 _errorCanvas.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(null);
+                EventSystem.current.SetSelectedGameObject(_errorCanvasButton);
+            }
         }
 
         private void FindHighScores()
