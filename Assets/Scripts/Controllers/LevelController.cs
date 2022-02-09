@@ -14,7 +14,7 @@ namespace Scripts.Controllers
         public GameObject _player;
         public UIManager _ui;
         public ObstacleManager _obstacle;
-        public BenefitManager _benefit;
+        public PerkManager _benefit;
         public InGame.PlataformController _plataform;
         public SoundManager _sound;
 

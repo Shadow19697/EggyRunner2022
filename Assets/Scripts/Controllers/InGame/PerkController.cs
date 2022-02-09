@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.Managers.InGame
+namespace Scripts.Controllers.InGame
 {
-    public class BenefitManager : MonoBehaviour
+    public class PerkController
     {
 
     } 
