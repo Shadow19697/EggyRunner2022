@@ -9,11 +9,14 @@ namespace Scripts.Controllers.Extensions
     public class NavigationMenuController : MonoBehaviour
     {
         public GameObject[] _buttons;
+        public GameObject[] _views;
 
         void Start()
         {
-            if (PlayerPrefsManager.GetLevelSelected() != 0) SetFirstSelectedButton(1);
-            else SetFirstSelectedButton(0);
+            for(int i=0; i<_views.Length; i++)
+                if (_views[i].active) SetFirstSelectedButton(i);
+            //if (PlayerPrefsManager.GetLevelSelected() != 0) SetFirstSelectedButton(1);
+            //else SetFirstSelectedButton(0);
         }
 
         public void SetFirstSelectedButton(int id)
