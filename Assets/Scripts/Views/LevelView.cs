@@ -58,13 +58,12 @@ namespace Scripts.Views
             });
         }
 
-        public void ButtonPressed(int id)
+        public void LevelSelected(int id)
         {
             PlayerPrefsManager.UpdateLevelSelected(id);
             Debug.LogWarning("Nivel seleccionado: " + id);
             //SceneManager.LoadScene("Level");
         }
-
     }
 
 }
