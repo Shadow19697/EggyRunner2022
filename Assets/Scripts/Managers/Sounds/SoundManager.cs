@@ -7,48 +7,71 @@ using UnityEngine.Audio;
 
 namespace Scripts.Managers.Sounds
 {
-    public class SoundManager : MonoBehaviour
+    public static class SoundManager
     {
-        public AudioSource _mainMenuMusic;
-        public AudioSource _cinematicMusic;
-        public AudioSource _endingMusic;
-        public List<AudioSource> _levelMusic;
+        public static AudioMixer _audioMixer;
 
-        public AudioSource _gameOverSound;
-        public AudioSource _jumpSound;
-        public AudioSource _landSound;
-        public AudioSource _benefitSound;
+        public static List<AudioSource> _levelMusic;
+        public static AudioSource _cinematicMusic;
+        public static AudioSource _endingMusic;
 
-        public void StopAllMusic()
+        public static AudioSource _jumpSound;
+        public static AudioSource _grabPerkSound;
+        public static AudioSource _grabEggSound;
+        public static AudioSource _gameOverSound;
+
+        public static void InitVolume()
         {
-            _mainMenuMusic.Stop();
-            _cinematicMusic.Stop();
-            _endingMusic.Stop();
-            _levelMusic.ForEach(levelMusic => levelMusic.Stop());
-        }
-        public void PlayMainMusic()
-        {
-            StopAllMusic();
-            _mainMenuMusic.Play();
+            _audioMixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefsManager.GetMusicValue()) * 20);
+            _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(PlayerPrefsManager.GetSoundEffectsValue()) * 20);
         }
 
-        public void PlayCinematicMusic()
+        public static void MuteMusic(bool value)
         {
-            StopAllMusic();
+            if (value) _audioMixer.SetFloat("MusicVolume", 0.0001f);
+            else _audioMixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefsManager.GetMusicValue()) * 20);
+        }
+
+        public static void MuteSoundEffects(bool value)
+        {
+            if (value) _audioMixer.SetFloat("SoundEffectsVolume", 0.0001f);
+            else _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(PlayerPrefsManager.GetSoundEffectsValue()) * 20);
+        }
+
+        #region Music
+        public static void PlayLevelMusic()
+        {
+            _levelMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].Play();
+        }
+
+        public static void PauseLevelMusic()
+        {
+            _levelMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].Pause();
+        }
+
+        public static void PlayCinematicMusic()
+        {
             _cinematicMusic.Play();
         }
 
-        public void PlayEndingMusic()
+        public static void StopCinematicMusic()
         {
-            StopAllMusic();
+            _cinematicMusic.Stop();
+        }
+
+        public static void PlayEndingMusic()
+        {
             _endingMusic.Play();
         }
 
-        public void PlayLevelMusic(int id)
+        public static void StopEndingMusic()
         {
-            StopAllMusic();
-            _levelMusic[id].Play();
+            _endingMusic.Stop();
         }
-    }
+        #endregion
 
+        #region Sounds
+
+        #endregion
+    }
 }
