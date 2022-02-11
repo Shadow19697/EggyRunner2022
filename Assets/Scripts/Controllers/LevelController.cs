@@ -3,19 +3,20 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using Scripts.Managers.InGame;
-using Scripts.Managers.Sounds;
 using System;
 using Scripts.Enums;
+using Scripts.Controllers.InGame;
 
 namespace Scripts.Controllers
 {
     public class LevelController : MonoBehaviour
     {
-        public GameObject _player;
-        public UIManager _ui;
-        public ObstacleManager _obstacle;
-        public PerkManager _benefit;
-        public InGame.PlataformController _plataform;
+        public SoundManager _soundManager;
+        public PlayerController _playerController;
+        public UIManager _uiManager;
+        public ObstacleManager _obstacleManager;
+        public PerkManager _perkManager;
+        public InGame.EnviromentController _plataformManager;
 
         private readonly float counter;
         private LevelStateEnum _state;
@@ -24,9 +25,7 @@ namespace Scripts.Controllers
 
         void Start()
         {
-            _plataform.Start(id);
-            _ui.SetHighScore();
-            _state = LevelStateEnum.IdleStart;
+            
         }
 
         // Update is called once per frame
