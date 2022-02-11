@@ -16,7 +16,7 @@ namespace Scripts.Controllers
         public UIManager _uiManager;
         public ObstacleManager _obstacleManager;
         public PerkManager _perkManager;
-        public InGame.EnviromentController _plataformManager;
+        public InGame.EnvironmentController _plataformManager;
 
         private readonly float counter;
         private LevelStateEnum _state;
