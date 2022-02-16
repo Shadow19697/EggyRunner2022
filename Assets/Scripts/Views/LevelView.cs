@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Scripts.Managers;
+using UnityEngine.SceneManagement;
 
 namespace Scripts.Views
 {
@@ -62,7 +63,7 @@ namespace Scripts.Views
         {
             PlayerPrefsManager.UpdateLevelSelected(id);
             Debug.LogWarning("Nivel seleccionado: " + id);
-            //SceneManager.LoadScene("Level");
+            SceneManager.LoadScene("LevelScene");
         }
     }
 
