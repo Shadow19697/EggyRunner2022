@@ -1,4 +1,5 @@
 using Scripts.Managers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,49 +15,72 @@ namespace Scripts.Controllers.InGame
         public List<Sprite> _levelsBackground;
         public List<Sprite> _levelsStreets;
 
-        private int levelId;
+        public int backgroundVelocity = 30;
+        public int streetVelocity = 30;
 
-        private SpriteRenderer spriteRenderer;
-        public Sprite newSprite;
+        private int levelId;
+        private List<Rigidbody2D> rigidbodys;
+
 
         private void Start()
         {
             levelId = PlayerPrefsManager.GetLevelSelected()-1; //0, 1, 2, 3, 4
-            BackgroundInit();
-            StreetInit();
+            EnvironmentInit();
+            GetComponents();
+            StartMoveEnvironment();
+        }
+
+        private void EnvironmentInit()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                _backgrounds[i].GetComponent<SpriteRenderer>().sprite = _levelsBackground[(levelId * 2) + i];
+                if (levelId != 2)
+                    _streets[i].GetComponent<SpriteRenderer>().sprite = _levelsStreets[levelId];
+                else
+                    _streets[i].GetComponent<BoxCollider2D>().enabled = false;
+            }
+        }
+
+        private void GetComponents()
+        {
+            rigidbodys = new List<Rigidbody2D>();
+            rigidbodys.Add(_backgrounds[0].GetComponent<Rigidbody2D>());
+            rigidbodys.Add(_backgrounds[1].GetComponent<Rigidbody2D>());
+            rigidbodys.Add(_streets[0].GetComponent<Rigidbody2D>());
+            rigidbodys.Add(_streets[1].GetComponent<Rigidbody2D>());
         }
 
         private void Update()
         {
-            StartMoveBackground();
+            //StartMoveEnvironment();
         }
 
-        private void BackgroundInit()
-        {
-            for (int i = 0; i < 2; i++)
-                _backgrounds[i].GetComponent<Image>().sprite = _levelsBackground[(levelId * 2)+i];
-        }
-
-        public void StartMoveBackground()
+        public void StartMoveEnvironment()
         {
             for (int i = 0; i < 2; i++)
             {
-                _backgrounds[i].GetComponent<Rigidbody2D>().velocity = new Vector2(-250,
-                    _backgrounds[i].GetComponent<Rigidbody2D>().velocity.y);
-                Debug.Log(_backgrounds[0].transform.localPosition.x);
-                if ((int)_backgrounds[i].transform.localPosition.x <= -1950)
-                {
-                    _backgrounds[i].transform.localPosition = new Vector3(
-                        1950,
-                        _backgrounds[i].transform.localPosition.y,
-                        _backgrounds[i].transform.localPosition.z);
-                }
+                ControlMovement(i, backgroundVelocity, _backgrounds);
+                if (levelId != 2)
+                    ControlMovement(i + 2, streetVelocity, _streets);
             }
         }
 
-        private void StreetInit()
+        private void ControlMovement(int offset, int velocity, List<GameObject> list)
         {
-            
+            rigidbodys[offset].velocity = new Vector2(
+                    -velocity,
+                    rigidbodys[offset].velocity.y);
+            /*
+            if (offset >= 2) offset -=2;
+            if ((int)list[offset].transform.localPosition.x <= -2000)
+            {
+                list[offset].transform.localPosition = new Vector3(
+                    2100,
+                    list[offset].transform.localPosition.y,
+                    list[offset].transform.localPosition.z);
+            }
+            */
         }
 
         /**********************************************************************************************************/
