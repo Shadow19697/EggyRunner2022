@@ -1,10 +1,6 @@
 using Scripts.Managers;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Scripts.Controllers.InGame
 {
@@ -51,11 +47,6 @@ namespace Scripts.Controllers.InGame
             rigidbodys.Add(_streets[1].GetComponent<Rigidbody2D>());
         }
 
-        private void Update()
-        {
-            //StartMoveEnvironment();
-        }
-
         public void StartMoveEnvironment()
         {
             for (int i = 0; i < 2; i++)
@@ -71,23 +62,6 @@ namespace Scripts.Controllers.InGame
             rigidbodys[offset].velocity = new Vector2(
                     -velocity,
                     rigidbodys[offset].velocity.y);
-            /*
-            if (offset >= 2) offset -=2;
-            if ((int)list[offset].transform.localPosition.x <= -2000)
-            {
-                list[offset].transform.localPosition = new Vector3(
-                    2100,
-                    list[offset].transform.localPosition.y,
-                    list[offset].transform.localPosition.z);
-            }
-            */
         }
-
-        /**********************************************************************************************************/
-        public void ReturnMenu()
-        {
-            SceneManager.LoadScene("MainScene");
-        }
-        /**********************************************************************************************************/
     }
 }

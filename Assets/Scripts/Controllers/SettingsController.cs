@@ -1,45 +1,26 @@
-using Scripts.Enums;
 using Scripts.Managers;
-using Scripts.WorldTimeAPI;
 using UnityEngine;
 using UnityEngine.Audio;
 
 namespace Scripts.Controllers
 {
-    public class MainController : MonoBehaviour
+    public static class SettingsController
     {
-        public AudioMixer _audioMixer;
-        
-        private SpecialDateEnum specialEnum;
-
-        void Start()
-        {
-            PlayerPrefsManager.InitPlayerPrefs();
-            SetVolume();
-            SetVisualSettings();
-            LocalLoggerManager.CreateLocalLog();
-            specialEnum = SpecialDate.WichSpecialIs();
-            Debug.Log("Is First Load? " + PlayerPrefsManager.IsFirstLoad()
-                + "\nResolution: " + PlayerPrefsManager.GetWidth() + " x " + PlayerPrefsManager.GetHeight() + " - Resolution Index: " + PlayerPrefsManager.GetResolutionIndex() + " - FullScreen: " + PlayerPrefsManager.IsFullScreen()
-                + "\nLevel Selected: " + PlayerPrefsManager.GetLevelSelected() + " - Special Date: " + specialEnum
-                + "\nMusic Value: " + PlayerPrefsManager.GetMusicValue() + " - Sound Value: " + PlayerPrefsManager.GetSoundEffectsValue()
-                + "\nQuality Index: " + PlayerPrefsManager.GetQualityIndex() + " - Total Score: " + PlayerPrefsManager.GetTotalScore());
-        }
-
-        public void SetVolume()
+        public static void SetVolume(AudioMixer _audioMixer)
         {
             _audioMixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefsManager.GetMusicValue()) * 20);
             _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(PlayerPrefsManager.GetSoundEffectsValue()) * 20);
         }
 
-        public void SetVisualSettings()
+        public static void SetVisualSettings(bool isMenu)
         {
             QualitySettings.SetQualityLevel(PlayerPrefsManager.GetQualityIndex());
             Screen.fullScreen = PlayerPrefsManager.IsFullScreen();
-            SetResolutionSettings();
+            if (isMenu) SetResolutionSettings();
+            else SetResolutionSaved();
         }
 
-        private void SetResolutionSettings()
+        private static void SetResolutionSettings()
         {
             PlayerPrefsManager.Resolutions = Screen.resolutions;
             int currentResolutionIndex = 0;
@@ -50,7 +31,7 @@ namespace Scripts.Controllers
                 if (PlayerPrefsManager.Resolutions[i].width == Screen.currentResolution.width && PlayerPrefsManager.Resolutions[i].height == Screen.currentResolution.height)
                     currentResolutionIndex = i;
             }
-           if (PlayerPrefsManager.IsFirstLoad())
+            if (PlayerPrefsManager.IsFirstLoad())
             {
                 Resolution resolution = PlayerPrefsManager.Resolutions[currentResolutionIndex];
                 Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
@@ -60,7 +41,12 @@ namespace Scripts.Controllers
                 PlayerPrefsManager.UpdateFirstLoad();
             }
             else
-                Screen.SetResolution(PlayerPrefsManager.GetWidth(), PlayerPrefsManager.GetHeight(), Screen.fullScreen);
+                SetResolutionSaved();
         }
-    }
+
+        private static void SetResolutionSaved()
+        {
+            Screen.SetResolution(PlayerPrefsManager.GetWidth(), PlayerPrefsManager.GetHeight(), Screen.fullScreen);
+        }
+    } 
 }

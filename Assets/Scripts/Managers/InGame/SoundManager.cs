@@ -1,3 +1,4 @@
+using Scripts.Controllers;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -17,7 +18,12 @@ namespace Scripts.Managers.InGame
         public AudioSource _grabEggSound;
         public AudioSource _grabPerkSound;
         public AudioSource _jumpSound;
-        
+
+        private void Start()
+        {
+            SettingsController.SetVolume(_audioMixer);
+        }
+
         public void InitVolume()
         {
             _audioMixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefsManager.GetMusicValue()) * 20);

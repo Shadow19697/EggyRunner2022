@@ -24,16 +24,16 @@ namespace Scripts.Managers
             var _sortedGames = (from game in _allGames
                                 orderby game.score descending
                                 select game);
-            LocalLoggerManager.UpdateLocalHighScoreLog(_sortedGames.ToList<GameModel>());
+            LocalLoggerManager.UpdateLocalHighscoreLog(_sortedGames.ToList<GameModel>());
         }
         /*******************************************************************/
 
-        #region Upload
+        #region Upload Games
         public static void UploadGame(string name, int score, int level)
         {
             GameModel game = new GameModel(name, score, level);
             _allGames.Add(game);
-            LocalLoggerManager.UpdateLocalHighScoreLog(_allGames);
+            LocalLoggerManager.UpdateLocalHighscoreLog(_allGames);
             string gameJson = JsonConvert.SerializeObject(game);
             _httpConnectionManager.PostGame(gameJson, false);
         }
@@ -63,7 +63,7 @@ namespace Scripts.Managers
 
         #endregion
 
-        #region Download
+        #region Get Games
         public static List<GameModel> ReturnGames(bool isLocal, bool isAll, int level)
         {
             if (isLocal) return ReturnLocalGames(isAll, level);
@@ -86,7 +86,7 @@ namespace Scripts.Managers
         private static void LocalGamesInit()
         {
             _allGames = new List<GameModel>();
-            StreamReader file = new StreamReader(LocalLoggerManager.GetLocalHighScorePath());
+            StreamReader file = new StreamReader(LocalLoggerManager.GetLocalHighscorePath());
             var Json = file.ReadToEnd();
             file.Close();
             _allGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
@@ -111,5 +111,30 @@ namespace Scripts.Managers
             }
         }
         #endregion
-    } 
+
+        #region Get Highscores
+        public static int GetLocalHighscoreOfLevel(int level)
+        {
+            LocalGamesInit();
+            return GetHighscoreOfLevel(level, _allGames);
+        }
+
+        public static int GetGlobalHighscoreOfLevel(int level)
+        {
+            List<GameModel> recoveredGames = _httpConnectionManager.GetGlobalGames();
+            if (recoveredGames != null) return GetHighscoreOfLevel(level, recoveredGames);
+            else return 0;
+        }
+
+        private static int GetHighscoreOfLevel(int level, List<GameModel> games)
+        {
+            var _game = (from game in games
+                         where game.level.Equals(level)
+                         orderby game.score descending
+                         select game).Take(1);
+            if (_game != null) return _game.ToList<GameModel>()[0].score;
+            else return 0;
+        }
+        #endregion
+    }
 }

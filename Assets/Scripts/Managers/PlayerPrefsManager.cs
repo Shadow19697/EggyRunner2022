@@ -29,10 +29,11 @@ namespace Scripts.Managers
             {
                 StreamReader file = new StreamReader(LocalLoggerManager.GetPlayerPrefsPath());
                 var Json = file.ReadToEnd();
-                Debug.Log(Json);
                 _model = JsonConvert.DeserializeObject<PlayerPrefsModel>(Json);
                 file.Close();
+                /*******************************************************/
                 Debug.Log("Se leyó el archivo player prefs");
+                /*******************************************************/
             }
             else
             {
@@ -46,7 +47,9 @@ namespace Scripts.Managers
                 _model.levelSelected = GetLevelSelected();
                 _model.height = GetHeight();
                 _model.width = GetWidth();
+                /*******************************************************/
                 Debug.Log("Se creó archivo player prefs");
+                /*******************************************************/
                 LocalLoggerManager.UpdatePlayerPrefsLog(_model);
             }
         }

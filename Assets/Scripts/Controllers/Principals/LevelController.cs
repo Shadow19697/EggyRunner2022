@@ -7,7 +7,7 @@ using System;
 using Scripts.Enums;
 using Scripts.Controllers.InGame;
 
-namespace Scripts.Controllers
+namespace Scripts.Controllers.Principals
 {
     public class LevelController : MonoBehaviour
     {
@@ -21,11 +21,9 @@ namespace Scripts.Controllers
         private readonly float counter;
         private LevelStateEnum _state;
 
-        private readonly int id;
-
         void Start()
         {
-            
+            SettingsController.SetVisualSettings(false);
         }
 
         // Update is called once per frame

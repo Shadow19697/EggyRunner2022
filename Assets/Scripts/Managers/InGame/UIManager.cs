@@ -1,21 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 namespace Scripts.Managers.InGame
 {
     public class UIManager : MonoBehaviour
     {
-        public Text GameText;
-        public Text Puntaje;
-        public Text HighScore;
-        public Text FechaHora;
+        public TextMeshProUGUI _localHighscoreText;
+        public TextMeshProUGUI _globalHighscoreText;
 
-        public void SetHighScore()
+        private void Start()
         {
-            HighScore.text = "High Score: " + PlayerPrefs.GetInt("HighScore", 0).ToString();
+            _localHighscoreText.text = "Local Highscore: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+            _globalHighscoreText.text = "Global Highscore: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
         }
 
-    } 
+        public void ReturnMenu()
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+    }
 }

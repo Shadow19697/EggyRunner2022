@@ -11,7 +11,7 @@ namespace Scripts.Managers
         private static string logPath = Application.dataPath + "/Log.txt";
         private static string errorLogPath = Application.dataPath + "/ErrorLog.txt";
         private static string playerPrefsPath = Application.dataPath + "/PlayerPrefs.txt";
-        private static string localHighScorePath = Application.dataPath + "/LocalHighScore.txt";
+        private static string localHighscorePath = Application.dataPath + "/LocalHighScore.txt";
 
         #region Get
         public static string GetLogPath()
@@ -26,9 +26,9 @@ namespace Scripts.Managers
         {
             return playerPrefsPath;
         }
-        public static string GetLocalHighScorePath()
+        public static string GetLocalHighscorePath()
         {
-            return localHighScorePath;
+            return localHighscorePath;
         }
         #endregion
 
@@ -92,16 +92,16 @@ namespace Scripts.Managers
         }
         #endregion
         
-        #region Local High Score
-        public static void UpdateLocalHighScoreLog(List<GameModel> games)
+        #region Local Highscore
+        public static void UpdateLocalHighscoreLog(List<GameModel> games)
         {
-            ResetLocalHighScoreLog();
+            ResetLocalHighscoreLog();
             string gamesString = JsonConvert.SerializeObject(games);
-            File.WriteAllText(localHighScorePath, gamesString);
+            File.WriteAllText(localHighscorePath, gamesString);
         }
-        public static void ResetLocalHighScoreLog()
+        public static void ResetLocalHighscoreLog()
         {
-            if (File.Exists(localHighScorePath)) File.Delete(localHighScorePath);
+            if (File.Exists(localHighscorePath)) File.Delete(localHighscorePath);
         }
         #endregion
     }
