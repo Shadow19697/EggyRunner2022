@@ -7,13 +7,13 @@ namespace Scripts.Views
 {
     public class SettingsView : MonoBehaviour
     {
-        public AudioMixer _audioMixer;
-        public Slider _musicSlider;
-        public Slider _soundEffectsSlider;
-        public Dropdown _resolutionDropdown;
-        public Dropdown _qualityDropdown;
-        public Toggle _fullscreenToggle;
-        public RectTransform _resDropdownList;
+        [SerializeField] private AudioMixer _audioMixer;
+        [SerializeField] private Slider _musicSlider;
+        [SerializeField] private Slider _soundEffectsSlider;
+        [SerializeField] private Dropdown _resolutionDropdown;
+        [SerializeField] private Dropdown _qualityDropdown;
+        [SerializeField] private Toggle _fullscreenToggle;
+        [SerializeField] private RectTransform _resDropdownList;
 
         private void Start()
         {

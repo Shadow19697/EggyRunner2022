@@ -5,8 +5,8 @@ namespace Scripts.Controllers.Extensions
 {
     public class NavigationMenuController : MonoBehaviour
     {
-        public GameObject[] _buttons;
-        public GameObject[] _views;
+        [SerializeField] private GameObject[] _buttons;
+        [SerializeField] private GameObject[] _views;
 
         [System.Obsolete]
         void Start()

@@ -7,10 +7,10 @@ namespace Scripts.Controllers.Extensions
 {
     public class RowController : MonoBehaviour
     {
-        public TextMeshProUGUI _positionLabel;
-        public TextMeshProUGUI _playerLabel;
-        public TextMeshProUGUI _levelLabel;
-        public TextMeshProUGUI _scoreLabel;
+        [SerializeField] private TextMeshProUGUI _positionLabel;
+        [SerializeField] private TextMeshProUGUI _playerLabel;
+        [SerializeField] private TextMeshProUGUI _levelLabel;
+        [SerializeField] private TextMeshProUGUI _scoreLabel;
 
         public void SetLabels(string position, string player, string level, string score)
         {

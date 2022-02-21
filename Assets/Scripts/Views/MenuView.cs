@@ -6,11 +6,11 @@ namespace Scripts.Views
 {
     public class MenuView : MonoBehaviour
     {
-        public TextMeshProUGUI _levelScoreText;
-        public TextMeshProUGUI _settingsScoreText;
-        public GameObject _mainMenuObject;
-        public GameObject _levelMenuObject;
-        public GameObject _settingsMenuObject;
+        [SerializeField] private TextMeshProUGUI _levelScoreText;
+        [SerializeField] private TextMeshProUGUI _settingsScoreText;
+        [SerializeField] private GameObject _mainMenuObject;
+        [SerializeField] private GameObject _levelMenuObject;
+        [SerializeField] private GameObject _settingsMenuObject;
 
         private void Start()
         {

@@ -7,11 +7,11 @@ namespace Scripts.Managers.InGame
 {
     public class UIManager : MonoBehaviour
     {
-        public TextMeshProUGUI _actualScoreText;
-        public TextMeshProUGUI _localHighscoreText;
-        public TextMeshProUGUI _globalHighscoreText;
-        public GameObject _idleUI;
-        public GameObject _playingUI;
+        [SerializeField] private TextMeshProUGUI _actualScoreText;
+        [SerializeField] private TextMeshProUGUI _localHighscoreText;
+        [SerializeField] private TextMeshProUGUI _globalHighscoreText;
+        [SerializeField] private GameObject _idleUI;
+        [SerializeField] private GameObject _playingUI;
 
         private bool isPlaying;
 

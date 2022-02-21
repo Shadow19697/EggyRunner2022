@@ -10,12 +10,12 @@ namespace Scripts.Views
 {
     public class HighScoreView : MonoBehaviour
     {
-        public ToggleController _localGlobalToggle;
-        public ToggleController _allLevelToggle;
-        public Dropdown _levelDropdown;
-        public List<RowController> _rowList;
-        public GameObject _errorCanvas;
-        public GameObject _errorCanvasButton;
+        [SerializeField] private ToggleController _localGlobalToggle;
+        [SerializeField] private ToggleController _allLevelToggle;
+        [SerializeField] private Dropdown _levelDropdown;
+        [SerializeField] private List<RowController> _rowList;
+        [SerializeField] private GameObject _errorCanvas;
+        [SerializeField] private GameObject _errorCanvasButton;
 
         private bool isLocal;
         private bool isAll;

@@ -9,8 +9,9 @@ namespace Scripts.Views
 {
     public class LevelView : MonoBehaviour
     {
-        public List<Button> _levelButtons;
-        public List<TextMeshProUGUI> _levelLabels;
+        [SerializeField] private List<Button> _levelButtons;
+        [SerializeField] private List<TextMeshProUGUI> _levelLabels;
+
         private int oldScore;
 
         private void Start()

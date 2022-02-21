@@ -6,13 +6,13 @@ namespace Scripts.Controllers.InGame
 {
     public class EnvironmentController : MonoBehaviour
     {
-        public List<GameObject> _backgrounds;
-        public List<GameObject> _streets;
-        public List<Sprite> _levelsBackground;
-        public List<Sprite> _levelsStreets;
+        [SerializeField] private List<GameObject> _backgrounds;
+        [SerializeField] private List<GameObject> _streets;
+        [SerializeField] private List<Sprite> _levelsBackground;
+        [SerializeField] private List<Sprite> _levelsStreets;
 
-        public int backgroundVelocity = 30;
-        public int streetVelocity = 30;
+        [SerializeField] private int backgroundVelocity = 30;
+        [SerializeField] private int streetVelocity = 30;
 
         private int levelId;
         private List<Rigidbody2D> rigidbodys;

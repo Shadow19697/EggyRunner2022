@@ -7,17 +7,17 @@ namespace Scripts.Managers.InGame
 {
     public class SoundManager : MonoBehaviour
     {
-        public AudioMixer _audioMixer;
+        [SerializeField] private AudioMixer _audioMixer;
 
-        public List<AudioSource> _levelMusic;
-        public AudioSource _cinematicMusic;
-        public AudioSource _endingMusic;
-        public AudioSource _powerupMusic;
+        [SerializeField] private List<AudioSource> _levelMusic;
+        [SerializeField] private AudioSource _cinematicMusic;
+        [SerializeField] private AudioSource _endingMusic;
+        [SerializeField] private AudioSource _powerupMusic;
 
-        public AudioSource _gameOverSound;
-        public AudioSource _grabEggSound;
-        public AudioSource _grabPerkSound;
-        public AudioSource _jumpSound;
+        [SerializeField] private AudioSource _gameOverSound;
+        [SerializeField] private AudioSource _grabEggSound;
+        [SerializeField] private AudioSource _grabPerkSound;
+        [SerializeField] private AudioSource _jumpSound;
 
         private void Start()
         {

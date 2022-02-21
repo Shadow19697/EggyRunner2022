@@ -11,12 +11,12 @@ namespace Scripts.Controllers.Principals
 {
     public class LevelController : MonoBehaviour
     {
-        public SoundManager _soundManager;
-        public PlayerController _playerController;
-        public UIManager _uiManager;
-        public ObstacleManager _obstacleManager;
-        public PerkManager _perkManager;
-        public EnvironmentController _environmentController;
+        [SerializeField] private SoundManager _soundManager;
+        [SerializeField] private PlayerController _playerController;
+        [SerializeField] private UIManager _uiManager;
+        [SerializeField] private ObstacleManager _obstacleManager;
+        [SerializeField] private PerkManager _perkManager;
+        [SerializeField] private EnvironmentController _environmentController;
 
         private float counter;
         private LevelStateEnum state;
