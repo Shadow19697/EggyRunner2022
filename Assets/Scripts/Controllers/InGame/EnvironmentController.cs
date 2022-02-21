@@ -23,7 +23,7 @@ namespace Scripts.Controllers.InGame
             levelId = PlayerPrefsManager.GetLevelSelected()-1; //0, 1, 2, 3, 4
             EnvironmentInit();
             GetComponents();
-            StartMoveEnvironment();
+            //StartMoveEnvironment();
         }
 
         private void EnvironmentInit()

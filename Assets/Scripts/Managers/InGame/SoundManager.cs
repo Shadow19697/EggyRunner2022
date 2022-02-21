@@ -32,13 +32,13 @@ namespace Scripts.Managers.InGame
 
         public void MuteMusic(bool value)
         {
-            if (value) _audioMixer.SetFloat("MusicVolume", 0.0001f);
+            if (value) _audioMixer.SetFloat("MusicVolume", Mathf.Log10(0.0001f)*20);
             else _audioMixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefsManager.GetMusicValue()) * 20);
         }
 
         public void MuteSoundEffects(bool value)
         {
-            if (value) _audioMixer.SetFloat("SoundEffectsVolume", 0.0001f);
+            if (value) _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(0.0001f) * 20);
             else _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(PlayerPrefsManager.GetSoundEffectsValue()) * 20);
         }
 

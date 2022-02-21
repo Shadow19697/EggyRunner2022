@@ -16,24 +16,27 @@ namespace Scripts.Controllers.Principals
         public UIManager _uiManager;
         public ObstacleManager _obstacleManager;
         public PerkManager _perkManager;
-        public InGame.EnvironmentController _plataformManager;
+        public EnvironmentController _environmentController;
 
-        private readonly float counter;
-        private LevelStateEnum _state;
+        private float counter;
+        private LevelStateEnum state;
 
         void Start()
         {
             SettingsController.SetVisualSettings(false);
+            _soundManager.PlayLevelMusic();
+            state = LevelStateEnum.IdleStart;
+            counter = 0;
         }
 
         // Update is called once per frame
         void Update()
         {
-            switch (_state)
+            switch (state)
             {
                 case LevelStateEnum.IdleStart: IdleStart();
                     break;
-                case LevelStateEnum.InGame: InGame();
+                case LevelStateEnum.Playing: Playing();
                     break;
                 case LevelStateEnum.GameOver: GameOver();
                     break;
@@ -43,6 +46,8 @@ namespace Scripts.Controllers.Principals
 
         private void IdleStart()
         {
+            if (_uiManager.IsPlaying())
+                state = LevelStateEnum.Playing;
             /*
             GameText.text = "Press Space to start\nPress Esc to exit";
             if (Input.GetKeyDown("space"))
@@ -62,8 +67,11 @@ namespace Scripts.Controllers.Principals
             */
         }
 
-        private void InGame()
+        private void Playing()
         {
+            _environmentController.StartMoveEnvironment();
+            counter += Time.deltaTime * 8;
+            _uiManager.UpdateActualScore((int)counter);
             /*
             counter += Time.deltaTime * 8;
             Puntaje.text = "Score: " + (int)counter;
