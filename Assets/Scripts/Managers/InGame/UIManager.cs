@@ -12,6 +12,7 @@ namespace Scripts.Managers.InGame
         [SerializeField] private TextMeshProUGUI _globalHighscoreText;
         [SerializeField] private GameObject _idleUI;
         [SerializeField] private GameObject _playingUI;
+        [SerializeField] private GameObject _player;
 
         private bool isPlaying;
 
@@ -21,6 +22,7 @@ namespace Scripts.Managers.InGame
             _actualScoreText.text = "Score: 0";
             _localHighscoreText.text = "Local Highscore: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
             _globalHighscoreText.text = "Global Highscore: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+            _player.SetActive(false);
         }
 
         public void ReturnMenu()
@@ -34,6 +36,7 @@ namespace Scripts.Managers.InGame
             //TO DO: ANIMACION QUE SE DESACTIVA EL MENU;
             isPlaying = true;
             _playingUI.SetActive(true);
+            _player.SetActive(true);
         }
 
         public bool IsPlaying()

@@ -29,8 +29,7 @@ namespace Scripts.Controllers.Principals
             counter = 0;
         }
 
-        // Update is called once per frame
-        void Update()
+        private void FixedUpdate()
         {
             switch (state)
             {
@@ -69,7 +68,7 @@ namespace Scripts.Controllers.Principals
 
         private void Playing()
         {
-            _environmentController.StartMoveEnvironment();
+            _environmentController.MoveEnvironment();
             counter += Time.deltaTime * 8;
             _uiManager.UpdateActualScore((int)counter);
             /*

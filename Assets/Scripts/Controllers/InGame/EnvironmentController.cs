@@ -23,7 +23,6 @@ namespace Scripts.Controllers.InGame
             levelId = PlayerPrefsManager.GetLevelSelected()-1; //0, 1, 2, 3, 4
             EnvironmentInit();
             GetComponents();
-            //StartMoveEnvironment();
         }
 
         private void EnvironmentInit()
@@ -34,7 +33,10 @@ namespace Scripts.Controllers.InGame
                 if (levelId != 2)
                     _streets[i].GetComponent<SpriteRenderer>().sprite = _levelsStreets[levelId];
                 else
+                {
                     _streets[i].GetComponent<BoxCollider2D>().enabled = false;
+                    _streets[i].GetComponent<SpriteRenderer>().enabled = false;
+                }
             }
         }
 
@@ -47,7 +49,7 @@ namespace Scripts.Controllers.InGame
             rigidbodys.Add(_streets[1].GetComponent<Rigidbody2D>());
         }
 
-        public void StartMoveEnvironment()
+        public void MoveEnvironment()
         {
             for (int i = 0; i < 2; i++)
             {
@@ -62,6 +64,14 @@ namespace Scripts.Controllers.InGame
             rigidbodys[offset].velocity = new Vector2(
                     -velocity,
                     rigidbodys[offset].velocity.y);
+            if (offset >= 2) offset -= 2;
+            if((int)list[offset].transform.localPosition.x <= -2000)
+            {
+                list[offset].transform.localPosition = new Vector3(
+                    2050,
+                    list[offset].transform.localPosition.y,
+                    list[offset].transform.localPosition.z);
+            }
         }
     }
 }

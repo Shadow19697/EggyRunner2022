@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Obstacle
+  - OnText
+  - Handle
+  - Off Text
+  - Toggle Bg
   layers:
   - Default
   - TransparentFX
@@ -13,8 +17,8 @@ TagManager:
   - Water
   - UI
   - Background
-  - Player
   - Froground
+  - Player
   - 
   - 
   - 
@@ -45,9 +49,12 @@ TagManager:
   - name: Background
     uniqueID: 1506687687
     locked: 0
+  - name: Forground
+    uniqueID: 1718964411
+    locked: 0
   - name: Player
     uniqueID: 941349375
     locked: 0
-  - name: Forground
-    uniqueID: 1718964411
+  - name: UI
+    uniqueID: 1059967117
     locked: 0
