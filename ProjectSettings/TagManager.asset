@@ -9,6 +9,7 @@ TagManager:
   - Handle
   - Off Text
   - Toggle Bg
+  - Collectable
   layers:
   - Default
   - TransparentFX
