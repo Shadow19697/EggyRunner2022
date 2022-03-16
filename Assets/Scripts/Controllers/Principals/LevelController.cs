@@ -17,6 +17,7 @@ namespace Scripts.Controllers.Principals
         [SerializeField] private ObstacleManager _obstacleManager;
         [SerializeField] private PerkManager _perkManager;
         [SerializeField] private EnvironmentController _environmentController;
+        [SerializeField] private CollectableController _collectableController;
 
         private float counter;
         private LevelStateEnum state;
@@ -47,38 +48,16 @@ namespace Scripts.Controllers.Principals
         {
             if (_uiManager.IsPlaying())
                 state = LevelStateEnum.Playing;
-            /*
-            GameText.text = "Press Space to start\nPress Esc to exit";
-            if (Input.GetKeyDown("space"))
-            {
-                Comienzo = false;
-                GameText.text = "";
-                Music.Play();
-            }
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Application.Quit();
-            }
-            //if (Input.GetKeyDown("q"))             //Lo dejo comentado para reiniciar el High Score cada vez que haga el build
-            //{
-            //    PlayerPrefs.DeleteAll();
-            //}
-            */
+            
         }
 
         private void Playing()
         {
             _environmentController.MoveEnvironment();
+            _collectableController.MoveCollectable(15);
             counter += Time.deltaTime * 8;
             _uiManager.UpdateActualScore((int)counter);
-            /*
-            counter += Time.deltaTime * 8;
-            Puntaje.text = "Score: " + (int)counter;
-            if ((int)counter > PlayerPrefs.GetInt("HighScore", 0)) { // Si supero el Highscore guardado
-                PlayerPrefs.SetInt("HighScore", (int)counter);
-                HighScore.text = "High Score: " + PlayerPrefs.GetInt("HighScore").ToString();
-            }
-            */
+            
         }
 
         private void GameOver()

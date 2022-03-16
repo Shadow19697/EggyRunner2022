@@ -14,13 +14,13 @@ namespace Scripts.Controllers.InGame
         [SerializeField] private int backgroundVelocity = 30;
         [SerializeField] private int streetVelocity = 30;
 
-        private int levelId;
-        private List<Rigidbody2D> rigidbodys;
+        private int _levelId;
+        private List<Rigidbody2D> _rigidbodys;
 
 
         private void Start()
         {
-            levelId = PlayerPrefsManager.GetLevelSelected()-1; //0, 1, 2, 3, 4
+            _levelId = PlayerPrefsManager.GetLevelSelected()-1; //0, 1, 2, 3, 4
             EnvironmentInit();
             GetComponents();
         }
@@ -29,9 +29,9 @@ namespace Scripts.Controllers.InGame
         {
             for (int i = 0; i < 2; i++)
             {
-                _backgrounds[i].GetComponent<SpriteRenderer>().sprite = _levelsBackground[(levelId * 2) + i];
-                if (levelId != 2)
-                    _streets[i].GetComponent<SpriteRenderer>().sprite = _levelsStreets[levelId];
+                _backgrounds[i].GetComponent<SpriteRenderer>().sprite = _levelsBackground[(_levelId * 2) + i];
+                if (_levelId != 2)
+                    _streets[i].GetComponent<SpriteRenderer>().sprite = _levelsStreets[_levelId];
                 else
                 {
                     _streets[i].GetComponent<BoxCollider2D>().enabled = false;
@@ -42,11 +42,11 @@ namespace Scripts.Controllers.InGame
 
         private void GetComponents()
         {
-            rigidbodys = new List<Rigidbody2D>();
-            rigidbodys.Add(_backgrounds[0].GetComponent<Rigidbody2D>());
-            rigidbodys.Add(_backgrounds[1].GetComponent<Rigidbody2D>());
-            rigidbodys.Add(_streets[0].GetComponent<Rigidbody2D>());
-            rigidbodys.Add(_streets[1].GetComponent<Rigidbody2D>());
+            _rigidbodys = new List<Rigidbody2D>();
+            _rigidbodys.Add(_backgrounds[0].GetComponent<Rigidbody2D>());
+            _rigidbodys.Add(_backgrounds[1].GetComponent<Rigidbody2D>());
+            _rigidbodys.Add(_streets[0].GetComponent<Rigidbody2D>());
+            _rigidbodys.Add(_streets[1].GetComponent<Rigidbody2D>());
         }
 
         public void MoveEnvironment()
@@ -54,16 +54,16 @@ namespace Scripts.Controllers.InGame
             for (int i = 0; i < 2; i++)
             {
                 ControlMovement(i, backgroundVelocity, _backgrounds);
-                if (levelId != 2)
+                if (_levelId != 2)
                     ControlMovement(i + 2, streetVelocity, _streets);
             }
         }
 
         private void ControlMovement(int offset, int velocity, List<GameObject> list)
         {
-            rigidbodys[offset].velocity = new Vector2(
+            _rigidbodys[offset].velocity = new Vector2(
                     -velocity,
-                    rigidbodys[offset].velocity.y);
+                    _rigidbodys[offset].velocity.y);
             if (offset >= 2) offset -= 2;
             if((int)list[offset].transform.localPosition.x <= -2000)
             {
