@@ -11,9 +11,6 @@ namespace Scripts.Controllers.InGame
         [SerializeField] private List<Sprite> _levelsBackground;
         [SerializeField] private List<Sprite> _levelsStreets;
 
-        [SerializeField] private int backgroundVelocity = 30;
-        [SerializeField] private int streetVelocity = 30;
-
         private int _levelId;
         private List<Rigidbody2D> _rigidbodys;
 
@@ -49,7 +46,7 @@ namespace Scripts.Controllers.InGame
             _rigidbodys.Add(_streets[1].GetComponent<Rigidbody2D>());
         }
 
-        public void MoveEnvironment()
+        public void MoveEnvironment(int backgroundVelocity, int streetVelocity)
         {
             for (int i = 0; i < 2; i++)
             {

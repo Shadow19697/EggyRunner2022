@@ -621,8 +621,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1023f9b6e03cde04eb5f0a0460405ea7, type: 3}
   - {fileID: 21300000, guid: 1023f9b6e03cde04eb5f0a0460405ea7, type: 3}
   - {fileID: 21300000, guid: 1023f9b6e03cde04eb5f0a0460405ea7, type: 3}
-  backgroundVelocity: 20
-  streetVelocity: 15
 --- !u!1 &199044367
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,7 +862,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4174170944274597574, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 5028f8ddae39c1947b8baf92f6c7817b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f7cb87b9f655bcd4da47075166d680fe, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2778,7 +2776,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4174170944274597574, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: aee6b13a76be3dd44aa8cf19ed19a928, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -4590,7 +4588,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4174170944274597574, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 41d59ed1efed27b47bee19734bba6201, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -4723,7 +4721,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4174170944274597574, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 5028f8ddae39c1947b8baf92f6c7817b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b0e6985be0aed6943847b829046343b6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -6078,7 +6076,6 @@ MonoBehaviour:
   _sickEggSprite: {fileID: 21300000, guid: 8a432c17dac53a546add34174af8615d, type: 3}
   _healthyEggSprite: {fileID: 21300000, guid: c08d6391ec1a4674d9941f3a297eb3ee, type: 3}
   _explosion: {fileID: 1404681889}
-  posY: 0
 --- !u!70 &1928903057
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -6142,7 +6139,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4174170944274597574, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: ea6d897976874d142a48f91080390901, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -6348,6 +6345,7 @@ MonoBehaviour:
   _perkManager: {fileID: 0}
   _environmentController: {fileID: 181897686}
   _collectableController: {fileID: 1928903056}
+  _streetVelocity: 10
 --- !u!1 &2061436606
 GameObject:
   m_ObjectHideFlags: 0

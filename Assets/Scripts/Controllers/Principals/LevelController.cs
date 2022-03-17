@@ -18,21 +18,28 @@ namespace Scripts.Controllers.Principals
         [SerializeField] private PerkManager _perkManager;
         [SerializeField] private EnvironmentController _environmentController;
         [SerializeField] private CollectableController _collectableController;
+        [SerializeField] private int _streetVelocity;
+        [SerializeField] private int _velocityIncrement = 1;
 
-        private float counter;
-        private LevelStateEnum state;
+        private float _counter;
+        private LevelStateEnum _state;
+        private int _backgroundVelocity;
+        private int _gear;
+        private int _intervalIncrement;
 
         void Start()
         {
             SettingsController.SetVisualSettings(false);
-            _soundManager.PlayLevelMusic();
-            state = LevelStateEnum.IdleStart;
-            counter = 0;
+            _state = LevelStateEnum.IdleStart;
+            _counter = 0;
+            _backgroundVelocity = _streetVelocity - 5;
+            _gear = 1;
+            _intervalIncrement = 200;
         }
 
         private void FixedUpdate()
         {
-            switch (state)
+            switch (_state)
             {
                 case LevelStateEnum.IdleStart: IdleStart();
                     break;
@@ -47,17 +54,30 @@ namespace Scripts.Controllers.Principals
         private void IdleStart()
         {
             if (_uiManager.IsPlaying())
-                state = LevelStateEnum.Playing;
-            
+            {
+                _state = LevelStateEnum.Playing;
+                _soundManager.PlayLevelMusic();
+            }
         }
 
         private void Playing()
         {
-            _environmentController.MoveEnvironment();
-            _collectableController.MoveCollectable(15);
-            counter += Time.deltaTime * 8;
-            _uiManager.UpdateActualScore((int)counter);
+            UpdateVelocity();
+            _environmentController.MoveEnvironment(_backgroundVelocity, _streetVelocity);
+            _collectableController.MoveCollectable(_streetVelocity);
+            _counter += Time.deltaTime * 8;
+            _uiManager.UpdateActualScore((int)_counter);
             
+        }
+
+        private void UpdateVelocity()
+        {
+            if((int)_counter == (_intervalIncrement*_gear) && _gear < 7)
+            {
+                if (_gear == 5) _velocityIncrement--;
+                _streetVelocity += _velocityIncrement;
+                _gear++;
+            }
         }
 
         private void GameOver()
