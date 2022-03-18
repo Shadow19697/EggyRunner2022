@@ -1119,6 +1119,7 @@ MonoBehaviour:
   _localHighscoreText: {fileID: 856852270}
   _globalHighscoreText: {fileID: 1345897889}
   _eggCountText: {fileID: 1266519508}
+  _lifesCountText: {fileID: 0}
   _idleUI: {fileID: 1586305949}
   _playingUI: {fileID: 2106753264}
   _player: {fileID: 640067738}
@@ -1496,7 +1497,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 640067739}
-  - component: {fileID: 640067742}
   - component: {fileID: 640067741}
   - component: {fileID: 640067740}
   - component: {fileID: 640067743}
@@ -1560,21 +1560,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 5
---- !u!114 &640067742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 640067738}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1d95042394f9db4d98b583b054ff39d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _jumpForce: 300
-  _speedMove: 10
-  _rig: {fileID: 984575281}
 --- !u!114 &640067743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6340,12 +6325,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _soundManager: {fileID: 1893654658}
   _playerController: {fileID: 0}
-  _uiManager: {fileID: 347541078}
   _obstacleManager: {fileID: 0}
   _perkManager: {fileID: 0}
   _environmentController: {fileID: 181897686}
   _collectableController: {fileID: 1928903056}
   _streetVelocity: 10
+  _velocityIncrement: 1
 --- !u!1 &2061436606
 GameObject:
   m_ObjectHideFlags: 0

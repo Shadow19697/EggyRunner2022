@@ -1,4 +1,5 @@
 using Scripts.Managers;
+using Scripts.Managers.InGame;
 using UnityEngine;
 
 namespace Scripts.Player
@@ -22,16 +23,19 @@ namespace Scripts.Player
 
         public void Update()
         {
-            if (PlayerPrefsManager.GetLevelSelected() == 3)
-                VerticalMove();
-            else
+            if (UIManager.Instance.GetLifesCount() != 0)
             {
-                _onGround = CheckGround();
-                if (Input.GetButtonDown("Jump") && _onGround)
-                    _rigidbody2D.AddForce(Vector2.up * _jumpForce);
+                if (PlayerPrefsManager.GetLevelSelected() == 3)
+                    VerticalMove();
                 else
-                    PlayerAnimations.PlayIdleAnimation();
-                HandleAir();
+                {
+                    _onGround = CheckGround();
+                    if (Input.GetButtonDown("Jump") && _onGround)
+                        _rigidbody2D.AddForce(Vector2.up * _jumpForce);
+                    else
+                        PlayerAnimations.PlayIdleAnimation();
+                    HandleAir();
+                }
             }
         }
 

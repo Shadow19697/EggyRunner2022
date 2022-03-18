@@ -13,7 +13,6 @@ namespace Scripts.Controllers.Principals
     {
         [SerializeField] private SoundManager _soundManager;
         [SerializeField] private PlayerController _playerController;
-        [SerializeField] private UIManager _uiManager;
         [SerializeField] private ObstacleManager _obstacleManager;
         [SerializeField] private PerkManager _perkManager;
         [SerializeField] private EnvironmentController _environmentController;
@@ -21,7 +20,7 @@ namespace Scripts.Controllers.Principals
         [SerializeField] private int _streetVelocity;
         [SerializeField] private int _velocityIncrement = 1;
 
-        private float _counter;
+        private int _counter;
         private LevelStateEnum _state;
         private int _backgroundVelocity;
         private int _gear;
@@ -53,7 +52,7 @@ namespace Scripts.Controllers.Principals
 
         private void IdleStart()
         {
-            if (_uiManager.IsPlaying())
+            if (UIManager.Instance.IsPlaying())
             {
                 _state = LevelStateEnum.Playing;
                 _soundManager.PlayLevelMusic();
@@ -65,14 +64,13 @@ namespace Scripts.Controllers.Principals
             UpdateVelocity();
             _environmentController.MoveEnvironment(_backgroundVelocity, _streetVelocity);
             _collectableController.MoveCollectable(_streetVelocity);
-            _counter += Time.deltaTime * 8;
-            _uiManager.UpdateActualScore((int)_counter);
-            
+            UIManager.Instance.UpdateActualScore();
+            _counter = UIManager.Instance.GetActualScore();
         }
 
         private void UpdateVelocity()
         {
-            if((int)_counter == (_intervalIncrement*_gear) && _gear < 7)
+            if(_counter == (_intervalIncrement*_gear) && _gear < 7)
             {
                 if (_gear == 5) _velocityIncrement--;
                 _streetVelocity += _velocityIncrement;
