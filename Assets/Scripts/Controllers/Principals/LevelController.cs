@@ -28,6 +28,8 @@ namespace Scripts.Controllers.Principals
 
         void Start()
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             SettingsController.SetVisualSettings(false);
             _state = LevelStateEnum.IdleStart;
             _counter = 0;
