@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using Scripts.Managers;
+using System.Collections.Generic;
 
 namespace Scripts.Views
 {
@@ -13,8 +14,10 @@ namespace Scripts.Views
         [SerializeField] private Dropdown _resolutionDropdown;
         [SerializeField] private Dropdown _qualityDropdown;
         [SerializeField] private Toggle _fullscreenToggle;
-        [SerializeField] private RectTransform _resDropdownList;
+        [SerializeField] private List<Text> _windowText;
 
+        private bool _isSave;
+        
         private void Start()
         {
             _musicSlider.value = PlayerPrefsManager.GetMusicValue();
@@ -59,7 +62,6 @@ namespace Scripts.Views
             _resolutionDropdown.ClearOptions();
             _resolutionDropdown.AddOptions(PlayerPrefsManager.ListResolutions);
             _resolutionDropdown.value = PlayerPrefsManager.GetResolutionIndex();
-            _resDropdownList.sizeDelta = new Vector2(0, PlayerPrefsManager.ListResolutions.Count * 70);
             _resolutionDropdown.RefreshShownValue();
         }
         public void ResetScore()
@@ -71,6 +73,32 @@ namespace Scripts.Views
         public void AddScore()
         {
             PlayerPrefsManager.UpdateTotalScore(750);
+        }
+
+        public void EraseWindow()
+        {
+            _isSave = false;
+            _windowText[0].enabled = true;
+            _windowText[1].enabled = true;
+            _windowText[2].enabled = false;
+            _windowText[3].enabled = false;
+        }
+
+        public void SaveWindow()
+        {
+            _isSave = true;
+            _windowText[0].enabled = false;
+            _windowText[1].enabled = false;
+            _windowText[2].enabled = true;
+            _windowText[3].enabled = true;
+        }
+
+        public void YesButton()
+        {
+            if (_isSave)
+            { //TO DO UPDATE
+            }
+            else ResetScore();
         }
     }
 }

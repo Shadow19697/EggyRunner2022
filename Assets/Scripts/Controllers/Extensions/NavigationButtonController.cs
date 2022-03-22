@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Scripts.Controllers.Extensions
 {
     [RequireComponent(typeof(Selectable))]
     public class NavigationButtonController : MonoBehaviour, IPointerEnterHandler, IDeselectHandler
     {
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (!EventSystem.current.alreadySelecting)
