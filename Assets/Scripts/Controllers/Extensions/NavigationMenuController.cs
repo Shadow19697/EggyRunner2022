@@ -21,5 +21,4 @@ namespace Scripts.Controllers.Extensions
             EventSystem.current.SetSelectedGameObject(_buttons[id]);
         }
     }
-
 }

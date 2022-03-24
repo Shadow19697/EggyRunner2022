@@ -9,20 +9,20 @@ namespace Scripts.Managers
     public static class PlayerPrefsManager
     {
         private static PlayerPrefsModel _model = new PlayerPrefsModel();
-        private static string   FirstLoad = "firstLoad",
+        private static string FirstLoad = "firstLoad",
                                 TotalScore = "totalScore",
-                                MusicValue = "musicValue",
-                                SoundEffectsValue = "soundEffectsValue",
-                                ResolutionIndex = "resolutionIndex",
-                                QualityIndex = "qualityIndex",
-                                FullScreen = "fullScreen",
                                 LevelSelected = "levelSelected",
+                                ResolutionIndex = "resolutionIndex",
                                 Height = "height",
-                                Width = "width";
+                                Width = "width",
+                                FullScreen = "fullScreen",
+                                QualityIndex = "qualityIndex",
+                                MusicValue = "musicValue",
+                                SoundEffectsValue = "soundEffectsValue";
 
         public static Resolution[] Resolutions;
         public static List<string> ListResolutions = new List<string>();
-        
+
         public static void InitPlayerPrefs()
         {
             if (LocalLoggerManager.ExistsPlayerPrefsLog())
@@ -39,21 +39,22 @@ namespace Scripts.Managers
             {
                 _model.firstLoad = GetFirstLoad();
                 _model.totalScore = GetTotalScore();
-                _model.musicValue = GetMusicValue();
-                _model.soundEffectsValue = GetSoundEffectsValue();
-                _model.resolutionIndex = GetResolutionIndex();
-                _model.qualityIndex = GetQualityIndex();
-                _model.fullScreen = GetFullScreen();
                 _model.levelSelected = GetLevelSelected();
-                _model.height = GetHeight();
-                _model.width = GetWidth();
+                _model.settings = new SettingsModel();
+                _model.settings.resolutionIndex = GetResolutionIndex();
+                _model.settings.height = GetHeight();
+                _model.settings.width = GetWidth();
+                _model.settings.fullScreen = GetFullScreen();
+                _model.settings.qualityIndex = GetQualityIndex();
+                _model.settings.musicValue = GetMusicValue();
+                _model.settings.soundEffectsValue = GetSoundEffectsValue();
                 /*******************************************************/
                 Debug.Log("Se creó archivo player prefs");
                 /*******************************************************/
                 LocalLoggerManager.UpdatePlayerPrefsLog(_model);
             }
         }
-        
+
         #region FirstLoad Methods
         public static bool IsFirstLoad()
         {
@@ -103,28 +104,16 @@ namespace Scripts.Managers
         }
         #endregion
 
-        #region Music & Sound Methods
-        public static float GetMusicValue()
+        #region LevelSelected Methods
+        public static int GetLevelSelected()
         {
-            return PlayerPrefs.GetFloat(MusicValue, 1f);
+            return PlayerPrefs.GetInt(LevelSelected, 0);
         }
 
-        public static float GetSoundEffectsValue()
+        public static void UpdateLevelSelected(int level)
         {
-            return PlayerPrefs.GetFloat(SoundEffectsValue, 1f);
-        }
-
-        public static void UpdateMusicValue(float value)
-        {
-            PlayerPrefs.SetFloat(MusicValue, value);
-            _model.musicValue = value;
-            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
-        }
-
-        public static void UpdateSoundEffectsValue(float value)
-        {
-            PlayerPrefs.SetFloat(SoundEffectsValue, value);
-            _model.soundEffectsValue = value;
+            PlayerPrefs.SetInt(LevelSelected, level);
+            _model.levelSelected = level;
             LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
         #endregion
@@ -138,56 +127,6 @@ namespace Scripts.Managers
         public static void UpdateResolutionIndex(int value)
         {
             PlayerPrefs.SetInt(ResolutionIndex, value);
-            _model.resolutionIndex = value;
-            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
-        }
-        #endregion
-
-        #region Quality Methods
-        public static int GetQualityIndex()
-        {
-            return PlayerPrefs.GetInt(QualityIndex, 2);
-        }
-        
-        public static void UpdateQualityIndex(int value)
-        {
-            PlayerPrefs.SetInt(QualityIndex, value);
-            _model.qualityIndex = value;
-            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
-        }
-        #endregion
-
-        #region FullScreen Methods
-        public static bool IsFullScreen()
-        {
-            if (GetFullScreen() == 1) return true;
-            else return false;
-        }
-
-        public static void UpdateFullScreen(int value)
-        {
-            PlayerPrefs.SetInt(FullScreen, value);
-            _model.fullScreen = value;
-            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
-        }
-
-        public static int GetFullScreen()
-        {
-            return PlayerPrefs.GetInt(FullScreen, 1);
-        }
-        #endregion
-
-        #region LevelSelected Methods
-        public static int GetLevelSelected()
-        {
-            return PlayerPrefs.GetInt(LevelSelected, 0);
-        }
-
-        public static void UpdateLevelSelected(int level)
-        {
-            PlayerPrefs.SetInt(LevelSelected, level);
-            _model.levelSelected = level;
-            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
         }
         #endregion
 
@@ -205,16 +144,90 @@ namespace Scripts.Managers
         public static void UpdateHeight(int value)
         {
             PlayerPrefs.SetInt(Height, value);
-            _model.height = value;
-            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
+            
         }
 
         public static void UpdateWidth(int value)
         {
             PlayerPrefs.SetInt(Width, value);
-            _model.width = value;
-            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
+            
         }
         #endregion
+
+        #region FullScreen Methods
+        public static bool IsFullScreen()
+        {
+            if (GetFullScreen() == 1) return true;
+            else return false;
+        }
+
+        public static void UpdateFullScreen(int value)
+        {
+            PlayerPrefs.SetInt(FullScreen, value);
+        }
+
+        public static int GetFullScreen()
+        {
+            return PlayerPrefs.GetInt(FullScreen, 1);
+        }
+        #endregion
+
+        #region Quality Methods
+        public static int GetQualityIndex()
+        {
+            return PlayerPrefs.GetInt(QualityIndex, 2);
+        }
+
+        public static void UpdateQualityIndex(int value)
+        {
+            PlayerPrefs.SetInt(QualityIndex, value);
+        }
+        #endregion
+
+        #region Music & Sound Methods
+        public static float GetMusicValue()
+        {
+            return PlayerPrefs.GetFloat(MusicValue, 1f);
+        }
+
+        public static float GetSoundEffectsValue()
+        {
+            return PlayerPrefs.GetFloat(SoundEffectsValue, 1f);
+        }
+
+        public static void UpdateMusicValue(float value)
+        {
+            PlayerPrefs.SetFloat(MusicValue, value);
+        }
+
+        public static void UpdateSoundEffectsValue(float value)
+        {
+            PlayerPrefs.SetFloat(SoundEffectsValue, value);
+        }
+        #endregion
+
+        public static void UpdateSettingsValues(SettingsModel _newSettings)
+        {
+            _model.settings.fullScreen = _newSettings.fullScreen;
+            _model.settings.height = _newSettings.height;
+            _model.settings.musicValue = _newSettings.musicValue;
+            _model.settings.qualityIndex = _newSettings.qualityIndex;
+            _model.settings.resolutionIndex = _newSettings.resolutionIndex;
+            _model.settings.soundEffectsValue = _newSettings.soundEffectsValue;
+            _model.settings.width = _newSettings.width;
+            UpdateFullScreen(_newSettings.fullScreen);
+            UpdateHeight(_newSettings.height);
+            UpdateMusicValue(_newSettings.musicValue);
+            UpdateQualityIndex(_newSettings.qualityIndex);
+            UpdateResolutionIndex(_newSettings.resolutionIndex);
+            UpdateSoundEffectsValue(_newSettings.soundEffectsValue);
+            UpdateWidth(_newSettings.width);
+            LocalLoggerManager.UpdatePlayerPrefsLog(_model);
+        }
+
+        public static SettingsModel GetSettingValues()
+        {
+            return _model.settings;
+        }
     }
 }

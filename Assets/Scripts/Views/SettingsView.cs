@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using Scripts.Managers;
-using System.Collections.Generic;
+using Scripts.Models;
+using Newtonsoft.Json;
 
 namespace Scripts.Views
 {
@@ -14,12 +15,19 @@ namespace Scripts.Views
         [SerializeField] private Dropdown _resolutionDropdown;
         [SerializeField] private Dropdown _qualityDropdown;
         [SerializeField] private Toggle _fullscreenToggle;
-        [SerializeField] private List<Text> _windowText;
 
+        private SettingsWindowsManager _settingsWindows;
         private bool _isSave;
+        private SettingsModel _settings = new SettingsModel();
         
         private void Start()
         {
+            SettingsInit();
+        }
+
+        private void SettingsInit()
+        {
+            _settingsWindows = GetComponent<SettingsWindowsManager>();
             _musicSlider.value = PlayerPrefsManager.GetMusicValue();
             _soundEffectsSlider.value = PlayerPrefsManager.GetSoundEffectsValue();
             _qualityDropdown.value = PlayerPrefsManager.GetQualityIndex();
@@ -28,35 +36,6 @@ namespace Scripts.Views
             ResolutionInit();
         }
 
-        public void UpdateMusicVolume(float sliderValue)
-        {
-            _audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderValue) * 20);
-            PlayerPrefsManager.UpdateMusicValue(sliderValue);
-        }
-        public void UpdateSoundEffectsVolume(float sliderValue)
-        {
-            _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(sliderValue) * 20);
-            PlayerPrefsManager.UpdateSoundEffectsValue(sliderValue);
-        }
-        public void SetQuality (int qualityIndex)
-        {
-            QualitySettings.SetQualityLevel(qualityIndex);
-            PlayerPrefsManager.UpdateQualityIndex(qualityIndex);
-        }
-        public void SetFullscreen (bool isFullscreen)
-        {
-            Screen.fullScreen = isFullscreen;
-            if (isFullscreen) PlayerPrefsManager.UpdateFullScreen(1);
-            else PlayerPrefsManager.UpdateFullScreen(0);
-        }
-        public void SetResolution (int resolutionIndex)
-        {
-            Resolution resolution = PlayerPrefsManager.Resolutions[resolutionIndex];
-            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-            PlayerPrefsManager.UpdateResolutionIndex(resolutionIndex);
-            PlayerPrefsManager.UpdateHeight(resolution.height);
-            PlayerPrefsManager.UpdateWidth(resolution.width);
-        }
         private void ResolutionInit()
         {
             _resolutionDropdown.ClearOptions();
@@ -64,41 +43,119 @@ namespace Scripts.Views
             _resolutionDropdown.value = PlayerPrefsManager.GetResolutionIndex();
             _resolutionDropdown.RefreshShownValue();
         }
-        public void ResetScore()
+
+        #region Settings Methods
+
+        public void UpdateMusicVolume(float sliderValue)
         {
-            PlayerPrefsManager.ResetTotalScore();
-            LocalLoggerManager.ResetLocalLog();
-            Debug.LogError("Se borró el puntaje" + PlayerPrefsManager.GetTotalScore());
+            _audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderValue) * 20);
+            _settings.musicValue = sliderValue;
+            Debug.LogWarning(_settings.musicValue);
+        }
+        public void UpdateSoundEffectsVolume(float sliderValue)
+        {
+            _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(sliderValue) * 20);
+            _settings.soundEffectsValue = sliderValue;
+            Debug.LogWarning(_settings.soundEffectsValue);
+        }
+        public void SetQuality(int qualityIndex)
+        {
+            QualitySettings.SetQualityLevel(qualityIndex);
+            _settings.qualityIndex = qualityIndex;
+            Debug.LogWarning(_settings.qualityIndex);
+        }
+        public void SetFullscreen(bool isFullscreen)
+        {
+            Screen.fullScreen = isFullscreen;
+            if (isFullscreen) _settings.fullScreen = 1;
+            else _settings.fullScreen = 0;
+            Debug.LogWarning(_settings.fullScreen);
+        }
+        public void SetResolution(int resolutionIndex)
+        {
+            Resolution resolution = PlayerPrefsManager.Resolutions[resolutionIndex];
+            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+            _settings.resolutionIndex = resolutionIndex;
+            _settings.height = resolution.height;
+            _settings.width = resolution.width;
+            Debug.LogWarning(_settings.resolutionIndex + ", " + _settings.width + "X" + _settings.height);
         }
         public void AddScore()
         {
             PlayerPrefsManager.UpdateTotalScore(750);
         }
 
-        public void EraseWindow()
+        #endregion
+
+        #region Button Methods
+        public void ReturnButton()
         {
-            _isSave = false;
-            _windowText[0].enabled = true;
-            _windowText[1].enabled = true;
-            _windowText[2].enabled = false;
-            _windowText[3].enabled = false;
+            Debug.LogWarning(JsonConvert.SerializeObject(_settings));
+            Debug.LogWarning(JsonConvert.SerializeObject(PlayerPrefsManager.GetSettingValues()));
+            if (JsonConvert.SerializeObject(_settings) != JsonConvert.SerializeObject(PlayerPrefsManager.GetSettingValues()))
+                _isSave = _settingsWindows.SaveWindow();
+            else
+            {
+                _settingsWindows.CloseSettings();
+                SettingsInit();
+            }
         }
 
-        public void SaveWindow()
+        public void EraseButton()
         {
-            _isSave = true;
-            _windowText[0].enabled = false;
-            _windowText[1].enabled = false;
-            _windowText[2].enabled = true;
-            _windowText[3].enabled = true;
+            _isSave = _settingsWindows.EraseWindow();
         }
 
         public void YesButton()
         {
             if (_isSave)
-            { //TO DO UPDATE
+                PlayerPrefsManager.UpdateSettingsValues(_settings);
+            else
+                ResetScore();
+            _settingsWindows.OpenOkWindow();
+        }
+
+        public void NoButton()
+        {
+            if (_isSave) { 
+                RestoreValues();
+                _settingsWindows.CloseSettings();
+                SettingsInit();
             }
-            else ResetScore();
+            else
+                CancelButton();
+        }
+
+        public void CancelButton()
+        {
+            _settingsWindows.CancelButton();
+        }
+
+        public void OkButton()
+        {
+            _settingsWindows.OkButton(_isSave);
+            if (_isSave)
+            {
+                _settingsWindows.CloseSettings();
+                SettingsInit();
+            }
+        }
+        #endregion
+
+        private void RestoreValues()
+        {
+            UpdateMusicVolume(PlayerPrefsManager.GetMusicValue());
+            UpdateSoundEffectsVolume(PlayerPrefsManager.GetSoundEffectsValue());
+            SetFullscreen(PlayerPrefsManager.GetFullScreen() == 1 ? true : false);
+            SetQuality(PlayerPrefsManager.GetQualityIndex());
+            SetResolution(PlayerPrefsManager.GetResolutionIndex());
+        }
+
+        public void ResetScore()
+        {
+            PlayerPrefsManager.ResetTotalScore();
+            LocalLoggerManager.ResetLocalLog();
+            Debug.LogError("Se borró el puntaje" + PlayerPrefsManager.GetTotalScore());
         }
     }
 }
