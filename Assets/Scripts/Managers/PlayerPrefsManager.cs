@@ -32,7 +32,7 @@ namespace Scripts.Managers
                 _model = JsonConvert.DeserializeObject<PlayerPrefsModel>(Json);
                 file.Close();
                 /*******************************************************/
-                Debug.Log("Se leyó el archivo player prefs");
+                Debug.Log("Se leyó el archivo player prefs" + Json);
                 /*******************************************************/
             }
             else

@@ -86,8 +86,8 @@ namespace Scripts.Views
         #region Button Methods
         public void ReturnButton()
         {
-            Debug.LogWarning(JsonConvert.SerializeObject(_settings));
-            Debug.LogWarning(JsonConvert.SerializeObject(PlayerPrefsManager.GetSettingValues()));
+            Debug.LogWarning("NEW SETTINGS: " + JsonConvert.SerializeObject(_settings));
+            Debug.LogWarning("PLAYER PREFS SETTINGS: " + JsonConvert.SerializeObject(PlayerPrefsManager.GetSettingValues()));
             if (JsonConvert.SerializeObject(_settings) != JsonConvert.SerializeObject(PlayerPrefsManager.GetSettingValues()))
                 _isSave = _settingsWindows.SaveWindow();
             else

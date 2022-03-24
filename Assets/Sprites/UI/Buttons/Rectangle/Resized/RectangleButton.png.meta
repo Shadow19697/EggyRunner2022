@@ -8,6 +8,9 @@ TextureImporter:
   - first:
       213: -600825713791232036
     second: RectangleButton_1
+  - first:
+      213: -2614468609874257499
+    second: RectangleButton_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -113,7 +116,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 244
         width: 773
         height: 206
       alignment: 0
@@ -134,7 +137,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 833
-        y: 0
+        y: 244
         width: 773
         height: 206
       alignment: 0
@@ -146,6 +149,27 @@ TextureImporter:
       bones: []
       spriteID: cd79d85523079a7f0800000000000000
       internalID: -600825713791232036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RectangleButton_2
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 4
+        width: 773
+        height: 206
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a91900c6aa87bbd0800000000000000
+      internalID: -2614468609874257499
       vertices: []
       indices: 
       edges: []
