@@ -50,26 +50,23 @@ namespace Scripts.Views
         {
             _audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderValue) * 20);
             _settings.musicValue = sliderValue;
-            Debug.LogWarning(_settings.musicValue);
         }
         public void UpdateSoundEffectsVolume(float sliderValue)
         {
             _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(sliderValue) * 20);
             _settings.soundEffectsValue = sliderValue;
-            Debug.LogWarning(_settings.soundEffectsValue);
         }
         public void SetQuality(int qualityIndex)
         {
             QualitySettings.SetQualityLevel(qualityIndex);
             _settings.qualityIndex = qualityIndex;
-            Debug.LogWarning(_settings.qualityIndex);
         }
         public void SetFullscreen(bool isFullscreen)
         {
             Screen.fullScreen = isFullscreen;
             if (isFullscreen) _settings.fullScreen = 1;
             else _settings.fullScreen = 0;
-            Debug.LogWarning(_settings.fullScreen);
+            Debug.LogWarning("FULLSCREEN: " + isFullscreen);
         }
         public void SetResolution(int resolutionIndex)
         {
@@ -78,7 +75,6 @@ namespace Scripts.Views
             _settings.resolutionIndex = resolutionIndex;
             _settings.height = resolution.height;
             _settings.width = resolution.width;
-            Debug.LogWarning(_settings.resolutionIndex + ", " + _settings.width + "X" + _settings.height);
         }
         public void AddScore()
         {
