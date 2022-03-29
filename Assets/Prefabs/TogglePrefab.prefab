@@ -158,7 +158,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _normalSprites: []
   _highlightedSprites: []
-  _checkmark: {fileID: 0}
+  _checkmark: {fileID: 300216137908604256}
+  _isFullScreen: 0
 --- !u!1 &300216137810189267
 GameObject:
   m_ObjectHideFlags: 0

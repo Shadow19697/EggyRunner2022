@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using Scripts.Managers;
 using Scripts.Models;
 using Newtonsoft.Json;
+using System;
+using UnityEngine.EventSystems;
 
 namespace Scripts.Views
 {
@@ -15,10 +17,13 @@ namespace Scripts.Views
         [SerializeField] private Dropdown _resolutionDropdown;
         [SerializeField] private Dropdown _qualityDropdown;
         [SerializeField] private Toggle _fullscreenToggle;
+        [SerializeField] private GameObject _eraseButton;
+        [SerializeField] private GameObject _returnButton;
 
         private SettingsWindowsManager _settingsWindows;
         private bool _isSave;
         private SettingsModel _settings = new SettingsModel();
+        private bool _isReturn;
         
         private void Start()
         {
@@ -86,10 +91,11 @@ namespace Scripts.Views
         #region Button Methods
         public void ReturnButton()
         {
-            Debug.LogWarning("NEW SETTINGS: " + JsonConvert.SerializeObject(_settings));
-            Debug.LogWarning("PLAYER PREFS SETTINGS: " + JsonConvert.SerializeObject(PlayerPrefsManager.GetSettingValues()));
             if (JsonConvert.SerializeObject(_settings) != JsonConvert.SerializeObject(PlayerPrefsManager.GetSettingValues()))
+            {
+                _isReturn = true;
                 _isSave = _settingsWindows.SaveWindow();
+            }
             else
             {
                 _settingsWindows.CloseSettings();
@@ -99,6 +105,7 @@ namespace Scripts.Views
 
         public void EraseButton()
         {
+            _isReturn = false;
             _isSave = _settingsWindows.EraseWindow();
         }
 
@@ -125,6 +132,7 @@ namespace Scripts.Views
         public void CancelButton()
         {
             _settingsWindows.CancelButton();
+            SelectLastButton();
         }
 
         public void OkButton()
@@ -135,6 +143,17 @@ namespace Scripts.Views
                 _settingsWindows.CloseSettings();
                 SettingsInit();
             }
+            else
+                SelectLastButton();
+        }
+
+        private void SelectLastButton()
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            if (_isReturn)
+                EventSystem.current.SetSelectedGameObject(_returnButton);
+            else
+                EventSystem.current.SetSelectedGameObject(_eraseButton);
         }
         #endregion
 

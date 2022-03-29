@@ -63,7 +63,6 @@ namespace Scripts.Managers
         public void CancelButton()
         {
             _confirmationWindow.SetActive(false);
-            _navigationMenu.SetFirstSelectedButton(2);
         }
 
         public void OkButton(bool isSave)
