@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e3677244a0c684347a51043e729bf5ad
+guid: 7c03ea5eeedc61d479e9cd995dd898a8
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -114,8 +114,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1002
-        height: 1000
+        width: 201
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -133,10 +133,10 @@ TextureImporter:
       name: NoButton_1
       rect:
         serializedVersion: 2
-        x: 1186
+        x: 237
         y: 0
-        width: 1002
-        height: 1000
+        width: 201
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

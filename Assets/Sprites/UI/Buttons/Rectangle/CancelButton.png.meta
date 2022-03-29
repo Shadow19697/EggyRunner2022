@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a829b51e9bcc6ba44b7c6cd7af4bd79e
+guid: 2db23111b1b1c2e4b892a3803ee4d12d
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -112,12 +112,12 @@ TextureImporter:
       name: CancelButton_0
       rect:
         serializedVersion: 2
-        x: 5
+        x: 0
         y: 0
-        width: 2881
-        height: 1000
+        width: 576
+        height: 200
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -133,12 +133,12 @@ TextureImporter:
       name: CancelButton_1
       rect:
         serializedVersion: 2
-        x: 3137
+        x: 639
         y: 0
-        width: 2881
-        height: 1000
+        width: 576
+        height: 200
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
