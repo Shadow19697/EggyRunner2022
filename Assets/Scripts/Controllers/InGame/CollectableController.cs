@@ -15,7 +15,8 @@ namespace Scripts.Controllers.InGame
         private Rigidbody2D _rigidbody;
         private SpriteRenderer _currentSprite;
         private CapsuleCollider2D _capsuleCollider2D;
-        
+        private int[] _randomPosY = new int[] { 0, -100, -200, -300, -390 };
+
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
@@ -37,9 +38,14 @@ namespace Scripts.Controllers.InGame
             this.transform.localPosition = new Vector3(
                 2000,
                 SetPositionY(),
-                this.transform.localPosition.z);;
+                this.transform.localPosition.z);
             _currentSprite.sprite = _sickEggSprite;
             _capsuleCollider2D.enabled = true;
+        }
+
+        private int SetPositionY()
+        {
+            return _randomPosY[UnityEngine.Random.Range(0,4)];
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -48,11 +54,6 @@ namespace Scripts.Controllers.InGame
             _explosion.Play();
             _currentSprite.sprite = _healthyEggSprite;
             UIManager.Instance.UpdateEggCount();
-        }
-
-        private int SetPositionY()
-        {
-            return (int)(UnityEngine.Random.Range(-3.25f, 0f) * 120);
         }
     } 
 }

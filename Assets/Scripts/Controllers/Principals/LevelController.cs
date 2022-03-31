@@ -14,7 +14,7 @@ namespace Scripts.Controllers.Principals
         [SerializeField] private SoundManager _soundManager;
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private ObstacleManager _obstacleManager;
-        [SerializeField] private PerkManager _perkManager;
+        [SerializeField] private UpgradeManager _upgradeManager;
         [SerializeField] private EnvironmentController _environmentController;
         [SerializeField] private CollectableController _collectableController;
         [SerializeField] private int _streetVelocity;
@@ -28,8 +28,8 @@ namespace Scripts.Controllers.Principals
 
         void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.visible = false;
             SettingsController.SetVisualSettings(false);
             _state = LevelStateEnum.IdleStart;
             _counter = 0;

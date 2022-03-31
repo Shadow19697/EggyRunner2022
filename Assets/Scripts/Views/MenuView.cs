@@ -26,9 +26,9 @@ namespace Scripts.Views
         private void Update()
         {
             if (_levelMenuObject.active)
-                _levelScoreText.text = "Score: " + PlayerPrefsManager.GetTotalScore();
+                _levelScoreText.text = "Puntos: " + PlayerPrefsManager.GetTotalScore();
             if (_settingsMenuObject.active)
-                _settingsScoreText.text = "Score: " + PlayerPrefsManager.GetTotalScore();
+                _settingsScoreText.text = "Puntos: " + PlayerPrefsManager.GetTotalScore();
         }
 
         public void QuitButton()

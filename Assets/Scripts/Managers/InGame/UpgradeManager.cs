@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Scripts.Managers.InGame
 {
-    public class PerkManager : MonoBehaviour
+    public class UpgradeManager : MonoBehaviour
     {
 
     } 

@@ -28,9 +28,8 @@ namespace Scripts.Managers.InGame
         private void Start()
         {
             _isPlaying = false;
-            _actualScoreText.text = "Score: 0";
-            _localHighscoreText.text = "Local Highscore: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
-            _globalHighscoreText.text = "Global Highscore: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+            _localHighscoreText.text = "Mejor Puntaje Local: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+            _globalHighscoreText.text = "Mejor Puntaje Global: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
             _player.SetActive(false);
             _eggCount = 0;
             _lifesCount = 1;
@@ -60,7 +59,7 @@ namespace Scripts.Managers.InGame
         public void UpdateActualScore()
         {
             _counter += Time.deltaTime * 8 * _scoreMultiplier;
-            _actualScoreText.text = "Score: " + (int)_counter;
+            _actualScoreText.text = "Puntaje: " + (int)_counter;
         }
 
         public int GetActualScore()
@@ -71,7 +70,7 @@ namespace Scripts.Managers.InGame
         public void UpdateEggCount()
         {
             _eggCount++;
-            _eggCountText.text = _eggCount.ToString();
+            _eggCountText.text = "x" + _eggCount.ToString();
         }
 
         public int GetEggCount()

@@ -5539,7 +5539,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928903051}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1056, y: -390, z: 0}
+  m_LocalPosition: {x: 1064.28, y: -390, z: 0}
   m_LocalScale: {x: 108.16, y: 108.16, z: 108.16}
   m_Children:
   - {fileID: 1404681890}
@@ -6033,7 +6033,7 @@ MonoBehaviour:
   _soundManager: {fileID: 1893654658}
   _playerController: {fileID: 0}
   _obstacleManager: {fileID: 0}
-  _perkManager: {fileID: 0}
+  _upgradeManager: {fileID: 0}
   _environmentController: {fileID: 181897686}
   _collectableController: {fileID: 1928903056}
   _streetVelocity: 10

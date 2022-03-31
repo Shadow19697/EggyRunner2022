@@ -70,5 +70,10 @@ namespace Scripts.Controllers.InGame
                     list[offset].transform.localPosition.z);
             }
         }
+
+        public void StopEnvironment()
+        {
+            _rigidbodys.ForEach(rigidbody => rigidbody.velocity = new Vector2(0,0));
+        }
     }
 }

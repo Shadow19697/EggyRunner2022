@@ -52,9 +52,9 @@ namespace Scripts.Views
             {
                 int left = levelScore - PlayerPrefsManager.GetTotalScore();
                 if (left > 0)
-                    label.text = left + " LEFT TO UNLOCK";
+                    label.text = "FALTAN " + left + " PUNTOS";
                 else
-                    label.text = "LEVEL " + levelNumber;
+                    label.text = "NIVEL " + levelNumber;
                 levelScore = levelScore + 1000;
                 levelNumber++;
             });
