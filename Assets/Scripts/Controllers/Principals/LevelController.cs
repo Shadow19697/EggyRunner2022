@@ -13,10 +13,9 @@ namespace Scripts.Controllers.Principals
     {
         [SerializeField] private SoundManager _soundManager;
         [SerializeField] private PlayerController _playerController;
-        [SerializeField] private ObstacleManager _obstacleManager;
-        [SerializeField] private UpgradeManager _upgradeManager;
+        [SerializeField] private ObjectsManager _objectsManager;
         [SerializeField] private EnvironmentController _environmentController;
-        [SerializeField] private CollectableController _collectableController;
+        
         [SerializeField] private int _streetVelocity;
         [SerializeField] private int _velocityIncrement = 1;
 
@@ -65,7 +64,7 @@ namespace Scripts.Controllers.Principals
         {
             UpdateVelocity();
             _environmentController.MoveEnvironment(_backgroundVelocity, _streetVelocity);
-            _collectableController.MoveCollectable(_streetVelocity);
+            _objectsManager.UpdateVelocityMovement(_streetVelocity);
             UIManager.Instance.UpdateActualScore();
             _counter = UIManager.Instance.GetActualScore();
         }
@@ -82,6 +81,7 @@ namespace Scripts.Controllers.Principals
 
         private void GameOver()
         {
+            _objectsManager.StopAll();
             /*
             if (!Fin)
             {

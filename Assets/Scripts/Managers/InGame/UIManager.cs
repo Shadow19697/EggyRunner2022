@@ -21,7 +21,7 @@ namespace Scripts.Managers.InGame
         private static UIManager _instance;
         private int _lifesCount;
         private int _scoreMultiplier;
-        private float _counter;
+        private float _scoreCounter;
 
         public static UIManager Instance { get {if(_instance == null) _instance = FindObjectOfType<UIManager>(); return _instance; }}
 
@@ -34,7 +34,7 @@ namespace Scripts.Managers.InGame
             _eggCount = 0;
             _lifesCount = 1;
             _scoreMultiplier = 1;
-            _counter = 0;
+            _scoreCounter = 0;
         }
 
         public void ReturnMenu()
@@ -56,17 +56,20 @@ namespace Scripts.Managers.InGame
             return _isPlaying;
         }
 
+        #region Actual Score Methods
         public void UpdateActualScore()
         {
-            _counter += Time.deltaTime * 8 * _scoreMultiplier;
-            _actualScoreText.text = "Puntaje: " + (int)_counter;
+            _scoreCounter += Time.deltaTime * 8 * _scoreMultiplier;
+            _actualScoreText.text = "Puntaje: " + (int)_scoreCounter;
         }
 
         public int GetActualScore()
         {
-            return (int)_counter;
+            return (int)_scoreCounter;
         }
+        #endregion
 
+        #region Egg Count Methods
         public void UpdateEggCount()
         {
             _eggCount++;
@@ -77,17 +80,20 @@ namespace Scripts.Managers.InGame
         {
             return _eggCount;
         }
+        #endregion
 
+        #region Lifes Count Methods
         public void UpdateLifesCount(int value)
         {
             _lifesCount += value;
-            _lifesCountText.text = _lifesCount.ToString();
+            _lifesCountText.text = "x" + _lifesCount.ToString();
         }
 
         public int GetLifesCount()
         {
             return _lifesCount;
-        }
+        } 
+        #endregion
 
         public void UpdateScoreMultiplier(int value)
         {
