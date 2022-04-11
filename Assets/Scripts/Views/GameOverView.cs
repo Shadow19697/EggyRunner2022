@@ -9,6 +9,8 @@ using Scripts.Managers;
 using System;
 using Scripts.Controllers.Extensions;
 using Scripts.Models;
+using Scripts.Models.Nested;
+using UnityEngine.SceneManagement;
 
 namespace Scripts.Views
 {
@@ -26,6 +28,7 @@ namespace Scripts.Views
 
         [SerializeField] private GameObject _highscorePanel;
         [SerializeField] private List<RowController> _rowList;
+        [SerializeField] private List<GameObject> _buttons;
 
         private int _score;
         private int _collectableCount;
@@ -103,7 +106,28 @@ namespace Scripts.Views
             PlayerPrefsManager.UpdateTotalScore(_increaseScore);
             DataManager.UploadGame(_nameText.text, _increaseScore, PlayerPrefsManager.GetLevelSelected());
             SwitchResultsHighscore(false);
-            ShowHighscores();
+            DisplayHighscores();
+        }
+
+        private void DisplayHighscores()
+        {
+            SetHighscores();
+            _rowList.ForEach(row => row.gameObject.SetActive(false));
+            StartCoroutine(ShowHighscores());
+        }
+
+        private IEnumerator ShowHighscores()
+        {
+            yield return new WaitForSeconds(1);
+            _rowList[0].gameObject.SetActive(true);
+            yield return new WaitForSeconds(1);
+            _rowList[1].gameObject.SetActive(true);
+            yield return new WaitForSeconds(1);
+            _rowList[2].gameObject.SetActive(true);
+            yield return new WaitForSeconds(1);
+            _buttons.ForEach(button => button.gameObject.SetActive(true));
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(_buttons[0].gameObject);
         }
 
         private void SwitchResultsHighscore(bool isWriting)
@@ -112,14 +136,24 @@ namespace Scripts.Views
             _resultsPanel.SetActive(isWriting);
         }
 
-        private void ShowHighscores()
+        private void SetHighscores()
         {
             _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
             GameModel currentGame = new GameModel(_nameText.text, _increaseScore, PlayerPrefsManager.GetLevelSelected());
             List<GameOrderedModel> games = DataManager.ReturnGamesWithLast(currentGame);
             for (int i = 0; i < games.Count; i++)
                 if(games[i] != null)
-                    _rowList[i].SetLabels(games[i].position.ToString(), games[i].game.name, "Nivel " + games[i].game.level, games[i].game.score.ToString());
+                    _rowList[i].SetLabels((games[i].position+1).ToString(), games[i].game.name, "Nivel " + games[i].game.level, games[i].game.score.ToString());
+        }
+
+        public void ReloadButton()
+        {
+            SceneManager.LoadScene("LevelScene");
+        }
+
+        public void ReturnToMenuButton()
+        {
+            SceneManager.LoadScene("MainScene");
         }
     } 
 }

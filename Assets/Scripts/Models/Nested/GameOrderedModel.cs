@@ -1,4 +1,4 @@
-namespace Scripts.Models
+namespace Scripts.Models.Nested
 {
     public class GameOrderedModel
     {
