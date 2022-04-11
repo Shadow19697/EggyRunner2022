@@ -27,13 +27,7 @@ namespace Scripts.Managers
         {
             if (LocalLoggerManager.ExistsPlayerPrefsLog())
             {
-                StreamReader file = new StreamReader(LocalLoggerManager.GetPlayerPrefsPath());
-                var Json = file.ReadToEnd();
-                _model = JsonConvert.DeserializeObject<PlayerPrefsModel>(Json);
-                file.Close();
-                /*******************************************************/
-                Debug.Log("Se leyó el archivo player prefs" + Json);
-                /*******************************************************/
+                ReadModel();
             }
             else
             {
@@ -53,6 +47,17 @@ namespace Scripts.Managers
                 /*******************************************************/
                 LocalLoggerManager.UpdatePlayerPrefsLog(_model);
             }
+        }
+
+        private static void ReadModel()
+        {
+            StreamReader file = new StreamReader(LocalLoggerManager.GetPlayerPrefsPath());
+            var Json = file.ReadToEnd();
+            _model = JsonConvert.DeserializeObject<PlayerPrefsModel>(Json);
+            file.Close();
+            /*******************************************************/
+            Debug.Log("Se leyó el archivo player prefs" + Json);
+            /*******************************************************/
         }
 
         #region FirstLoad Methods
@@ -85,6 +90,7 @@ namespace Scripts.Managers
         #region TotalScore Methods
         public static void UpdateTotalScore(int levelScore)
         {
+            ReadModel();
             int totalScore = PlayerPrefs.GetInt(TotalScore, 0);
             PlayerPrefs.SetInt(TotalScore, totalScore + levelScore);
             _model.totalScore = totalScore + levelScore;

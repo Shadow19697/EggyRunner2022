@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using TMPro;
 using Scripts.Managers.InGame;
 using Scripts.Managers;
+using System;
+using Scripts.Controllers.Extensions;
+using Scripts.Models;
 
 namespace Scripts.Views
 {
@@ -22,6 +25,7 @@ namespace Scripts.Views
         [SerializeField] private Text _nameText;
 
         [SerializeField] private GameObject _highscorePanel;
+        [SerializeField] private List<RowController> _rowList;
 
         private int _score;
         private int _collectableCount;
@@ -30,8 +34,8 @@ namespace Scripts.Views
         private int _increaseScore;
         private int _totalScore;
 
-        public int CountFPS = 30;
-        public float Duration = 1f;
+        private int CountFPS = 30;
+        private float Duration = 1f;
         
         private Coroutine CountingCoroutine;
 
@@ -48,25 +52,23 @@ namespace Scripts.Views
         private IEnumerator ShowCoroutine()
         {
             SwitchResultsHighscore(true);
-            _inputField.gameObject.SetActive(false);
-            _continueText.SetActive(false);
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1);
             _scoreText.gameObject.SetActive(true);
             _scoreText.text = _score.ToString();
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             _collectableText.gameObject.SetActive(true);
             _collectableText.text = _collectableCount.ToString() + " x 100";
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             _obstacleText.gameObject.SetActive(true);
             _obstacleText.text = _obstacleCount.ToString() + " x 200";
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             _levelScoreText.gameObject.SetActive(true);
             _levelScoreText.text = _levelScore.ToString();
             UpdateText(0, _increaseScore, _levelScoreText);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1f);
             _totalScoreText.gameObject.SetActive(true);
             _totalScoreText.text = _totalScore.ToString();
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1.5f);
             UpdateText(_totalScore, _totalScore + _increaseScore, _totalScoreText);
             yield return new WaitForSeconds(2);
             _inputField.gameObject.SetActive(true);
@@ -85,10 +87,7 @@ namespace Scripts.Views
         private IEnumerator CountText(int previousValue, int newValue, TextMeshProUGUI text)
         {
             WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
-            int stepAmount;
-
-            stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
-
+            int stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
             while (previousValue < newValue)
             {
                 previousValue += stepAmount;
@@ -97,20 +96,30 @@ namespace Scripts.Views
                 text.SetText(previousValue.ToString());
                 yield return Wait;
             }
-
         }
-
 
         public void AcceptButton()
         {
-            Debug.LogWarning("LOL");
-            //SwitchResultsHighscore(false);
+            PlayerPrefsManager.UpdateTotalScore(_increaseScore);
+            DataManager.UploadGame(_nameText.text, _increaseScore, PlayerPrefsManager.GetLevelSelected());
+            SwitchResultsHighscore(false);
+            ShowHighscores();
         }
 
         private void SwitchResultsHighscore(bool isWriting)
         {
             _highscorePanel.SetActive(!isWriting);
             _resultsPanel.SetActive(isWriting);
+        }
+
+        private void ShowHighscores()
+        {
+            _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
+            GameModel currentGame = new GameModel(_nameText.text, _increaseScore, PlayerPrefsManager.GetLevelSelected());
+            List<GameOrderedModel> games = DataManager.ReturnGamesWithLast(currentGame);
+            for (int i = 0; i < games.Count; i++)
+                if(games[i] != null)
+                    _rowList[i].SetLabels(games[i].position.ToString(), games[i].game.name, "Nivel " + games[i].game.level, games[i].game.score.ToString());
         }
     } 
 }

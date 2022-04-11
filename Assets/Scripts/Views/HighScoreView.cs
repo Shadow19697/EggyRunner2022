@@ -40,7 +40,7 @@ namespace Scripts.Views
             FindHighScores();
             if (_games != null)
                 for (int i = 0; i < _games.Count; i++)
-                    _rowList[i].SetLabels((i + 1).ToString(), _games[i].name, "Level " + _games[i].level, _games[i].score.ToString());
+                    _rowList[i].SetLabels((i + 1).ToString(), _games[i].name, "Nivel " + _games[i].level, _games[i].score.ToString());
             else
             {
                 _levelDropdown.interactable = false;

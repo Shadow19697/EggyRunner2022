@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using UnityEngine;
 
 namespace Scripts.Managers
 {
@@ -31,10 +32,13 @@ namespace Scripts.Managers
         #region Upload Games
         public static void UploadGame(string name, int score, int level)
         {
-            GameModel game = new GameModel(name, score, level);
-            _allGames.Add(game);
-            LocalLoggerManager.UpdateLocalHighscoreLog(_allGames);
-            string gameJson = JsonConvert.SerializeObject(game);
+            GameModel currentGame = new GameModel(name, score, level);
+            _allGames.Add(currentGame);
+            var _sortedGames = (from game in _allGames
+                                orderby game.score descending
+                                select game);
+            LocalLoggerManager.UpdateLocalHighscoreLog(_sortedGames.ToList<GameModel>());
+            string gameJson = JsonConvert.SerializeObject(currentGame);
             _httpConnectionManager.PostGame(gameJson, false);
         }
 
@@ -86,10 +90,18 @@ namespace Scripts.Managers
         private static void LocalGamesInit()
         {
             _allGames = new List<GameModel>();
-            StreamReader file = new StreamReader(LocalLoggerManager.GetLocalHighscorePath());
-            var Json = file.ReadToEnd();
-            file.Close();
-            _allGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
+            try
+            {
+                StreamReader file = new StreamReader(LocalLoggerManager.GetLocalHighscorePath());
+                var Json = file.ReadToEnd();
+                file.Close();
+                Debug.LogWarning(Json);
+                _allGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
+            }
+            catch
+            {
+                Debug.LogWarning("No existen jugadas guardadas");
+            }
         }
 
         private static List<GameModel> SortGames(bool isAll, int level, List<GameModel> games)
@@ -110,6 +122,50 @@ namespace Scripts.Managers
                 return _sortedGames.ToList<GameModel>();
             }
         }
+
+        public static List<GameOrderedModel> ReturnGamesWithLast(GameModel actualGame)
+        {
+            int index = ReturnIndexOfGame(actualGame);
+            List<GameOrderedModel> gamesOrdered = new List<GameOrderedModel>();
+            if (index == 0)
+            {
+                gamesOrdered.Add(new GameOrderedModel(0, _allGames[0]));
+                gamesOrdered.Add(_allGames.Count > 1 ? new GameOrderedModel(1, _allGames[1]) : null);
+                gamesOrdered.Add(_allGames.Count > 2 ? new GameOrderedModel(2, _allGames[2]) : null);
+            }
+            else
+            {
+                if(index == (_allGames.Count-1))
+                {
+                    gamesOrdered.Add(_allGames.Count > 2 ? new GameOrderedModel(index -2, _allGames[index - 2]) : new GameOrderedModel(index -1, _allGames[index - 1]));
+                    gamesOrdered.Add(_allGames.Count > 2 ? new GameOrderedModel(index - 1, _allGames[index - 1]) : new GameOrderedModel(index, _allGames[index]));
+                    gamesOrdered.Add(_allGames.Count > 2 ? new GameOrderedModel(index, _allGames[index]) : null);
+                }
+                else
+                {
+                    gamesOrdered.Add(new GameOrderedModel(index - 1, _allGames[index - 1]));
+                    gamesOrdered.Add(new GameOrderedModel(index, _allGames[index]));
+                    gamesOrdered.Add(new GameOrderedModel(index + 1, _allGames[index + 1]));
+                }
+            }
+            return gamesOrdered;
+        }
+
+        public static int ReturnIndexOfGame(GameModel gameToFind)
+        {
+            LocalGamesInit();
+            int i = 0;
+            for (i = 0; i < _allGames.Count; i++)
+                if (_allGames[i].level == gameToFind.level && _allGames[i].name == gameToFind.name && _allGames[i].score == gameToFind.score)
+                    break;
+            return i;
+        }
+
+        public static int ReturnQuantityOfGames()
+        {
+            return _allGames.Count;
+        }
+        
         #endregion
 
         #region Get Highscores
@@ -128,11 +184,15 @@ namespace Scripts.Managers
 
         private static int GetHighscoreOfLevel(int level, List<GameModel> games)
         {
-            var _game = (from game in games
-                         where game.level.Equals(level)
-                         orderby game.score descending
-                         select game).Take(1);
-            if (_game != null) return _game.ToList<GameModel>()[0].score;
+            if (games.Count > 0)
+            {
+                var _game = (from game in games
+                             where game.level.Equals(level)
+                             orderby game.score descending
+                             select game).Take(1);
+                if (_game != null) return _game.ToList<GameModel>()[0].score;
+                else return 0;
+            }
             else return 0;
         }
         #endregion
