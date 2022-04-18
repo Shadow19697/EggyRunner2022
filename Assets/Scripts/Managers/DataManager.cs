@@ -84,7 +84,11 @@ namespace Scripts.Managers
         private static List<GameModel> ReturnGlobalGames(bool isAll, int level)
         {
             List<GameModel> recoveredGames = _httpConnectionManager.GetGlobalGames();
-            if (recoveredGames != null) return SortGames(isAll, level, recoveredGames);
+            if (recoveredGames != null)
+            {
+                Debug.Log("recuperados");
+                return SortGames(isAll, level, recoveredGames);
+            }
             else return null;
         }
 
