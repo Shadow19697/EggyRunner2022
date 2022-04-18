@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
+using System;
 
 namespace Scripts.Managers.InGame
 {
@@ -12,9 +14,11 @@ namespace Scripts.Managers.InGame
         [SerializeField] private TextMeshProUGUI _globalHighscoreText;
         [SerializeField] private TextMeshProUGUI _eggCountText;
         [SerializeField] private TextMeshProUGUI _lifesCountText;
+        [SerializeField] private TextMeshProUGUI _upgradeText;
         [SerializeField] private GameObject _idleUI;
         [SerializeField] private GameObject _playingUI;
         [SerializeField] private GameObject _player;
+        
 
         private int _eggCount;
         private bool _isPlaying;
@@ -35,6 +39,7 @@ namespace Scripts.Managers.InGame
             _lifesCount = 1;
             _scoreMultiplier = 1;
             _scoreCounter = 0;
+            _upgradeText.text = "";
         }
 
         public void ReturnMenu()
@@ -98,6 +103,15 @@ namespace Scripts.Managers.InGame
         public void UpdateScoreMultiplier(int value)
         {
             _scoreMultiplier = value;
+            _upgradeText.text = ("x" + value);
+            StartCoroutine(UpdateScoreMultiplier());
+        }
+
+        private IEnumerator UpdateScoreMultiplier()
+        {
+            yield return new WaitForSeconds(20);
+            _scoreMultiplier = 1;
+            _upgradeText.text = "";
         }
 
         public void QuitButton()
@@ -105,5 +119,18 @@ namespace Scripts.Managers.InGame
             Debug.LogError("Quit");
             Application.Quit();
         }
+
+        public void DisplayImmortality()
+        {
+            _upgradeText.text = "Inmortalidad";
+            StartCoroutine(DisplayImmortalityUntil());
+        }
+
+        private IEnumerator DisplayImmortalityUntil()
+        {
+            yield return new WaitForSeconds(20);
+            _upgradeText.text = "";
+        }
+
     }
 }

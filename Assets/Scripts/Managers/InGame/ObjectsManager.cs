@@ -18,6 +18,7 @@ namespace Scripts.Managers.InGame
         private bool _itStarted = false;
         private bool _itStoped = false;
         private int _counter;
+        private Coroutine _moveCollectable;
 
         public void UpdateVelocityMovement(int streetVelocity)
         {
@@ -35,15 +36,25 @@ namespace Scripts.Managers.InGame
             if(!_itStoped && _itStarted)
             {
                 ManageCollectable();
-                ManageObstacles();
-                _counter = UIManager.Instance.GetActualScore();
+                //ManageObstacles();
+                //_counter = UIManager.Instance.GetActualScore();
             }
         }
 
         private void ManageCollectable()
         {
-            _collectable.MoveCollectable(_collectableVelocity);
+            if (_collectable.IsReady())
+                if(_moveCollectable == null)
+                    _moveCollectable = StartCoroutine(MoveCollectable());
         }
+
+        private IEnumerator MoveCollectable()
+        {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(30, 40));
+            _collectable.MoveCollectable(_collectableVelocity);
+            _moveCollectable = null;
+        }
+
         private void ManageObstacles()
         {
             throw new NotImplementedException();

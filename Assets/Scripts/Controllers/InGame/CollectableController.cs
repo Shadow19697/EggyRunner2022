@@ -9,7 +9,6 @@ namespace Scripts.Controllers.InGame
 {
     public class CollectableController : MonoBehaviour
     {
-        [SerializeField] private GameObject _this;
         [SerializeField] private List<Sprite> _activeSprite; //0: SickEgg, 1: Life, 2: x2, 3: x3, 4: Immortality
         [SerializeField] private Sprite _healthyEggSprite;
         [SerializeField] private Sprite _emptySprite;
@@ -20,6 +19,7 @@ namespace Scripts.Controllers.InGame
         private CapsuleCollider2D _capsuleCollider2D;
         private int[] _randomPosY = new int[] { 0, -100, -200, -300, -390 };
         private CollectableTypeEnum _typeOfCollectable;
+        private bool _isReady;
 
         private void Start()
         {
@@ -30,11 +30,16 @@ namespace Scripts.Controllers.InGame
             _explosion.Pause();
         }
 
+        private void Update()
+        {
+            if ((int)this.transform.localPosition.x <= -2000)
+                ResetCollectable();
+        }
+
         public void MoveCollectable(int velocity)
         {
+            _isReady = false;
             _rigidbody.velocity = new Vector2(-velocity, _rigidbody.velocity.y);
-            if((int)this.transform.localPosition.x <= -2000)
-                ResetCollectable();
         }
 
         private void ResetCollectable()
@@ -43,7 +48,7 @@ namespace Scripts.Controllers.InGame
                 2000,
                 SetPositionY(),
                 this.transform.localPosition.z);
-            switch(UnityEngine.Random.Range(0, 4))
+            switch(UnityEngine.Random.Range(0, 5))
             {
                 case 0: _currentSprite.sprite = _activeSprite[0];
                     _typeOfCollectable = CollectableTypeEnum.SickEgg;
@@ -65,11 +70,18 @@ namespace Scripts.Controllers.InGame
                     break;
             }
             _capsuleCollider2D.enabled = true;
+            _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+            _isReady = true;
         }
 
         private int SetPositionY()
         {
-            return _randomPosY[UnityEngine.Random.Range(0,4)];
+            return _randomPosY[UnityEngine.Random.Range(0,5)];
+        }
+
+        public bool IsReady()
+        {
+            return _isReady;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -93,6 +105,7 @@ namespace Scripts.Controllers.InGame
                     UIManager.Instance.UpdateScoreMultiplier(3);
                     break;
                 default:
+                    UIManager.Instance.DisplayImmortality();
                     ObjectsManager.Instance.DisableObstacleCollider();
                     break;
             }

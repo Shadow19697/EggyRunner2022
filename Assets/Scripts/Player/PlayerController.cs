@@ -25,11 +25,5 @@ namespace Scripts.Player
                 PlayerAnimations.PlayDeathAnimation();
             }
         }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            _tagType = collision.gameObject.tag;
-            PlayerInteractions.InteractionManager(_tagType, _capsuleCollider2D);
-        }
     }
 }
