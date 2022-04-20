@@ -2549,7 +2549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &640067739
 Transform:
   m_ObjectHideFlags: 0
@@ -4643,7 +4643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1044261645
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7766,7 +7766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1586305950
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10819,6 +10819,7 @@ GameObject:
   - component: {fileID: 2036570679}
   - component: {fileID: 2036570678}
   - component: {fileID: 2036570682}
+  - component: {fileID: 2036570683}
   m_Layer: 5
   m_Name: LevelController
   m_TagString: Untagged
@@ -10925,6 +10926,18 @@ MonoBehaviour:
   _environmentController: {fileID: 181897686}
   _streetVelocity: 10
   _velocityIncrement: 1
+--- !u!114 &2036570683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036570677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cad98b993b48d747b7b0d5f62480414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2039967700
 GameObject:
   m_ObjectHideFlags: 0

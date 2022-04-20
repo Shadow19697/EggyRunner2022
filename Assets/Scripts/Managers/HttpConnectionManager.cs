@@ -12,12 +12,11 @@ namespace Scripts.Managers
 {
     public class HttpConnectionManager : MonoBehaviour
     {
-        const string _url = "";
+        const string _urlPost = "https://eggyrunner.000webhostapp.com//NewScore.php";
         const string _urlGet = "https://eggyrunner.000webhostapp.com//ShowScores.php";
         private List<GameModel> _globalGames;
         private Coroutine _postGameCoroutine;
         private Coroutine _getGamesCoroutine;
-        private bool _isReady = false;
 
         private static HttpConnectionManager _instance;
 
@@ -25,41 +24,29 @@ namespace Scripts.Managers
 
         public List<GameModel> GetGlobalGames()
         {
-            StreamReader file = new StreamReader(Application.dataPath + "/RecoveredGames.txt");
+            StreamReader file = new StreamReader(LocalLoggerManager.GetGlobalGamesPath());
             var Json = file.ReadToEnd();
-            return JsonConvert.DeserializeObject<List<GameModel>>(Json);
-            //try
-            //{
-            //    Debug.Log("1");
-            //    if (_getGamesCoroutine == null)
-            //    {
-            //        Debug.Log("2");
-            //        _getGamesCoroutine = StartCoroutine(GetGamesFromAPI());
-            //    }
-            //    Debug.Log("3");
-            //    while (_getGamesCoroutine != null)
-            //    {
-            //        Debug.Log("Obteniendo partidas");
-            //    }
-            //    Debug.Log("4");
-            //    return _globalGames;
-            //}
-            //catch
-            //{
-            //    Debug.Log("5");
-            //    return null;
-            //}
-        }
-
-        public bool IsReady()
-        {
-            return _isReady;
+            try {
+                _globalGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
+            } 
+            catch { 
+                _globalGames = null;
+            }
+            return _globalGames;
         }
 
         public void ReturnGames()
         {
-            _isReady = false;
-            _getGamesCoroutine = StartCoroutine(GetGamesFromAPI());
+            if (_getGamesCoroutine != null)
+                StopCoroutine(_getGamesCoroutine);
+            try
+            {
+                _getGamesCoroutine = StartCoroutine(GetGamesFromAPI());
+            }
+            catch
+            {
+                Debug.LogError("No hay conexion a internet");
+            }
         }
 
         private IEnumerator GetGamesFromAPI()
@@ -69,64 +56,52 @@ namespace Scripts.Managers
             try
             {
                 Debug.Log(webRequest.downloadHandler.text);
-                _globalGames = JsonConvert.DeserializeObject<List<GameModel>>(webRequest.downloadHandler.text);
-                string gamesString = JsonConvert.SerializeObject(_globalGames);
-                File.WriteAllText(Application.dataPath + "/RecoveredGames.txt", gamesString);
+                LocalLoggerManager.UpdateGlobalGamesLog(webRequest.downloadHandler.text);
             }
             catch (Exception)
             {
-                _globalGames = null;
+                LocalLoggerManager.UpdateGlobalGamesLog("");
                 Debug.LogError("No hay conexion a internet");
             }
-            _isReady = true;
         }
 
-        public void PostGame(string json, bool isRemaining)
+        public void PostGame(GameModel game, bool isRemaining)
         {
-            Debug.Log("json: " + json + " remaining: " + isRemaining);
+            string gameJson = JsonConvert.SerializeObject(game);
+            Debug.Log("json: " + gameJson + " remaining: " + isRemaining);
             if(_postGameCoroutine != null)
                 StopCoroutine(_postGameCoroutine);
             try
             {
-                _postGameCoroutine = StartCoroutine(PostGameToAPI(json, isRemaining));
+                _postGameCoroutine = StartCoroutine(PostGameToAPI(game, isRemaining));
             }
             catch (Exception)
             {
                 Debug.LogWarning("No se pudo subir la jugada");
-                DataManager.ItWasUploaded(false);
-                if (!isRemaining) DataManager.AddGameToUpload(json);
+                if (!isRemaining) DataManager.AddGameToUpload(game);
             }
         }
 
-        IEnumerator PostGameToAPI(string json, bool isRemaining) {
-            var webRequest = new UnityWebRequest(_url, "POST");
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+        private IEnumerator PostGameToAPI(GameModel game, bool isRemaining) {
+            var webRequest = new UnityWebRequest(_urlPost, "POST");
+            string gameJson = JsonConvert.SerializeObject(game);
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(gameJson);
             webRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
             webRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
             webRequest.SetRequestHeader("Content-Type", "application/json");
             yield return webRequest.SendWebRequest();
             try
             {
-                DataManager.ItWasUploaded(true);
+                if (webRequest.downloadHandler.text != "OK") throw new Exception();
+                if (isRemaining) DataManager.RemoveGameUploadedFromList(game);
                 Debug.Log("Juego subido!");
             }
             catch
             {
-                Debug.Log(webRequest.error + ": " + webRequest.responseCode);
-                DataManager.ItWasUploaded(false);
-                if (!isRemaining) DataManager.AddGameToUpload(json);
+                Debug.LogError(webRequest.error + ": " + webRequest.responseCode);
+                Debug.LogError(webRequest.downloadHandler.text);
+                if (!isRemaining) DataManager.AddGameToUpload(game);
             }
-            //if (webRequest.result != UnityWebRequest.Result.Success)
-            //{
-            //    Debug.Log(webRequest.error + ": " + webRequest.responseCode);
-            //    DataManager.ItWasUploaded(false);
-            //    if (!isRemaining) DataManager.AddGameToUpload(json);
-            //}
-            //else
-            //{
-            //    DataManager.ItWasUploaded(true);
-            //    Debug.Log("Juego subido!");
-            //}
         }
     }
 }

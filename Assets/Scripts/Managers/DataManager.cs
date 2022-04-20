@@ -10,65 +10,82 @@ namespace Scripts.Managers
 {
     public static class DataManager 
     {
-        private static List<GameModel> _allGames;
-        private static List<GameModel> _gamesToUpload = new List<GameModel>();
-        private static bool wasUploaded;
-        private static HttpConnectionManager _httpConnectionManager = new HttpConnectionManager();
-        
-        /*******************************************************************/
-        public static void MadeExampleGameModelList()
+        private static List<GameModel> _localGames;
+        private static List<GameModel> _gamesToUpload;
+
+        #region Init
+        private static void LocalGamesInit()
         {
-            for(int i=0; i<50; i++)
+            _localGames = new List<GameModel>();
+            try
             {
-                GameModel game = new GameModel("Nombre " + (i + 1), (i+1 * 100), i+1);
-                _allGames.Add(game);
+                StreamReader file = new StreamReader(LocalLoggerManager.GetLocalGamesPath());
+                var Json = file.ReadToEnd();
+                file.Close();
+                Debug.LogWarning(Json);
+                _localGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
             }
-            var _sortedGames = (from game in _allGames
-                                orderby game.score descending
-                                select game);
-            LocalLoggerManager.UpdateLocalHighscoreLog(_sortedGames.ToList<GameModel>());
+            catch
+            {
+                Debug.LogWarning("No existen jugadas guardadas");
+            }
         }
-        /*******************************************************************/
+
+        private static void GamesToUploadInit()
+        {
+            _gamesToUpload = new List<GameModel>();
+            try
+            {
+                StreamReader file = new StreamReader(LocalLoggerManager.GetGamesToUploadPath());
+                var Json = file.ReadToEnd();
+                file.Close();
+                Debug.LogWarning(Json);
+                _gamesToUpload = JsonConvert.DeserializeObject<List<GameModel>>(Json);
+            }
+            catch
+            {
+                Debug.LogWarning("No existen juegos para subir");
+            }
+        }
+        #endregion
 
         #region Upload Games
         public static void UploadGame(string name, int score, int level)
         {
+            LocalGamesInit();
             GameModel currentGame = new GameModel(name, score, level);
-            _allGames.Add(currentGame);
-            var _sortedGames = (from game in _allGames
+            _localGames.Add(currentGame);
+            var _sortedGames = (from game in _localGames
                                 orderby game.score descending
                                 select game);
-            LocalLoggerManager.UpdateLocalHighscoreLog(_sortedGames.ToList<GameModel>());
-            string gameJson = JsonConvert.SerializeObject(currentGame);
-            _httpConnectionManager.PostGame(gameJson, false);
+            LocalLoggerManager.UpdateLocalGamesLog(_sortedGames.ToList<GameModel>());
+            HttpConnectionManager.Instance.PostGame(currentGame, false);
         }
 
-        public static void AddGameToUpload(string gameJson)
+        public static void AddGameToUpload(GameModel game)
         {
-            GameModel game = JsonConvert.DeserializeObject<GameModel>(gameJson);
+            GamesToUploadInit();
             _gamesToUpload.Add(game);
-        }
-
-        public static void ItWasUploaded(bool option)
-        {
-            wasUploaded = option;
+            LocalLoggerManager.UpdateGamesToUpload(JsonConvert.SerializeObject(_gamesToUpload));
         }
 
         public static void UploadRemainingGames()
         {
+            GamesToUploadInit();
             List<GameModel> gamesUploaded = new List<GameModel>();
-            _gamesToUpload.ForEach(game =>
-            {
-                string gameJson = JsonConvert.SerializeObject(game);
-                _httpConnectionManager.PostGame(gameJson, true);
-                if (wasUploaded) gamesUploaded.Add(game);
-            });
-            gamesUploaded.ForEach(game => _gamesToUpload.Remove(game));
+            if (_gamesToUpload.Count > 0)
+                HttpConnectionManager.Instance.PostGame(_gamesToUpload[0], true);
         }
 
+        public static void RemoveGameUploadedFromList(GameModel game)
+        {
+            GamesToUploadInit();
+            _gamesToUpload.Remove(game);
+            LocalLoggerManager.UpdateGamesToUpload(JsonConvert.SerializeObject(_gamesToUpload));
+        }
         #endregion
 
-        #region Get Games
+        #region Return Games
         public static List<GameModel> ReturnGames(bool isLocal, bool isAll, int level)
         {
             if (isLocal) return ReturnLocalGames(isAll, level);
@@ -78,35 +95,14 @@ namespace Scripts.Managers
         private static List<GameModel> ReturnLocalGames(bool isAll, int level)
         {
             LocalGamesInit();
-            return SortGames(isAll, level, _allGames);
+            return SortGames(isAll, level, _localGames);
         }
 
         private static List<GameModel> ReturnGlobalGames(bool isAll, int level)
         {
-            List<GameModel> recoveredGames = _httpConnectionManager.GetGlobalGames();
-            if (recoveredGames != null)
-            {
-                Debug.Log("recuperados");
-                return SortGames(isAll, level, recoveredGames);
-            }
+            List<GameModel> recoveredGames = HttpConnectionManager.Instance.GetGlobalGames();
+            if (recoveredGames != null) return SortGames(isAll, level, recoveredGames);
             else return null;
-        }
-
-        private static void LocalGamesInit()
-        {
-            _allGames = new List<GameModel>();
-            try
-            {
-                StreamReader file = new StreamReader(LocalLoggerManager.GetLocalHighscorePath());
-                var Json = file.ReadToEnd();
-                file.Close();
-                Debug.LogWarning(Json);
-                _allGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
-            }
-            catch
-            {
-                Debug.LogWarning("No existen jugadas guardadas");
-            }
         }
 
         private static List<GameModel> SortGames(bool isAll, int level, List<GameModel> games)
@@ -134,23 +130,23 @@ namespace Scripts.Managers
             List<GameOrderedModel> gamesOrdered = new List<GameOrderedModel>();
             if (index == 0)
             {
-                gamesOrdered.Add(new GameOrderedModel(0, _allGames[0]));
-                gamesOrdered.Add(_allGames.Count > 1 ? new GameOrderedModel(1, _allGames[1]) : null);
-                gamesOrdered.Add(_allGames.Count > 2 ? new GameOrderedModel(2, _allGames[2]) : null);
+                gamesOrdered.Add(new GameOrderedModel(0, _localGames[0]));
+                gamesOrdered.Add(_localGames.Count > 1 ? new GameOrderedModel(1, _localGames[1]) : null);
+                gamesOrdered.Add(_localGames.Count > 2 ? new GameOrderedModel(2, _localGames[2]) : null);
             }
             else
             {
-                if(index == (_allGames.Count-1))
+                if(index == (_localGames.Count-1))
                 {
-                    gamesOrdered.Add(_allGames.Count > 2 ? new GameOrderedModel(index -2, _allGames[index - 2]) : new GameOrderedModel(index -1, _allGames[index - 1]));
-                    gamesOrdered.Add(_allGames.Count > 2 ? new GameOrderedModel(index - 1, _allGames[index - 1]) : new GameOrderedModel(index, _allGames[index]));
-                    gamesOrdered.Add(_allGames.Count > 2 ? new GameOrderedModel(index, _allGames[index]) : null);
+                    gamesOrdered.Add(_localGames.Count > 2 ? new GameOrderedModel(index -2, _localGames[index - 2]) : new GameOrderedModel(index -1, _localGames[index - 1]));
+                    gamesOrdered.Add(_localGames.Count > 2 ? new GameOrderedModel(index - 1, _localGames[index - 1]) : new GameOrderedModel(index, _localGames[index]));
+                    gamesOrdered.Add(_localGames.Count > 2 ? new GameOrderedModel(index, _localGames[index]) : null);
                 }
                 else
                 {
-                    gamesOrdered.Add(new GameOrderedModel(index - 1, _allGames[index - 1]));
-                    gamesOrdered.Add(new GameOrderedModel(index, _allGames[index]));
-                    gamesOrdered.Add(new GameOrderedModel(index + 1, _allGames[index + 1]));
+                    gamesOrdered.Add(new GameOrderedModel(index - 1, _localGames[index - 1]));
+                    gamesOrdered.Add(new GameOrderedModel(index, _localGames[index]));
+                    gamesOrdered.Add(new GameOrderedModel(index + 1, _localGames[index + 1]));
                 }
             }
             return gamesOrdered;
@@ -160,29 +156,23 @@ namespace Scripts.Managers
         {
             LocalGamesInit();
             int i = 0;
-            for (i = 0; i < _allGames.Count; i++)
-                if (_allGames[i].level == gameToFind.level && _allGames[i].name == gameToFind.name && _allGames[i].score == gameToFind.score)
+            for (i = 0; i < _localGames.Count; i++)
+                if (_localGames[i].level == gameToFind.level && _localGames[i].name == gameToFind.name && _localGames[i].score == gameToFind.score)
                     break;
             return i;
         }
-
-        public static int ReturnQuantityOfGames()
-        {
-            return _allGames.Count;
-        }
-        
         #endregion
 
         #region Get Highscores
         public static int GetLocalHighscoreOfLevel(int level)
         {
             LocalGamesInit();
-            return GetHighscoreOfLevel(level, _allGames);
+            return GetHighscoreOfLevel(level, _localGames);
         }
 
         public static int GetGlobalHighscoreOfLevel(int level)
         {
-            List<GameModel> recoveredGames = _httpConnectionManager.GetGlobalGames();
+            List<GameModel> recoveredGames = HttpConnectionManager.Instance.GetGlobalGames();
             if (recoveredGames != null) return GetHighscoreOfLevel(level, recoveredGames);
             else return 0;
         }

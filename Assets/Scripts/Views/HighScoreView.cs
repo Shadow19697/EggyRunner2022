@@ -103,11 +103,6 @@ namespace Scripts.Views
             _games = DataManager.ReturnGames(_isGlobal, _isLevel, _level);
         }
 
-        public void AddGames()
-        {
-            DataManager.MadeExampleGameModelList();
-        }
-
         [System.Obsolete]
         public void ReloadView()
         {

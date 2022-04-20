@@ -44,9 +44,9 @@ namespace Scripts.Views
 
         private void Start()
         {
-            _score = 1000; //UIManager.Instance.GetActualScore();
-            _collectableCount = 18; //UIManager.Instance.GetEggCount();
-            _obstacleCount = 5; //UIManager.Instance.GetObstaclesCount();
+            _score = 1400; //UIManager.Instance.GetActualScore();
+            _collectableCount = 20; //UIManager.Instance.GetEggCount();
+            _obstacleCount = 7; //UIManager.Instance.GetObstaclesCount();
             _totalScore = PlayerPrefsManager.GetTotalScore();
             _increaseScore = _score + _collectableCount * 100 + _obstacleCount * 200;
             StartCoroutine(ShowCoroutine());
