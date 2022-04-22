@@ -7,6 +7,7 @@ using Scripts.Models;
 using System;
 using Newtonsoft.Json;
 using System.IO;
+using Scripts.Views;
 
 namespace Scripts.Managers
 {
@@ -35,40 +36,45 @@ namespace Scripts.Managers
             return _globalGames;
         }
 
-        public void ReturnGames()
+        public void ReturnGames(bool isFromReload)
         {
             if (_getGamesCoroutine != null)
                 StopCoroutine(_getGamesCoroutine);
             try
             {
-                _getGamesCoroutine = StartCoroutine(GetGamesFromAPI());
+                _getGamesCoroutine = StartCoroutine(GetGamesFromAPI(isFromReload));
             }
             catch
             {
+                HighScoreView.Instance.HideLoadingCanvas();
                 Debug.LogError("No hay conexion a internet");
             }
         }
 
-        private IEnumerator GetGamesFromAPI()
+        private IEnumerator GetGamesFromAPI(bool isFromReload)
         {
             UnityWebRequest webRequest = UnityWebRequest.Get(_urlGet);
             yield return webRequest.SendWebRequest();
+            yield return new WaitForSeconds(4);
             try
             {
-                Debug.Log(webRequest.downloadHandler.text);
+                Debug.Log("Se obtuvieron partidas!");
                 LocalLoggerManager.UpdateGlobalGamesLog(webRequest.downloadHandler.text);
+                if (isFromReload) HighScoreView.Instance.HideLoadingCanvas();
             }
             catch (Exception)
             {
-                LocalLoggerManager.UpdateGlobalGamesLog("");
+                Debug.Log(webRequest.downloadHandler.text);
                 Debug.LogError("No hay conexion a internet");
+                if (isFromReload) HighScoreView.Instance.HideLoadingCanvas();
+                LocalLoggerManager.UpdateGlobalGamesLog("");
             }
         }
 
         public void PostGame(GameModel game, bool isRemaining)
         {
             string gameJson = JsonConvert.SerializeObject(game);
-            Debug.Log("json: " + gameJson + " remaining: " + isRemaining);
+            Debug.Log("Subiendo jugada: " + gameJson + " - Es pendiente?: " + isRemaining);
             if(_postGameCoroutine != null)
                 StopCoroutine(_postGameCoroutine);
             try
@@ -77,7 +83,7 @@ namespace Scripts.Managers
             }
             catch (Exception)
             {
-                Debug.LogWarning("No se pudo subir la jugada");
+                Debug.LogError("No se pudo subir la jugada");
                 if (!isRemaining) DataManager.AddGameToUpload(game);
             }
         }
@@ -94,14 +100,23 @@ namespace Scripts.Managers
             {
                 if (webRequest.downloadHandler.text != "OK") throw new Exception();
                 if (isRemaining) DataManager.RemoveGameUploadedFromList(game);
-                Debug.Log("Juego subido!");
+                Debug.Log("Jugada subida!");
             }
             catch
             {
-                Debug.LogError(webRequest.error + ": " + webRequest.responseCode);
-                Debug.LogError(webRequest.downloadHandler.text);
+                Debug.LogError("No se pudo subir la jugada\n" + webRequest.error + ": " + webRequest.responseCode  + "\n" + webRequest.downloadHandler.text);
                 if (!isRemaining) DataManager.AddGameToUpload(game);
             }
+        }
+
+        private void OnApplicationQuit()
+        {
+            if (_postGameCoroutine != null)
+                StopCoroutine(_postGameCoroutine);
+            if (_getGamesCoroutine != null)
+                StopCoroutine(_getGamesCoroutine);
+            LocalLoggerManager.ResetGlobalGamesLog();
+            //PlayerPrefsManager.UpdateLevelSelected(0);
         }
     }
 }

@@ -37,14 +37,14 @@ namespace Scripts.Views
         private int _increaseScore;
         private int _totalScore;
 
-        private int CountFPS = 30;
-        private float Duration = 1f;
+        private int _countFPS = 30;
+        private float _duration = 1f;
         
         private Coroutine CountingCoroutine;
 
         private void Start()
         {
-            _score = 1400; //UIManager.Instance.GetActualScore();
+            _score = 2500; //UIManager.Instance.GetActualScore();
             _collectableCount = 20; //UIManager.Instance.GetEggCount();
             _obstacleCount = 7; //UIManager.Instance.GetObstaclesCount();
             _totalScore = PlayerPrefsManager.GetTotalScore();
@@ -89,8 +89,8 @@ namespace Scripts.Views
 
         private IEnumerator CountText(int previousValue, int newValue, TextMeshProUGUI text)
         {
-            WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
-            int stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
+            WaitForSeconds Wait = new WaitForSeconds(1f / _countFPS);
+            int stepAmount = Mathf.CeilToInt((newValue - previousValue) / (_countFPS * _duration));
             while (previousValue < newValue)
             {
                 previousValue += stepAmount;

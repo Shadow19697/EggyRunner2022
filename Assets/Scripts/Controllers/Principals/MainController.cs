@@ -11,6 +11,7 @@ namespace Scripts.Controllers.Principals
         public AudioMixer _audioMixer;
         
         private SpecialDateEnum specialEnum;
+        private static Coroutine _uploadRemainingCoroutine;
 
         void Start()
         {
@@ -20,7 +21,9 @@ namespace Scripts.Controllers.Principals
             SettingsController.SetVolume(_audioMixer);
             SettingsController.SetVisualSettings(true);
             LocalLoggerManager.CreateLocalLog();
-            HttpConnectionManager.Instance.ReturnGames();
+            HttpConnectionManager.Instance.ReturnGames(false);
+            if (_uploadRemainingCoroutine != null) StopCoroutine(_uploadRemainingCoroutine);
+            StartCoroutine(DataManager.UploadRemainingGames());
             /*******************************************************/
             specialEnum = SpecialDate.WichSpecialIs();
             Debug.Log("Is First Load? " + PlayerPrefsManager.IsFirstLoad()

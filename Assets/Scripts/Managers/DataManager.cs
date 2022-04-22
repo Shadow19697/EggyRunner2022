@@ -5,10 +5,11 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using Scripts.Models.Nested;
+using System.Collections;
 
 namespace Scripts.Managers
 {
-    public static class DataManager 
+    public static class DataManager
     {
         private static List<GameModel> _localGames;
         private static List<GameModel> _gamesToUpload;
@@ -39,12 +40,11 @@ namespace Scripts.Managers
                 StreamReader file = new StreamReader(LocalLoggerManager.GetGamesToUploadPath());
                 var Json = file.ReadToEnd();
                 file.Close();
-                Debug.LogWarning(Json);
                 _gamesToUpload = JsonConvert.DeserializeObject<List<GameModel>>(Json);
             }
             catch
             {
-                Debug.LogWarning("No existen juegos para subir");
+                Debug.Log("No existen jugadas para subir, se crea el archivo");
             }
         }
         #endregion
@@ -69,19 +69,29 @@ namespace Scripts.Managers
             LocalLoggerManager.UpdateGamesToUpload(JsonConvert.SerializeObject(_gamesToUpload));
         }
 
-        public static void UploadRemainingGames()
+        public static IEnumerator UploadRemainingGames()
         {
-            GamesToUploadInit();
-            List<GameModel> gamesUploaded = new List<GameModel>();
-            if (_gamesToUpload.Count > 0)
-                HttpConnectionManager.Instance.PostGame(_gamesToUpload[0], true);
+            do
+            {
+                GamesToUploadInit();
+                if (_gamesToUpload.Count > 0)
+                {
+                    Debug.Log("Buscando jugadas pendientes...");
+                    HttpConnectionManager.Instance.PostGame(_gamesToUpload[0], true);
+                    yield return new WaitForSeconds(20);
+                }
+            } while (_gamesToUpload.Count > 0);
+            Debug.Log("No hay jugadas para subir");
         }
 
         public static void RemoveGameUploadedFromList(GameModel game)
         {
             GamesToUploadInit();
-            _gamesToUpload.Remove(game);
-            LocalLoggerManager.UpdateGamesToUpload(JsonConvert.SerializeObject(_gamesToUpload));
+            _gamesToUpload.RemoveAll(_game => _game.level == game.level && _game.name == game.name && _game.score == game.score);
+            if (_gamesToUpload.Count > 0)
+                LocalLoggerManager.UpdateGamesToUpload(JsonConvert.SerializeObject(_gamesToUpload));
+            else
+                LocalLoggerManager.DeleteGamesToUpload();
         }
         #endregion
 
@@ -152,7 +162,7 @@ namespace Scripts.Managers
             return gamesOrdered;
         }
 
-        public static int ReturnIndexOfGame(GameModel gameToFind)
+        private static int ReturnIndexOfGame(GameModel gameToFind)
         {
             LocalGamesInit();
             int i = 0;

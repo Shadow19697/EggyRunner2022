@@ -123,20 +123,20 @@ namespace Scripts.Managers
         }
         public static void ResetGlobalGamesLog()
         {
-            if (File.Exists(_globalGamesPath)) File.Delete(_globalGamesPath);
+            if (File.Exists(_globalGamesPath)) File.Delete(_globalGamesPath); 
         }
         #endregion
 
         #region Games To Upload
         public static void UpdateGamesToUpload(string games)
         {
-            ResetGamesToUpload();
+            DeleteGamesToUpload();
             File.WriteAllText(_gamesToUploadPath, games);
         }
-        public static void ResetGamesToUpload()
+        public static void DeleteGamesToUpload()
         {
             if (File.Exists(_gamesToUploadPath)) File.Delete(_gamesToUploadPath);
-        }
+        } 
         #endregion
     }
 }

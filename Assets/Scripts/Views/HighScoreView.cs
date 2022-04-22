@@ -17,13 +17,18 @@ namespace Scripts.Views
         [SerializeField] private GameObject _errorCanvas;
         [SerializeField] private GameObject _errorCanvasButton;
         [SerializeField] private GameObject _reloadButton;
+        [SerializeField] private GameObject _loadingCanvas;
 
-        private bool _isGlobal;
-        private bool _isLevel;
+        private bool _isLocal;
+        private bool _isAll;
         private int _level;
         private List<GameModel> _games;
         private bool _fromLocalToggle;
         private bool _fromReloadButton;
+
+        private static HighScoreView _instance;
+
+        public static HighScoreView Instance { get { if (_instance == null) _instance = FindObjectOfType<HighScoreView>(); return _instance; } }
 
         private void Start()
         {
@@ -35,7 +40,7 @@ namespace Scripts.Views
         {
             _fromReloadButton = fromButton;
             _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
-            if(!_isLevel)
+            if(!_isAll)
                 _levelDropdown.interactable = true;
             FindHighScores();
             if (_games != null)
@@ -52,8 +57,8 @@ namespace Scripts.Views
 
         private void VariablesInit()
         {
-            _isGlobal = !_localGlobalToggle.isOn;
-            _isLevel = !_allLevelToggle.isOn;
+            _isLocal = !_localGlobalToggle.isOn;
+            _isAll = !_allLevelToggle.isOn;
             _levelDropdown.interactable = false;
         }
 
@@ -65,15 +70,15 @@ namespace Scripts.Views
 
         public void SetLocalGlobal(bool isGlobal)
         {
-            _isGlobal = !isGlobal;
+            _isLocal = !isGlobal;
             _fromLocalToggle = true;
             LoadTable(false);
         }
 
         public void SetAllLevel(bool isLevel)
         {
-            _isLevel = !isLevel;
-            if (_isLevel)
+            _isAll = !isLevel;
+            if (_isAll)
             {
                 _levelDropdown.interactable = false;
                 _levelDropdown.value = 0;
@@ -100,16 +105,32 @@ namespace Scripts.Views
 
         private void FindHighScores()
         {
-            _games = DataManager.ReturnGames(_isGlobal, _isLevel, _level);
+            _games = DataManager.ReturnGames(_isLocal, _isAll, _level);
         }
 
-        [System.Obsolete]
         public void ReloadView()
         {
             _localGlobalToggle.isOn = false;
             _allLevelToggle.isOn = false;
             _levelDropdown.value = 0;
             _errorCanvas.SetActive(false);
+        }
+
+        public void ReloadTable()
+        {
+            if (!_isLocal)
+            {
+                _loadingCanvas.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(null);
+                HttpConnectionManager.Instance.ReturnGames(true);
+            }
+        }
+
+        public void HideLoadingCanvas()
+        {
+            _loadingCanvas.SetActive(false);
+            LoadTable(true);
+            SetLastButtonSelected();
         }
     } 
 }
