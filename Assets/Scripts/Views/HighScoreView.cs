@@ -36,6 +36,12 @@ namespace Scripts.Views
             LoadTable(false);
         }
 
+        private void Update()
+        {
+            if (Input.GetButtonDown("Cancel"))
+                NavigationMenuController.Instance.ReturnToMainMenu();
+        }
+
         public void LoadTable(bool fromButton)
         {
             _fromReloadButton = fromButton;

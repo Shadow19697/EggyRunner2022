@@ -6,6 +6,7 @@ using Scripts.Models;
 using Newtonsoft.Json;
 using System;
 using UnityEngine.EventSystems;
+using Scripts.Controllers.Extensions;
 
 namespace Scripts.Views
 {
@@ -28,6 +29,12 @@ namespace Scripts.Views
         private void Start()
         {
             SettingsInit();
+        }
+
+        private void Update()
+        {
+            if (Input.GetButtonDown("Cancel"))
+                ReturnButton();
         }
 
         private void SettingsInit()

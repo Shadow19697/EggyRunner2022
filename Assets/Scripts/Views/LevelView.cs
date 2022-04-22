@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Scripts.Managers;
 using UnityEngine.SceneManagement;
+using Scripts.Controllers.Extensions;
 
 namespace Scripts.Views
 {
@@ -29,6 +30,8 @@ namespace Scripts.Views
                 UpdateButtonsStatus();
                 UpdateButtonsLabels();
             }
+            if (Input.GetButtonDown("Cancel"))
+                NavigationMenuController.Instance.ReturnToMainMenu();
         }
 
         private void UpdateButtonsStatus()
