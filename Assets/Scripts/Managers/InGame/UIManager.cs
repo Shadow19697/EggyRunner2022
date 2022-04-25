@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using UnityEngine.EventSystems;
 
 namespace Scripts.Managers.InGame
 {
@@ -17,8 +18,11 @@ namespace Scripts.Managers.InGame
         [SerializeField] private TextMeshProUGUI _upgradeText;
         [SerializeField] private GameObject _idleUI;
         [SerializeField] private GameObject _playingUI;
+        [SerializeField] private GameObject _quitCanvas;
+        [SerializeField] private GameObject _yesButton;
+        [SerializeField] private GameObject _playButton;
         [SerializeField] private GameObject _player;
-        
+
 
         private int _eggCount;
         private bool _isPlaying;
@@ -26,20 +30,53 @@ namespace Scripts.Managers.InGame
         private int _lifesCount;
         private int _scoreMultiplier;
         private float _scoreCounter;
+        private bool _gettingScore;
 
         public static UIManager Instance { get {if(_instance == null) _instance = FindObjectOfType<UIManager>(); return _instance; }}
 
         private void Start()
         {
             _isPlaying = false;
-            _localHighscoreText.text = "Mejor Puntaje Local: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
-            _globalHighscoreText.text = "Mejor Puntaje Global: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
             _player.SetActive(false);
             _eggCount = 0;
             _lifesCount = 1;
             _scoreMultiplier = 1;
             _scoreCounter = 0;
             _upgradeText.text = "";
+            _localHighscoreText.text = "Mejor Puntaje Local: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+            try
+            {
+                _globalHighscoreText.text = "Mejor Puntaje Global: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+                _gettingScore = false;
+            }
+            catch
+            {
+                HttpConnectionManager.Instance.ReturnGames(false);
+                _gettingScore = true;
+                _globalHighscoreText.text = "Esperando puntaje global...";
+            }
+        }
+
+        [Obsolete]
+        private void Update()
+        {
+            if (_idleUI.active)
+            {
+                if (Input.GetButtonDown("Cancel") && !_quitCanvas.active) OpenQuitCanvas();
+                else if (Input.GetButtonDown("Cancel") && _quitCanvas.active) NoButton();
+            }
+            if (_gettingScore)
+            {
+                try
+                {
+                    _globalHighscoreText.text = "Mejor Puntaje Global: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+                    _gettingScore = false;
+                }
+                catch
+                {
+                    _globalHighscoreText.text = "Esperando puntaje global...";
+                }
+            }
         }
 
         public void ReturnMenu()
@@ -114,12 +151,6 @@ namespace Scripts.Managers.InGame
             _upgradeText.text = "";
         }
 
-        public void QuitButton()
-        {
-            Debug.LogError("Quit");
-            Application.Quit();
-        }
-
         public void DisplayImmortality()
         {
             _upgradeText.text = "Inmortalidad";
@@ -132,5 +163,24 @@ namespace Scripts.Managers.InGame
             _upgradeText.text = "";
         }
 
+        public void OpenQuitCanvas()
+        {
+            _quitCanvas.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(_yesButton);
+        }
+
+        public void QuitApplication()
+        {
+            Debug.LogError("Quit");
+            Application.Quit();
+        }
+
+        public void NoButton()
+        {
+            _quitCanvas.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(_playButton);
+        }
     }
 }

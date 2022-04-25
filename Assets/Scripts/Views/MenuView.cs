@@ -35,11 +35,8 @@ namespace Scripts.Views
                 _settingsScoreText.text = "Puntos: " + PlayerPrefsManager.GetTotalScore();
             if (_mainMenuObject.active)
             {
-                if (Input.GetButtonDown("Cancel") && !_quitCanvas.active)
-                    OpenQuitCanvas();
-                else
-                    if (Input.GetButtonDown("Cancel") && _quitCanvas.active)
-                        NoButton();
+                if (Input.GetButtonDown("Cancel") && !_quitCanvas.active) OpenQuitCanvas();
+                else if (Input.GetButtonDown("Cancel") && _quitCanvas.active) NoButton();
             }
         }
 

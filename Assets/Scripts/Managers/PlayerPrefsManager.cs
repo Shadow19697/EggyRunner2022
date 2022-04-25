@@ -67,6 +67,7 @@ namespace Scripts.Managers
 
         public static void UpdateFirstLoad()
         {
+            ReadModel();
             PlayerPrefs.SetInt(FirstLoad, 0);
             _model.firstLoad = 0;
             LocalLoggerManager.UpdatePlayerPrefsLog(_model);
@@ -74,6 +75,7 @@ namespace Scripts.Managers
 
         public static void ResetFirstLoad()
         {
+            ReadModel();
             PlayerPrefs.SetInt(FirstLoad, 1);
             _model.firstLoad = 1;
             LocalLoggerManager.UpdatePlayerPrefsLog(_model);
@@ -97,6 +99,7 @@ namespace Scripts.Managers
 
         public static void ResetTotalScore()
         {
+            ReadModel();
             PlayerPrefs.SetInt(TotalScore, 0);
             _model.totalScore = 0;
             LocalLoggerManager.UpdatePlayerPrefsLog(_model);
@@ -116,6 +119,7 @@ namespace Scripts.Managers
 
         public static void UpdateLevelSelected(int level)
         {
+            ReadModel();
             PlayerPrefs.SetInt(LevelSelected, level);
             _model.levelSelected = level;
             LocalLoggerManager.UpdatePlayerPrefsLog(_model);
@@ -154,7 +158,6 @@ namespace Scripts.Managers
         public static void UpdateWidth(int value)
         {
             PlayerPrefs.SetInt(Width, value);
-            
         }
         #endregion
 
