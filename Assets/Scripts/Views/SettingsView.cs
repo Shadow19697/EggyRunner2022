@@ -4,9 +4,7 @@ using UnityEngine.UI;
 using Scripts.Managers;
 using Scripts.Models;
 using Newtonsoft.Json;
-using System;
 using UnityEngine.EventSystems;
-using Scripts.Controllers.Extensions;
 
 namespace Scripts.Views
 {
@@ -16,7 +14,6 @@ namespace Scripts.Views
         [SerializeField] private Slider _musicSlider;
         [SerializeField] private Slider _soundEffectsSlider;
         [SerializeField] private Dropdown _resolutionDropdown;
-        [SerializeField] private Dropdown _qualityDropdown;
         [SerializeField] private Toggle _fullscreenToggle;
         [SerializeField] private GameObject _eraseButton;
         [SerializeField] private GameObject _returnButton;
@@ -42,8 +39,6 @@ namespace Scripts.Views
             _settingsWindows = GetComponent<SettingsWindowsManager>();
             _musicSlider.value = PlayerPrefsManager.GetMusicValue();
             _soundEffectsSlider.value = PlayerPrefsManager.GetSoundEffectsValue();
-            _qualityDropdown.value = PlayerPrefsManager.GetQualityIndex();
-            _qualityDropdown.RefreshShownValue();
             _fullscreenToggle.isOn = PlayerPrefsManager.IsFullScreen();
             ResolutionInit();
         }
@@ -67,11 +62,6 @@ namespace Scripts.Views
         {
             _audioMixer.SetFloat("SoundEffectsVolume", Mathf.Log10(sliderValue) * 20);
             _settings.soundEffectsValue = sliderValue;
-        }
-        public void SetQuality(int qualityIndex)
-        {
-            QualitySettings.SetQualityLevel(qualityIndex);
-            _settings.qualityIndex = qualityIndex;
         }
         public void SetFullscreen(bool isFullscreen)
         {
@@ -169,7 +159,6 @@ namespace Scripts.Views
             UpdateMusicVolume(PlayerPrefsManager.GetMusicValue());
             UpdateSoundEffectsVolume(PlayerPrefsManager.GetSoundEffectsValue());
             SetFullscreen(PlayerPrefsManager.GetFullScreen() == 1 ? true : false);
-            SetQuality(PlayerPrefsManager.GetQualityIndex());
             SetResolution(PlayerPrefsManager.GetResolutionIndex());
         }
 

@@ -15,6 +15,7 @@ namespace Scripts.Managers
 
         private void Start()
         {
+            _joystickButtons.SetActive(false);
             _state = State.KeyboardUsed;
             _keysToScan = new List<KeyCode>(){
                 KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D,

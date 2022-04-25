@@ -16,7 +16,6 @@ namespace Scripts.Managers
                                 Height = "height",
                                 Width = "width",
                                 FullScreen = "fullScreen",
-                                QualityIndex = "qualityIndex",
                                 MusicValue = "musicValue",
                                 SoundEffectsValue = "soundEffectsValue";
 
@@ -39,7 +38,6 @@ namespace Scripts.Managers
                 _model.settings.height = GetHeight();
                 _model.settings.width = GetWidth();
                 _model.settings.fullScreen = GetFullScreen();
-                _model.settings.qualityIndex = GetQualityIndex();
                 _model.settings.musicValue = GetMusicValue();
                 _model.settings.soundEffectsValue = GetSoundEffectsValue();
                 /*******************************************************/
@@ -178,18 +176,6 @@ namespace Scripts.Managers
         }
         #endregion
 
-        #region Quality Methods
-        public static int GetQualityIndex()
-        {
-            return PlayerPrefs.GetInt(QualityIndex, 2);
-        }
-
-        public static void UpdateQualityIndex(int value)
-        {
-            PlayerPrefs.SetInt(QualityIndex, value);
-        }
-        #endregion
-
         #region Music & Sound Methods
         public static float GetMusicValue()
         {
@@ -217,14 +203,12 @@ namespace Scripts.Managers
             _model.settings.fullScreen = _newSettings.fullScreen;
             _model.settings.height = _newSettings.height;
             _model.settings.musicValue = _newSettings.musicValue;
-            _model.settings.qualityIndex = _newSettings.qualityIndex;
             _model.settings.resolutionIndex = _newSettings.resolutionIndex;
             _model.settings.soundEffectsValue = _newSettings.soundEffectsValue;
             _model.settings.width = _newSettings.width;
             UpdateFullScreen(_newSettings.fullScreen);
             UpdateHeight(_newSettings.height);
             UpdateMusicValue(_newSettings.musicValue);
-            UpdateQualityIndex(_newSettings.qualityIndex);
             UpdateResolutionIndex(_newSettings.resolutionIndex);
             UpdateSoundEffectsValue(_newSettings.soundEffectsValue);
             UpdateWidth(_newSettings.width);

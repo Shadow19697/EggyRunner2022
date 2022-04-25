@@ -42,10 +42,14 @@ public class ToggleSpritesController : MonoBehaviour, ISelectHandler, IDeselectH
 
     public void OnSelect(BaseEventData eventData)
     {
-        if (_isOn)
-            _checkmarkImage.sprite = _highlightedSprites[1];
-        else
-            _checkmarkImage.sprite = _highlightedSprites[0];
+        try
+        {
+            if (_isOn)
+                _checkmarkImage.sprite = _highlightedSprites[1];
+            else
+                _checkmarkImage.sprite = _highlightedSprites[0];
+        }
+        catch { }
     }
 
     public void OnDeselect(BaseEventData eventData)

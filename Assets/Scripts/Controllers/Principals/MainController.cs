@@ -29,8 +29,7 @@ namespace Scripts.Controllers.Principals
             Debug.Log("Is First Load? " + PlayerPrefsManager.IsFirstLoad()
                 + "\nResolution: " + PlayerPrefsManager.GetWidth() + " x " + PlayerPrefsManager.GetHeight() + " - Resolution Index: " + PlayerPrefsManager.GetResolutionIndex() + " - FullScreen: " + PlayerPrefsManager.IsFullScreen()
                 + "\nLevel Selected: " + PlayerPrefsManager.GetLevelSelected() + " - Special Date: " + specialEnum
-                + "\nMusic Value: " + PlayerPrefsManager.GetMusicValue() + " - Sound Value: " + PlayerPrefsManager.GetSoundEffectsValue()
-                + "\nQuality Index: " + PlayerPrefsManager.GetQualityIndex() + " - Total Score: " + PlayerPrefsManager.GetTotalScore());
+                + "\nMusic Value: " + PlayerPrefsManager.GetMusicValue() + " - Sound Value: " + PlayerPrefsManager.GetSoundEffectsValue());
             /*******************************************************/
         }
     }

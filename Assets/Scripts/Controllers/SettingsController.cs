@@ -14,7 +14,6 @@ namespace Scripts.Controllers
 
         public static void SetVisualSettings(bool isMenu)
         {
-            QualitySettings.SetQualityLevel(PlayerPrefsManager.GetQualityIndex());
             Screen.fullScreen = PlayerPrefsManager.IsFullScreen();
             if (isMenu) SetResolutionSettings();
             else SetResolutionSaved();

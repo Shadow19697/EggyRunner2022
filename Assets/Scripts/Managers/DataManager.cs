@@ -23,7 +23,7 @@ namespace Scripts.Managers
                 StreamReader file = new StreamReader(LocalLoggerManager.GetLocalGamesPath());
                 var Json = file.ReadToEnd();
                 file.Close();
-                Debug.LogWarning(Json);
+                Debug.Log("Se cargaron las jugadas guardadas");
                 _localGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
             }
             catch
