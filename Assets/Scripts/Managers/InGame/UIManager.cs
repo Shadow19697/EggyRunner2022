@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.UI;
 using System.Collections;
 using System;
 using UnityEngine.EventSystems;
@@ -16,16 +15,16 @@ namespace Scripts.Managers.InGame
         [SerializeField] private TextMeshProUGUI _eggCountText;
         [SerializeField] private TextMeshProUGUI _lifesCountText;
         [SerializeField] private TextMeshProUGUI _upgradeText;
-        [SerializeField] private GameObject _idleUI;
-        [SerializeField] private GameObject _playingUI;
+        [SerializeField] private GameObject _idleCanvas;
+        [SerializeField] private GameObject _playingCanvas;
         [SerializeField] private GameObject _quitCanvas;
         [SerializeField] private GameObject _yesButton;
         [SerializeField] private GameObject _playButton;
         [SerializeField] private GameObject _player;
 
-
         private int _eggCount;
         private bool _isPlaying;
+        private bool _isGameOver;
         private static UIManager _instance;
         private int _lifesCount;
         private int _scoreMultiplier;
@@ -37,6 +36,7 @@ namespace Scripts.Managers.InGame
         private void Start()
         {
             _isPlaying = false;
+            _isGameOver = false;
             _player.SetActive(false);
             _eggCount = 0;
             _lifesCount = 1;
@@ -44,58 +44,43 @@ namespace Scripts.Managers.InGame
             _scoreCounter = 0;
             _upgradeText.text = "";
             _localHighscoreText.text = "Mejor Puntaje Local: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
-            try
-            {
-                _globalHighscoreText.text = "Mejor Puntaje Global: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
-                _gettingScore = false;
-            }
-            catch
-            {
-                HttpConnectionManager.Instance.ReturnGames(false);
-                _gettingScore = true;
-                _globalHighscoreText.text = "Esperando puntaje global...";
-            }
-        }
+            GetGlobalHighscore(true);
+        }      
 
         [Obsolete]
         private void Update()
         {
-            if (_idleUI.active)
-            {
+            if (_idleCanvas.active) {
                 if (Input.GetButtonDown("Cancel") && !_quitCanvas.active) OpenQuitCanvas();
                 else if (Input.GetButtonDown("Cancel") && _quitCanvas.active) NoButton();
             }
             if (_gettingScore)
-            {
-                try
-                {
-                    _globalHighscoreText.text = "Mejor Puntaje Global: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
-                    _gettingScore = false;
-                }
-                catch
-                {
-                    _globalHighscoreText.text = "Esperando puntaje global...";
-                }
+                GetGlobalHighscore(false);
+        }
+
+        private void GetGlobalHighscore(bool isStart)
+        {
+            try {
+                _globalHighscoreText.text = "Mejor Puntaje Global: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+                _gettingScore = false;
             }
-        }
-
-        public void ReturnMenu()
-        {
-            SceneManager.LoadScene("MainScene");
-        }
-
-        public void StartGame()
-        {
-            _idleUI.SetActive(false);
-            //TO DO: ANIMACION QUE SE DESACTIVA EL MENU;
-            _isPlaying = true;
-            _playingUI.SetActive(true);
-            _player.SetActive(true);
-        }
+            catch {
+                if (isStart) {
+                    HttpConnectionManager.Instance.ReturnGames(false);
+                    _gettingScore = true;
+                }
+                _globalHighscoreText.text = "Esperando puntaje global...";
+            }
+        }        
 
         public bool IsPlaying()
         {
             return _isPlaying;
+        }
+
+        public bool IsGameOver()
+        {
+            return _isGameOver;
         }
 
         #region Actual Score Methods
@@ -134,9 +119,10 @@ namespace Scripts.Managers.InGame
         public int GetLifesCount()
         {
             return _lifesCount;
-        } 
+        }
         #endregion
 
+        #region Score Multiplier Methods
         public void UpdateScoreMultiplier(int value)
         {
             _scoreMultiplier = value;
@@ -150,17 +136,30 @@ namespace Scripts.Managers.InGame
             _scoreMultiplier = 1;
             _upgradeText.text = "";
         }
+        #endregion
 
-        public void DisplayImmortality()
+        #region Immunity Methods
+        public void DisplayImmunity()
         {
             _upgradeText.text = "Inmortalidad";
-            StartCoroutine(DisplayImmortalityUntil());
+            StartCoroutine(DisplayImmunityUntil());
         }
 
-        private IEnumerator DisplayImmortalityUntil()
+        private IEnumerator DisplayImmunityUntil()
         {
             yield return new WaitForSeconds(20);
             _upgradeText.text = "";
+        }
+        #endregion
+
+        #region Buttons Methods
+        public void StartGame()
+        {
+            _idleCanvas.SetActive(false);
+            //TO DO: ANIMACION QUE SE DESACTIVA EL MENU;
+            _isPlaying = true;
+            _playingCanvas.SetActive(true);
+            _player.SetActive(true);
         }
 
         public void OpenQuitCanvas()
@@ -182,5 +181,11 @@ namespace Scripts.Managers.InGame
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_playButton);
         }
+
+        public void ReturnMenu()
+        {
+            SceneManager.LoadScene("MainScene");
+        } 
+        #endregion
     }
 }

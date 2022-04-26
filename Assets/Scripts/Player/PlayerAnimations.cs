@@ -8,11 +8,17 @@ namespace Scripts.Player
         
         private static AnyStateAnimator _anyStateAnimator;
         private static GameObject _rig;
+        private static ParticleSystem _explosion;
+        private static ParticleSystem _deathAnimation;
 
         public static GameObject Rig { get => _rig; set => _rig = value; }
+        public static ParticleSystem Explosion { get => _explosion; set => _explosion = value; }
+        public static ParticleSystem DeathAnimation { get => _deathAnimation; set => _deathAnimation = value; }
 
         public static void InitAnimations()
         {
+            _explosion.Pause();
+            _deathAnimation.Pause();
             _anyStateAnimator = Rig.GetComponent<AnyStateAnimator>();
             AnyStateAnimation[] animations = new AnyStateAnimation[]
             {
@@ -37,7 +43,8 @@ namespace Scripts.Player
         }
         public static void PlayDeathAnimation()
         {
-
+            _explosion.Play();
+            _deathAnimation.Play();
         }
     } 
 }

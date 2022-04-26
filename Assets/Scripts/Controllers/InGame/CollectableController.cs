@@ -9,7 +9,7 @@ namespace Scripts.Controllers.InGame
 {
     public class CollectableController : MonoBehaviour
     {
-        [SerializeField] private List<Sprite> _activeSprite; //0: SickEgg, 1: Life, 2: x2, 3: x3, 4: Immortality
+        [SerializeField] private List<Sprite> _activeSprite; //0: SickEgg, 1: Life, 2: x2, 3: x3, 4: Immunity
         [SerializeField] private Sprite _healthyEggSprite;
         [SerializeField] private Sprite _emptySprite;
         [SerializeField] private ParticleSystem _explosion;
@@ -66,7 +66,7 @@ namespace Scripts.Controllers.InGame
                     break;
                 default:
                     _currentSprite.sprite = _activeSprite[4];
-                    _typeOfCollectable = CollectableTypeEnum.Immortality;
+                    _typeOfCollectable = CollectableTypeEnum.Immunity;
                     break;
             }
             _capsuleCollider2D.enabled = true;
@@ -105,7 +105,7 @@ namespace Scripts.Controllers.InGame
                     UIManager.Instance.UpdateScoreMultiplier(3);
                     break;
                 default:
-                    UIManager.Instance.DisplayImmortality();
+                    UIManager.Instance.DisplayImmunity();
                     ObjectsManager.Instance.DisableObstacleCollider();
                     break;
             }

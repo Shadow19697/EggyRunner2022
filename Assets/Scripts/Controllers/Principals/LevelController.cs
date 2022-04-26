@@ -66,6 +66,11 @@ namespace Scripts.Controllers.Principals
             _objectsManager.UpdateVelocityMovement(_streetVelocity);
             UIManager.Instance.UpdateActualScore();
             _counter = UIManager.Instance.GetActualScore();
+            if (UIManager.Instance.IsGameOver())
+            {
+                _state = LevelStateEnum.GameOver;
+                _soundManager.PauseLevelMusic();
+            }
         }
 
         private void UpdateVelocity()
