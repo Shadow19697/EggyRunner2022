@@ -1,7 +1,5 @@
 using Scripts.Enums;
 using Scripts.Managers.InGame;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +15,7 @@ namespace Scripts.Controllers.InGame
         private Rigidbody2D _rigidbody;
         private SpriteRenderer _currentSprite;
         private CapsuleCollider2D _capsuleCollider2D;
-        private int[] _randomPosY = new int[] { 0, -100, -200, -300, -390 };
+        private int[] _randomPosY = new int[] { 0, -100, -200, -300};
         private CollectableTypeEnum _typeOfCollectable;
         private bool _isReady;
 
@@ -32,11 +30,11 @@ namespace Scripts.Controllers.InGame
 
         private void Update()
         {
-            if ((int)this.transform.localPosition.x <= -2000)
+            if ((int)this.transform.localPosition.x <= -1100)
                 ResetCollectable();
         }
 
-        public void MoveCollectable(int velocity)
+        public void MoveCollectable(float velocity)
         {
             _isReady = false;
             _rigidbody.velocity = new Vector2(-velocity, _rigidbody.velocity.y);
@@ -45,7 +43,7 @@ namespace Scripts.Controllers.InGame
         private void ResetCollectable()
         {
             this.transform.localPosition = new Vector3(
-                2000,
+                1100,
                 SetPositionY(),
                 this.transform.localPosition.z);
             switch(UnityEngine.Random.Range(0, 5))
@@ -76,7 +74,7 @@ namespace Scripts.Controllers.InGame
 
         private int SetPositionY()
         {
-            return _randomPosY[UnityEngine.Random.Range(0,5)];
+            return _randomPosY[UnityEngine.Random.Range(0,_randomPosY.Length)];
         }
 
         public bool IsReady()
@@ -86,28 +84,31 @@ namespace Scripts.Controllers.InGame
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            _capsuleCollider2D.enabled = false;
-            _explosion.Play();
-            _currentSprite.sprite = _emptySprite;
-            switch (_typeOfCollectable)
+
+            if (collision.CompareTag("Player"))
             {
-                case CollectableTypeEnum.SickEgg:
-                    _currentSprite.sprite = _healthyEggSprite;
-                    UIManager.Instance.UpdateEggCount();
-                    break;
-                case CollectableTypeEnum.Life:
-                    UIManager.Instance.UpdateLifesCount(1);
-                    break;
-                case CollectableTypeEnum.x2:
-                    UIManager.Instance.UpdateScoreMultiplier(2);
-                    break;
-                case CollectableTypeEnum.x3:
-                    UIManager.Instance.UpdateScoreMultiplier(3);
-                    break;
-                default:
-                    UIManager.Instance.DisplayImmunity();
-                    ObjectsManager.Instance.DisableObstacleCollider();
-                    break;
+                _capsuleCollider2D.enabled = false;
+                _explosion.Play();
+                _currentSprite.sprite = _emptySprite;
+                switch (_typeOfCollectable)
+                {
+                    case CollectableTypeEnum.SickEgg:
+                        _currentSprite.sprite = _healthyEggSprite;
+                        UIManager.Instance.UpdateEggCount();
+                        break;
+                    case CollectableTypeEnum.Life:
+                        UIManager.Instance.UpdateLifesCount(1);
+                        break;
+                    case CollectableTypeEnum.x2:
+                        UIManager.Instance.UpdateScoreMultiplier(2);
+                        break;
+                    case CollectableTypeEnum.x3:
+                        UIManager.Instance.UpdateScoreMultiplier(3);
+                        break;
+                    default:
+                        UIManager.Instance.DisplayImmunity();
+                        break;
+                } 
             }
         }
     } 

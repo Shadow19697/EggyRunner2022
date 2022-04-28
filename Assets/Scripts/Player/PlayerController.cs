@@ -11,6 +11,7 @@ namespace Scripts.Player
 
         private CapsuleCollider2D _capsuleCollider2D;
         private Rigidbody2D _rigidbody2D;
+        private bool _hasDied;
 
         private void Start()
         {
@@ -20,16 +21,27 @@ namespace Scripts.Player
             PlayerAnimations.InitAnimations();
             _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
+            _hasDied = false;
         }
 
         private void Update()
         {
-            if (UIManager.Instance.GetLifesCount() == 0)
+            if (UIManager.Instance.GetLifesCount() == 0 && !_hasDied)
             {
                 _capsuleCollider2D.enabled = false;
                 _rig.SetActive(false);
                 _rigidbody2D.bodyType = RigidbodyType2D.Static;
+                _hasDied = true;
                 PlayerAnimations.PlayDeathAnimation();
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.collider.CompareTag("Obstacle"))
+            {
+                UIManager.Instance.UpdateLifesCount(-1);
+                PlayerAnimations.PlayExposionAnimation();
             }
         }
     }

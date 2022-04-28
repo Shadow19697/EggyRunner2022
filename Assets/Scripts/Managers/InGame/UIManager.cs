@@ -12,8 +12,9 @@ namespace Scripts.Managers.InGame
         [SerializeField] private TextMeshProUGUI _actualScoreText;
         [SerializeField] private TextMeshProUGUI _localHighscoreText;
         [SerializeField] private TextMeshProUGUI _globalHighscoreText;
-        [SerializeField] private TextMeshProUGUI _eggCountText;
         [SerializeField] private TextMeshProUGUI _lifesCountText;
+        [SerializeField] private TextMeshProUGUI _eggCountText;
+        [SerializeField] private TextMeshProUGUI _obstacleCountText;
         [SerializeField] private TextMeshProUGUI _upgradeText;
         [SerializeField] private GameObject _idleCanvas;
         [SerializeField] private GameObject _playingCanvas;
@@ -27,9 +28,11 @@ namespace Scripts.Managers.InGame
         private bool _isGameOver;
         private static UIManager _instance;
         private int _lifesCount;
+        private int _obstacleCount;
         private int _scoreMultiplier;
         private float _scoreCounter;
         private bool _gettingScore;
+        private bool _immunityActivated;
 
         public static UIManager Instance { get {if(_instance == null) _instance = FindObjectOfType<UIManager>(); return _instance; }}
 
@@ -40,12 +43,23 @@ namespace Scripts.Managers.InGame
             _player.SetActive(false);
             _eggCount = 0;
             _lifesCount = 1;
+            _obstacleCount = 0;
             _scoreMultiplier = 1;
             _scoreCounter = 0;
             _upgradeText.text = "";
             _localHighscoreText.text = "Mejor Puntaje Local: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
             GetGlobalHighscore(true);
-        }      
+        }
+        public void AddObstacleCount()
+        {
+            _obstacleCount++;
+            _obstacleCountText.text = "x" + _obstacleCount.ToString();
+        }
+
+        public int GetObstaclesCount()
+        {
+            return _obstacleCount;
+        }
 
         [Obsolete]
         private void Update()
@@ -86,7 +100,7 @@ namespace Scripts.Managers.InGame
         #region Actual Score Methods
         public void UpdateActualScore()
         {
-            _scoreCounter += Time.deltaTime * 8 * _scoreMultiplier;
+            _scoreCounter += Time.deltaTime * 9 * _scoreMultiplier;
             _actualScoreText.text = "Puntaje: " + (int)_scoreCounter;
         }
 
@@ -114,6 +128,7 @@ namespace Scripts.Managers.InGame
         {
             _lifesCount += value;
             _lifesCountText.text = "x" + _lifesCount.ToString();
+            if (_lifesCount == 0) _isGameOver = true;
         }
 
         public int GetLifesCount()
@@ -147,8 +162,17 @@ namespace Scripts.Managers.InGame
 
         private IEnumerator DisplayImmunityUntil()
         {
+            ObjectsManager.Instance.EnableDamageCollider(false);
+            _immunityActivated = true;
             yield return new WaitForSeconds(20);
             _upgradeText.text = "";
+            ObjectsManager.Instance.EnableDamageCollider(true);
+            _immunityActivated = false;
+        }
+
+        public bool IsImmunityActivated()
+        {
+            return _immunityActivated;
         }
         #endregion
 

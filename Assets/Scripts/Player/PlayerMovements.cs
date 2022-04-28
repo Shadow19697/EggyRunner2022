@@ -35,13 +35,9 @@ namespace Scripts.Player
                             _rigidbody2D.AddForce(Vector2.up * _jumpForce);
                         else
                             PlayerAnimations.PlayIdleAnimation();
-                    else
-                        if (Input.GetAxis("Vertical") < 0)
-                            _rigidbody2D.AddForce(Vector2.down * _jumpForce * 0.02f);
-                    //if (Input.GetButtonDown("Jump") && _onGround)
-                    //    _rigidbody2D.AddForce(Vector2.up * _jumpForce);
                     //else
-                    //    PlayerAnimations.PlayIdleAnimation();
+                      //  if (Input.GetAxis("Vertical") < 0)
+                        //    _rigidbody2D.AddForce(Vector2.down * _jumpForce * 0.02f);
                     HandleAir();
                 }
             }

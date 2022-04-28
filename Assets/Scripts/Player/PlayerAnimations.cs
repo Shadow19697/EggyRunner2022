@@ -43,8 +43,12 @@ namespace Scripts.Player
         }
         public static void PlayDeathAnimation()
         {
-            _explosion.Play();
+            PlayExposionAnimation();
             _deathAnimation.Play();
+        }
+        public static void PlayExposionAnimation()
+        {
+            _explosion.Play();
         }
     } 
 }

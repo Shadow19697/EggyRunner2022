@@ -44,11 +44,11 @@ namespace Scripts.Views
 
         private void Start()
         {
-            _score = 2500; //UIManager.Instance.GetActualScore();
-            _collectableCount = 20; //UIManager.Instance.GetEggCount();
-            _obstacleCount = 7; //UIManager.Instance.GetObstaclesCount();
+            _score = UIManager.Instance.GetActualScore();
+            _collectableCount = UIManager.Instance.GetEggCount();
+            _obstacleCount = UIManager.Instance.GetObstaclesCount();
             _totalScore = PlayerPrefsManager.GetTotalScore();
-            _increaseScore = _score + _collectableCount * 100 + _obstacleCount * 200;
+            _increaseScore = _score + _collectableCount * 200 + _obstacleCount * 100;
             StartCoroutine(ShowCoroutine());
         }
 
@@ -60,10 +60,10 @@ namespace Scripts.Views
             _scoreText.text = _score.ToString();
             yield return new WaitForSeconds(1);
             _collectableText.gameObject.SetActive(true);
-            _collectableText.text = _collectableCount.ToString() + " x 100";
+            _collectableText.text = _collectableCount.ToString() + " x 200";
             yield return new WaitForSeconds(1);
             _obstacleText.gameObject.SetActive(true);
-            _obstacleText.text = _obstacleCount.ToString() + " x 200";
+            _obstacleText.text = _obstacleCount.ToString() + " x 100";
             yield return new WaitForSeconds(1);
             _levelScoreText.gameObject.SetActive(true);
             _levelScoreText.text = _levelScore.ToString();
