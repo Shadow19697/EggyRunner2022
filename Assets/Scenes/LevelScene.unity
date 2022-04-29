@@ -770,7 +770,7 @@ GameObject:
   - component: {fileID: 137952706}
   - component: {fileID: 137952707}
   m_Layer: 5
-  m_Name: GrabPerkSound
+  m_Name: GrabUpgradeSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1147,6 +1147,11 @@ PrefabInstance:
       propertyPath: _isGreen
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
+        type: 3}
+      propertyPath: _cryingCovidSound
+      value: 
+      objectReference: {fileID: 2142677154}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7281ea40481d8e043984513752456d3f, type: 3}
 --- !u!224 &176709768 stripped
@@ -1778,6 +1783,11 @@ PrefabInstance:
       propertyPath: _isGreen
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
+        type: 3}
+      propertyPath: _cryingCovidSound
+      value: 
+      objectReference: {fileID: 2142677154}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7281ea40481d8e043984513752456d3f, type: 3}
 --- !u!224 &313024202 stripped
@@ -2972,6 +2982,7 @@ MonoBehaviour:
   _rig: {fileID: 984575281}
   _explosion: {fileID: 4391855793570900580}
   _deathAnimation: {fileID: 1712007712992053041}
+  _deathSound: {fileID: 918977658}
 --- !u!114 &640067744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2986,6 +2997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpForce: 300
   _speedMove: 10
+  _jumpSound: {fileID: 162909171}
 --- !u!1 &680099086
 GameObject:
   m_ObjectHideFlags: 0
@@ -4172,7 +4184,7 @@ GameObject:
   - component: {fileID: 918977657}
   - component: {fileID: 918977658}
   m_Layer: 5
-  m_Name: GameOverSound
+  m_Name: DeathSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4208,7 +4220,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -8050005459465965061, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 63148e2d81bca81459d1fc494b7f3993, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -6013,6 +6025,11 @@ PrefabInstance:
       propertyPath: _isGreen
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
+        type: 3}
+      propertyPath: _cryingCovidSound
+      value: 
+      objectReference: {fileID: 2142677154}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7281ea40481d8e043984513752456d3f, type: 3}
 --- !u!224 &1180460219 stripped
@@ -8527,11 +8544,11 @@ MonoBehaviour:
 
     VIRUS COMBATIDOS
 
-    PUNTAJE DEL
-    NIVEL
+    PUNTAJE DE LA
+    PARTIDA
 
 
-    NUEVO PUNTAJE TOTAL'
+    PUNTOS ACUMULADOS'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2bfef3229fa952545a4b705ab4d87109, type: 2}
   m_sharedMaterial: {fileID: -8232979977628694545, guid: 2bfef3229fa952545a4b705ab4d87109,
@@ -9967,6 +9984,7 @@ RectTransform:
   - {fileID: 1731419085}
   - {fileID: 1628410792}
   - {fileID: 918977657}
+  - {fileID: 2142677153}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10400,6 +10418,8 @@ MonoBehaviour:
   _healthyEggSprite: {fileID: 21300000, guid: c08d6391ec1a4674d9941f3a297eb3ee, type: 3}
   _emptySprite: {fileID: 21300000, guid: 26b91d117330f024d877e2b4eb370ffd, type: 3}
   _explosion: {fileID: 6392953765140351467}
+  _grabUpgradeSound: {fileID: 137952707}
+  _grabEggSound: {fileID: 1812976968}
 --- !u!70 &1928903057
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -11551,6 +11571,139 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2141448570}
   m_CullTransparentMesh: 1
+--- !u!1 &2142677152
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2142677153}
+  - component: {fileID: 2142677154}
+  m_Layer: 5
+  m_Name: CryingCovidSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2142677153
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142677152}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1893654657}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!82 &2142677154
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142677152}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -8050005459465965061, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 1a7a455125c35f04e8348c64b17d85b4, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &56092912997190308
 GameObject:
   m_ObjectHideFlags: 0
@@ -23264,6 +23417,11 @@ PrefabInstance:
       propertyPath: _isGreen
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
+        type: 3}
+      propertyPath: _cryingCovidSound
+      value: 
+      objectReference: {fileID: 2142677154}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7281ea40481d8e043984513752456d3f, type: 3}
 --- !u!114 &6089953534228181448

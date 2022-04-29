@@ -36,7 +36,7 @@ namespace Scripts.Controllers.Principals
             _counter = 0;
             _backgroundVelocity = _streetVelocity - 5;
             _gear = 1;
-            _intervalIncrement = 200;
+            _intervalIncrement = 100;
             _showGameOverCanvas = null;
         }
 
@@ -93,28 +93,6 @@ namespace Scripts.Controllers.Principals
             _objectsManager.StopAll();
             if(_showGameOverCanvas == null)
                 _showGameOverCanvas = StartCoroutine(ShowGameOverCanvas());
-            //_gameOverCanvas.SetActive(true);
-            /*
-            if (!Fin)
-            {
-                Music.Stop();
-                Fin = true;
-                GameText.text = "Game Over\nPress R to restart\nPress Escape to exit";
-                Fondo.Stop();
-                File.AppendAllText(path, "High Score: " + (int)counter + "\t- " + FechaHora.text + "\n");
-            }
-            if (Fin)
-            {
-                if (Input.GetKeyDown("r"))
-                {
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                }
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    Application.Quit();
-                }
-            }
-            */
         }
 
         private IEnumerator ShowGameOverCanvas()

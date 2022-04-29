@@ -8,6 +8,7 @@ namespace Scripts.Player
     {
         [SerializeField] private int _jumpForce;
         [SerializeField] private int _speedMove;
+        [SerializeField] private AudioSource _jumpSound;
 
         private Rigidbody2D _rigidbody2D;
         private float _inputVertical;
@@ -16,6 +17,7 @@ namespace Scripts.Player
 
         public void Start()
         {
+            _jumpSound.Pause();
             _rigidbody2D = GetComponent<Rigidbody2D>();
             if (PlayerPrefsManager.GetLevelSelected() == 3)
                 _rigidbody2D.gravityScale = 0;
@@ -32,7 +34,10 @@ namespace Scripts.Player
                     _onGround = CheckGround();
                     if (_onGround)
                         if (Input.GetButtonDown("Jump"))
+                        {
+                            _jumpSound.Play();
                             _rigidbody2D.AddForce(Vector2.up * _jumpForce);
+                        }
                         else
                             PlayerAnimations.PlayIdleAnimation();
                     //else

@@ -24,7 +24,7 @@ namespace Scripts.Managers.InGame
         public void UpdateVelocityMovement(int streetVelocity)
         {
             if (!_itStarted) _itStarted = true;
-            _objectsVelocity = streetVelocity * 1.3f;
+            _objectsVelocity = streetVelocity * 1f;
         }
 
         public void StopAll()
@@ -36,16 +36,22 @@ namespace Scripts.Managers.InGame
         {
             if(!_itStoped && _itStarted)
             {
-                ManageCollectable();
+                ManageCollectable(false);
                 ManageObstacles();
             }
+            if (_itStoped) ManageCollectable(true);
+
         }
 
-        private void ManageCollectable()
+        private void ManageCollectable(bool stop)
         {
-            if (_collectable.IsReady())
-                if(_moveCollectable == null)
-                    _moveCollectable = StartCoroutine(MoveCollectable());
+            if (!stop)
+            {
+                if (_collectable.IsReady())
+                    if (_moveCollectable == null)
+                        _moveCollectable = StartCoroutine(MoveCollectable());
+            }
+            else StopCoroutine(MoveCollectable());
         }
 
         private IEnumerator MoveCollectable()
@@ -60,7 +66,6 @@ namespace Scripts.Managers.InGame
             if (_readyToLaunch)
             {
                 _index = UnityEngine.Random.Range(0, _obstacles.Count);
-                Debug.Log(_index);
                 if (_obstacles[_index].IsReady())
                     MoveObstacle();
             }

@@ -7,6 +7,7 @@ namespace Scripts.Controllers.InGame
     {
         [SerializeField] private CapsuleCollider2D _damageCollider2D;
         [SerializeField] private bool _isGreen;
+        [SerializeField] private AudioSource _cryingCovidSound;
         
         private CapsuleCollider2D _capsuleCollider2D;
         private Transform _transform;
@@ -18,7 +19,11 @@ namespace Scripts.Controllers.InGame
 
         private void Start()
         {
-            if(_isGreen) _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+            if (_isGreen)
+            {
+                _cryingCovidSound.Pause();
+                _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+            }
             _transform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody2D>();
             _launchAnother = false;
@@ -28,7 +33,7 @@ namespace Scripts.Controllers.InGame
 
         private void Update()
         {
-            if ((int)this.transform.localPosition.x <= -500)
+            if ((int)this.transform.localPosition.x <= - (UnityEngine.Random.Range(300, 500)))
                 _launchAnother = true;
             if ((int)this.transform.localPosition.x <= -1200)
                 ResetObstacle();
@@ -79,6 +84,7 @@ namespace Scripts.Controllers.InGame
         {
             if (collision.CompareTag("Player"))
             {
+                _cryingCovidSound.Play();
                 _transform.localScale = new Vector3(_obstacleScale.x, _obstacleScale.y * 0.3f, _obstacleScale.z);
                 _capsuleCollider2D.enabled = false;
                 _damageCollider2D.enabled = false;

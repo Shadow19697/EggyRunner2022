@@ -11,6 +11,8 @@ namespace Scripts.Controllers.InGame
         [SerializeField] private Sprite _healthyEggSprite;
         [SerializeField] private Sprite _emptySprite;
         [SerializeField] private ParticleSystem _explosion;
+        [SerializeField] private AudioSource _grabUpgradeSound;
+        [SerializeField] private AudioSource _grabEggSound;
 
         private Rigidbody2D _rigidbody;
         private SpriteRenderer _currentSprite;
@@ -21,6 +23,8 @@ namespace Scripts.Controllers.InGame
 
         private void Start()
         {
+            _grabEggSound.Pause();
+            _grabUpgradeSound.Pause();
             _rigidbody = GetComponent<Rigidbody2D>();
             _currentSprite = GetComponent<SpriteRenderer>();
             _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
@@ -93,19 +97,24 @@ namespace Scripts.Controllers.InGame
                 switch (_typeOfCollectable)
                 {
                     case CollectableTypeEnum.SickEgg:
+                        _grabEggSound.Play();
                         _currentSprite.sprite = _healthyEggSprite;
                         UIManager.Instance.UpdateEggCount();
                         break;
                     case CollectableTypeEnum.Life:
+                        _grabEggSound.Play();
                         UIManager.Instance.UpdateLifesCount(1);
                         break;
                     case CollectableTypeEnum.x2:
+                        _grabUpgradeSound.Play();
                         UIManager.Instance.UpdateScoreMultiplier(2);
                         break;
                     case CollectableTypeEnum.x3:
+                        _grabUpgradeSound.Play();
                         UIManager.Instance.UpdateScoreMultiplier(3);
                         break;
                     default:
+                        _grabUpgradeSound.Play();
                         UIManager.Instance.DisplayImmunity();
                         break;
                 } 

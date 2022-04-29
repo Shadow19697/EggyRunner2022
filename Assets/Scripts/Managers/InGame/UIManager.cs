@@ -50,16 +50,6 @@ namespace Scripts.Managers.InGame
             _localHighscoreText.text = "Mejor Puntaje Local: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
             GetGlobalHighscore(true);
         }
-        public void AddObstacleCount()
-        {
-            _obstacleCount++;
-            _obstacleCountText.text = "x" + _obstacleCount.ToString();
-        }
-
-        public int GetObstaclesCount()
-        {
-            return _obstacleCount;
-        }
 
         [Obsolete]
         private void Update()
@@ -173,6 +163,19 @@ namespace Scripts.Managers.InGame
         public bool IsImmunityActivated()
         {
             return _immunityActivated;
+        }
+        #endregion
+
+        #region Obstacle Methods
+        public void AddObstacleCount()
+        {
+            _obstacleCount++;
+            _obstacleCountText.text = "x" + _obstacleCount.ToString();
+        }
+
+        public int GetObstaclesCount()
+        {
+            return _obstacleCount;
         }
         #endregion
 

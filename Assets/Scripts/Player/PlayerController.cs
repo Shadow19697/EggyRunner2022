@@ -8,6 +8,7 @@ namespace Scripts.Player
         [SerializeField] private GameObject _rig;
         [SerializeField] private ParticleSystem _explosion;
         [SerializeField] private ParticleSystem _deathAnimation;
+        [SerializeField] private AudioSource _deathSound;
 
         private CapsuleCollider2D _capsuleCollider2D;
         private Rigidbody2D _rigidbody2D;
@@ -22,12 +23,14 @@ namespace Scripts.Player
             _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _hasDied = false;
+            _deathSound.Pause();
         }
 
         private void Update()
         {
             if (UIManager.Instance.GetLifesCount() == 0 && !_hasDied)
             {
+                _deathSound.Play();
                 _capsuleCollider2D.enabled = false;
                 _rig.SetActive(false);
                 _rigidbody2D.bodyType = RigidbodyType2D.Static;
