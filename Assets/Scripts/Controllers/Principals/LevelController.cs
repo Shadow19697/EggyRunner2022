@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.IO;
 using Scripts.Managers.InGame;
 using Scripts.Enums;
 using Scripts.Controllers.InGame;
@@ -36,7 +33,7 @@ namespace Scripts.Controllers.Principals
             _counter = 0;
             _backgroundVelocity = _streetVelocity - 5;
             _gear = 1;
-            _intervalIncrement = 100;
+            _intervalIncrement = 200;
             _showGameOverCanvas = null;
         }
 

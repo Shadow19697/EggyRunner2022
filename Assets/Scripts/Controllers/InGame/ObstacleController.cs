@@ -33,7 +33,7 @@ namespace Scripts.Controllers.InGame
 
         private void Update()
         {
-            if ((int)this.transform.localPosition.x <= - (UnityEngine.Random.Range(300, 500)))
+            if ((int)this.transform.localPosition.x <= - (UnityEngine.Random.Range(200, 500)))
                 _launchAnother = true;
             if ((int)this.transform.localPosition.x <= -1200)
                 ResetObstacle();

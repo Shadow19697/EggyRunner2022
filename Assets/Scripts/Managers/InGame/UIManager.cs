@@ -4,25 +4,45 @@ using TMPro;
 using System.Collections;
 using System;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 namespace Scripts.Managers.InGame
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _actualScoreText;
-        [SerializeField] private TextMeshProUGUI _localHighscoreText;
-        [SerializeField] private TextMeshProUGUI _globalHighscoreText;
-        [SerializeField] private TextMeshProUGUI _lifesCountText;
-        [SerializeField] private TextMeshProUGUI _eggCountText;
-        [SerializeField] private TextMeshProUGUI _obstacleCountText;
-        [SerializeField] private TextMeshProUGUI _upgradeText;
-        [SerializeField] private GameObject _idleCanvas;
-        [SerializeField] private GameObject _playingCanvas;
-        [SerializeField] private GameObject _quitCanvas;
+        [SerializeField] private UICanvas _uiCanvas;
+        [System.Serializable]
+        public class UICanvas
+        {
+            public GameObject _idleCanvas;
+            public GameObject _playingCanvas;
+            public GameObject _quitCanvas;
+        }
+        [SerializeField] private IdleText _idleText;
+        [System.Serializable]
+        public class IdleText
+        {
+            public TextMeshProUGUI _localHighscoreText;
+            public TextMeshProUGUI _globalHighscoreText;
+        }
+
+        [SerializeField] private PlayingText _playingText;
+        [System.Serializable]
+        public class PlayingText
+        {
+            public TextMeshProUGUI _actualScoreText;
+            public TextMeshProUGUI _lifesCountText;
+            public TextMeshProUGUI _eggCountText;
+            public TextMeshProUGUI _obstacleCountText;
+            public TextMeshProUGUI _upgradeText;
+        }
+
+        [SerializeField] private List<GameObject> _tipsImages;
+
         [SerializeField] private GameObject _yesButton;
         [SerializeField] private GameObject _playButton;
-        [SerializeField] private GameObject _player;
-
+        [SerializeField] private GameObject _player;    
+        
         private int _eggCount;
         private bool _isPlaying;
         private bool _isGameOver;
@@ -38,6 +58,11 @@ namespace Scripts.Managers.InGame
 
         private void Start()
         {
+            SetValues();
+        }
+
+        private void SetValues()
+        {
             _isPlaying = false;
             _isGameOver = false;
             _player.SetActive(false);
@@ -46,17 +71,19 @@ namespace Scripts.Managers.InGame
             _obstacleCount = 0;
             _scoreMultiplier = 1;
             _scoreCounter = 0;
-            _upgradeText.text = "";
-            _localHighscoreText.text = "Mejor Puntaje Local: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+            _playingText._upgradeText.text = "";
+            _tipsImages.ForEach(tip => tip.SetActive(false));
+            _tipsImages[PlayerPrefsManager.GetLevelSelected()-1].SetActive(true);
+            _idleText._localHighscoreText.text = "Mejor Puntaje\nLocal: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
             GetGlobalHighscore(true);
         }
 
         [Obsolete]
         private void Update()
         {
-            if (_idleCanvas.active) {
-                if (Input.GetButtonDown("Cancel") && !_quitCanvas.active) OpenQuitCanvas();
-                else if (Input.GetButtonDown("Cancel") && _quitCanvas.active) NoButton();
+            if (_uiCanvas._idleCanvas.active) {
+                if (Input.GetButtonDown("Cancel") && !_uiCanvas._quitCanvas.active) OpenQuitCanvas();
+                else if (Input.GetButtonDown("Cancel") && _uiCanvas._quitCanvas.active) NoButton();
             }
             if (_gettingScore)
                 GetGlobalHighscore(false);
@@ -65,7 +92,7 @@ namespace Scripts.Managers.InGame
         private void GetGlobalHighscore(bool isStart)
         {
             try {
-                _globalHighscoreText.text = "Mejor Puntaje Global: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+                _idleText._globalHighscoreText.text = "Mejor Puntaje\nGlobal: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
                 _gettingScore = false;
             }
             catch {
@@ -73,7 +100,7 @@ namespace Scripts.Managers.InGame
                     HttpConnectionManager.Instance.ReturnGames(false);
                     _gettingScore = true;
                 }
-                _globalHighscoreText.text = "Esperando puntaje global...";
+                _idleText._globalHighscoreText.text = "Esperando\npuntaje global...";
             }
         }        
 
@@ -91,7 +118,7 @@ namespace Scripts.Managers.InGame
         public void UpdateActualScore()
         {
             _scoreCounter += Time.deltaTime * 9 * _scoreMultiplier;
-            _actualScoreText.text = "Puntaje: " + (int)_scoreCounter;
+            _playingText._actualScoreText.text = "Puntaje: " + (int)_scoreCounter;
         }
 
         public int GetActualScore()
@@ -104,7 +131,7 @@ namespace Scripts.Managers.InGame
         public void UpdateEggCount()
         {
             _eggCount++;
-            _eggCountText.text = "x" + _eggCount.ToString();
+            _playingText._eggCountText.text = "x" + _eggCount.ToString();
         }
 
         public int GetEggCount()
@@ -117,7 +144,7 @@ namespace Scripts.Managers.InGame
         public void UpdateLifesCount(int value)
         {
             _lifesCount += value;
-            _lifesCountText.text = "x" + _lifesCount.ToString();
+            _playingText._lifesCountText.text = "x" + _lifesCount.ToString();
             if (_lifesCount == 0) _isGameOver = true;
         }
 
@@ -131,7 +158,7 @@ namespace Scripts.Managers.InGame
         public void UpdateScoreMultiplier(int value)
         {
             _scoreMultiplier = value;
-            _upgradeText.text = ("x" + value);
+            _playingText._upgradeText.text = ("x" + value);
             StartCoroutine(UpdateScoreMultiplier());
         }
 
@@ -139,14 +166,14 @@ namespace Scripts.Managers.InGame
         {
             yield return new WaitForSeconds(20);
             _scoreMultiplier = 1;
-            _upgradeText.text = "";
+            _playingText._upgradeText.text = "";
         }
         #endregion
 
         #region Immunity Methods
         public void DisplayImmunity()
         {
-            _upgradeText.text = "Inmortalidad";
+            _playingText._upgradeText.text = "INMUNIDAD";
             StartCoroutine(DisplayImmunityUntil());
         }
 
@@ -154,8 +181,8 @@ namespace Scripts.Managers.InGame
         {
             ObjectsManager.Instance.EnableDamageCollider(false);
             _immunityActivated = true;
-            yield return new WaitForSeconds(20);
-            _upgradeText.text = "";
+            yield return new WaitForSeconds(10);
+            _playingText._upgradeText.text = "";
             ObjectsManager.Instance.EnableDamageCollider(true);
             _immunityActivated = false;
         }
@@ -170,7 +197,7 @@ namespace Scripts.Managers.InGame
         public void AddObstacleCount()
         {
             _obstacleCount++;
-            _obstacleCountText.text = "x" + _obstacleCount.ToString();
+            _playingText._obstacleCountText.text = "x" + _obstacleCount.ToString();
         }
 
         public int GetObstaclesCount()
@@ -182,16 +209,16 @@ namespace Scripts.Managers.InGame
         #region Buttons Methods
         public void StartGame()
         {
-            _idleCanvas.SetActive(false);
+            _uiCanvas._idleCanvas.SetActive(false);
             //TO DO: ANIMACION QUE SE DESACTIVA EL MENU;
             _isPlaying = true;
-            _playingCanvas.SetActive(true);
+            _uiCanvas._playingCanvas.SetActive(true);
             _player.SetActive(true);
         }
 
         public void OpenQuitCanvas()
         {
-            _quitCanvas.SetActive(true);
+            _uiCanvas._quitCanvas.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_yesButton);
         }
@@ -204,7 +231,7 @@ namespace Scripts.Managers.InGame
 
         public void NoButton()
         {
-            _quitCanvas.SetActive(false);
+            _uiCanvas._quitCanvas.SetActive(false);
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_playButton);
         }

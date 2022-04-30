@@ -51,12 +51,14 @@ namespace Scripts.Managers.InGame
                     if (_moveCollectable == null)
                         _moveCollectable = StartCoroutine(MoveCollectable());
             }
-            else StopCoroutine(MoveCollectable());
+            else 
+                if(_moveCollectable!=null)
+                    StopCoroutine(_moveCollectable);
         }
 
         private IEnumerator MoveCollectable()
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(20, 40));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(15, 20));
             _collectable.MoveCollectable(_objectsVelocity);
             _moveCollectable = null;
         }
