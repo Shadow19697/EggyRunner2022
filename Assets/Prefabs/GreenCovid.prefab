@@ -121,7 +121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 351fb5488c7720145acde52b34f99173, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 826e0578d70299346a6305419d8a08ab, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -181,3 +181,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageCollider2D: {fileID: 5996889022453379827}
+  _isGreen: 0
+  _cryingCovidSound: {fileID: 0}

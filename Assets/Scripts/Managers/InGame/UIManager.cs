@@ -161,6 +161,7 @@ namespace Scripts.Managers.InGame
             _scoreMultiplier = value;
             _playingText._upgradeText.text = ("x" + value);
             StartCoroutine(UpdateScoreMultiplier());
+            StartCoroutine(Fade(_playingText._upgradeText, _timeUpgradeActive));
         }
 
         private IEnumerator UpdateScoreMultiplier()
@@ -176,6 +177,7 @@ namespace Scripts.Managers.InGame
         {
             _playingText._upgradeText.text = "INMUNIDAD";
             StartCoroutine(DisplayImmunityUntil());
+            StartCoroutine(Fade(_playingText._upgradeText, _timeUpgradeActive));
         }
 
         private IEnumerator DisplayImmunityUntil()
@@ -193,6 +195,18 @@ namespace Scripts.Managers.InGame
             return _immunityActivated;
         }
         #endregion
+
+        private IEnumerator Fade(TextMeshProUGUI text, float fadeTime)
+        {
+            text.color = new Color(1, 1, 1, 1);
+            float alpha = text.color.a;
+            for(float t = 0.0f; t < 1.0f; t+= Time.deltaTime / fadeTime)
+            {
+                Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, 0, t));
+                text.color = newColor;
+                yield return null;
+            }
+        }
 
         #region Obstacle Methods
         public void AddObstacleCount()

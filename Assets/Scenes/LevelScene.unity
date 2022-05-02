@@ -3745,9 +3745,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 40.85498, y: -20}
+  m_AnchoredPosition: {x: 40.85498, y: -57.5}
   m_SizeDelta: {x: 41.710022, y: 75}
-  m_Pivot: {x: 0.5, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &708105735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3768,8 +3768,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3503759623513060128, guid: 85bcfd1ca6f0c9d4c85b20c05f37e6bb,
-    type: 3}
+  m_Sprite: {fileID: 21300000, guid: 23d10e2c083634144a6db119bad3562d, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -11017,8 +11016,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8a432c17dac53a546add34174af8615d, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 84fa4868491739044be3246ea39784f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11028,7 +11027,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!114 &1928903056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11043,10 +11042,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _activeSprite:
   - {fileID: 21300000, guid: 8a432c17dac53a546add34174af8615d, type: 3}
-  - {fileID: 21300000, guid: 2a31eb69d5442b74d8c0b5ea5ef573aa, type: 3}
-  - {fileID: 21300000, guid: 32d27afdab4cd26468bfd780c31a8408, type: 3}
-  - {fileID: 21300000, guid: bdead154ef6611d46b3a8f30c51c96fd, type: 3}
-  - {fileID: 21300000, guid: 598118f71a9f91f4c9ffe973bdf9d2c6, type: 3}
+  - {fileID: 21300000, guid: bbcf4df51d2f37a4399a55eae0ec94ab, type: 3}
+  - {fileID: 21300000, guid: 84fa4868491739044be3246ea39784f5, type: 3}
+  - {fileID: 21300000, guid: bd7a89f55439e87439659d2d8f91148a, type: 3}
+  - {fileID: 21300000, guid: 1761d9a38c7a62b4cbfdcbbc7115fa36, type: 3}
   _healthyEggSprite: {fileID: 21300000, guid: c08d6391ec1a4674d9941f3a297eb3ee, type: 3}
   _emptySprite: {fileID: 21300000, guid: 26b91d117330f024d877e2b4eb370ffd, type: 3}
   _explosion: {fileID: 6392953765140351467}
