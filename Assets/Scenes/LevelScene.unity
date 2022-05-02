@@ -1168,29 +1168,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89d92fb9edbe36f45a1d92690a277c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _backgrounds:
+  _backgroundObjects:
   - {fileID: 704539402}
   - {fileID: 232984474}
-  _streets:
+  _streetObjects:
   - {fileID: 521263319}
   - {fileID: 1315621370}
   _levelsBackground:
-  - {fileID: 21300000, guid: ea98ec031757bff45b8985692728e157, type: 3}
-  - {fileID: 21300000, guid: 8edc593ebe74ba445953533f52a5aea7, type: 3}
-  - {fileID: 21300000, guid: d357d9f8fc197ee4bbc669b716d5de96, type: 3}
-  - {fileID: 21300000, guid: 9ef993aa545833d41a7305724b54b08c, type: 3}
-  - {fileID: 21300000, guid: ea98ec031757bff45b8985692728e157, type: 3}
-  - {fileID: 21300000, guid: 8edc593ebe74ba445953533f52a5aea7, type: 3}
-  - {fileID: 21300000, guid: d357d9f8fc197ee4bbc669b716d5de96, type: 3}
-  - {fileID: 21300000, guid: 9ef993aa545833d41a7305724b54b08c, type: 3}
-  - {fileID: 21300000, guid: ea98ec031757bff45b8985692728e157, type: 3}
-  - {fileID: 21300000, guid: 8edc593ebe74ba445953533f52a5aea7, type: 3}
+  - _backgrounds:
+    - {fileID: 21300000, guid: 177eeefb47a21ad48865c66f6aa0348c, type: 3}
+    - {fileID: 21300000, guid: 38d90a8940fc1e54e9c57db8dfc825e1, type: 3}
+    - {fileID: 21300000, guid: 96808ee52bd4a0843add907faacf075f, type: 3}
+    - {fileID: 21300000, guid: 7ecd9dee4f6f8e84c9e36d7e1aa1d2d2, type: 3}
+    - {fileID: 21300000, guid: fbef3563df1db0045ab4286ea7371d51, type: 3}
+    - {fileID: 21300000, guid: a7a2c4eb2b7d95a4d99bf2dfa86537f4, type: 3}
+    - {fileID: 21300000, guid: b9d0717b39b7fef478faf7290e68f8ec, type: 3}
+    - {fileID: 21300000, guid: 02a61d556c1b97b45b74e1b427139099, type: 3}
+    - {fileID: 21300000, guid: 6d8ae79ccbd88994bb45668fb34597bf, type: 3}
+    - {fileID: 21300000, guid: 368f5555f23566347a7699ac0bd2dab8, type: 3}
+    - {fileID: 21300000, guid: c98fe896b2c7e684e835bbe3d906db66, type: 3}
+  - _backgrounds: []
+  - _backgrounds: []
+  - _backgrounds: []
+  - _backgrounds: []
   _levelsStreets:
-  - {fileID: 21300000, guid: 1023f9b6e03cde04eb5f0a0460405ea7, type: 3}
-  - {fileID: 21300000, guid: 1023f9b6e03cde04eb5f0a0460405ea7, type: 3}
-  - {fileID: 21300000, guid: 1023f9b6e03cde04eb5f0a0460405ea7, type: 3}
-  - {fileID: 21300000, guid: 1023f9b6e03cde04eb5f0a0460405ea7, type: 3}
-  - {fileID: 21300000, guid: 1023f9b6e03cde04eb5f0a0460405ea7, type: 3}
+  - {fileID: 21300000, guid: 9a7b6eaa8e57bac4282796720fc241d3, type: 3}
+  - {fileID: 21300000, guid: 9a7b6eaa8e57bac4282796720fc241d3, type: 3}
+  - {fileID: 21300000, guid: 9a7b6eaa8e57bac4282796720fc241d3, type: 3}
+  - {fileID: 21300000, guid: 9a7b6eaa8e57bac4282796720fc241d3, type: 3}
+  - {fileID: 21300000, guid: 9a7b6eaa8e57bac4282796720fc241d3, type: 3}
 --- !u!1 &182064054
 GameObject:
   m_ObjectHideFlags: 0
@@ -1420,7 +1426,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6c7fed0f75653a34ab259bfcb5e7ee83, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 38d90a8940fc1e54e9c57db8dfc825e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3659,7 +3665,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 05c2dd7673eb23e42ad390fdd4f5c72f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 177eeefb47a21ad48865c66f6aa0348c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

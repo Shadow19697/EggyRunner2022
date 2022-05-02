@@ -47,7 +47,7 @@ namespace Scripts.Controllers.InGame
         private void ResetCollectable()
         {
             this.transform.localPosition = new Vector3(
-                1100,
+                1300,
                 SetPositionY(),
                 this.transform.localPosition.z);
             switch(UnityEngine.Random.Range(0, 5))

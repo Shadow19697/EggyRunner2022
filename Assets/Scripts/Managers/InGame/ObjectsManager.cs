@@ -24,7 +24,7 @@ namespace Scripts.Managers.InGame
         public void UpdateVelocityMovement(int streetVelocity)
         {
             if (!_itStarted) _itStarted = true;
-            _objectsVelocity = streetVelocity * 1f;
+            _objectsVelocity = streetVelocity * 1.05f;
         }
 
         public void StopAll()

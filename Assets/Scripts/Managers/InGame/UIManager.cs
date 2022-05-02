@@ -53,6 +53,7 @@ namespace Scripts.Managers.InGame
         private float _scoreCounter;
         private bool _gettingScore;
         private bool _immunityActivated;
+        private int _timeUpgradeActive = 10;
 
         public static UIManager Instance { get {if(_instance == null) _instance = FindObjectOfType<UIManager>(); return _instance; }}
 
@@ -164,7 +165,7 @@ namespace Scripts.Managers.InGame
 
         private IEnumerator UpdateScoreMultiplier()
         {
-            yield return new WaitForSeconds(20);
+            yield return new WaitForSeconds(_timeUpgradeActive);
             _scoreMultiplier = 1;
             _playingText._upgradeText.text = "";
         }
@@ -181,7 +182,7 @@ namespace Scripts.Managers.InGame
         {
             ObjectsManager.Instance.EnableDamageCollider(false);
             _immunityActivated = true;
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(_timeUpgradeActive);
             _playingText._upgradeText.text = "";
             ObjectsManager.Instance.EnableDamageCollider(true);
             _immunityActivated = false;
