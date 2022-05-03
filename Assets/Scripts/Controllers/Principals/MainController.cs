@@ -20,7 +20,7 @@ namespace Scripts.Controllers.Principals
             PlayerPrefsManager.InitPlayerPrefs();
             SettingsController.SetVolume(_audioMixer);
             SettingsController.SetVisualSettings(true);
-            LocalLoggerManager.CreateLocalLog();
+            LocalLoggerManager.InitLocalLoggerManager();
             HttpConnectionManager.Instance.ReturnGames(false);
             if (_uploadRemainingCoroutine != null) StopCoroutine(_uploadRemainingCoroutine);
             StartCoroutine(DataManager.UploadRemainingGames());

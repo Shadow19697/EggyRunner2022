@@ -3,6 +3,7 @@ using Scripts.Managers.InGame;
 using Scripts.Enums;
 using Scripts.Controllers.InGame;
 using System.Collections;
+using Scripts.Managers;
 
 namespace Scripts.Controllers.Principals
 {
@@ -27,6 +28,7 @@ namespace Scripts.Controllers.Principals
         {
             //Cursor.lockState = CursorLockMode.Locked;
             //Cursor.visible = false;
+            LocalLoggerManager.InitLocalLoggerManager();
             SettingsController.SetVisualSettings(false);
             _gameOverCanvas.SetActive(false);
             _state = LevelStateEnum.IdleStart;

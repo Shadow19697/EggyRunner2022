@@ -8,18 +8,41 @@ namespace Scripts.Managers
 {
     public static class LocalLoggerManager
     {
-        private static string _logPath = Application.dataPath + "/Log.txt";
-        private static string _errorLogPath = Application.dataPath + "/ErrorLog.txt";
-        private static string _playerPrefsPath = Application.dataPath + "/PlayerPrefs.txt";
-        private static string _localGamesPath = Application.dataPath + "/LocalGames.txt";
-        private static string _globalGamesPath = Application.dataPath + "/GlobalGames.txt";
-        private static string _gamesToUploadPath = Application.dataPath + "/GamesToUpload.txt";
+        private static string _errorLogPath;
+        private static string _playerPrefsPath;
+        private static string _localGamesPath;
+        private static string _globalGamesPath;
+        private static string _gamesToUploadPath;
+        private static string _myDocumentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/EggyRunner2022";
+        private static bool _hasBeenCalled = false;
+
+        public static void InitLocalLoggerManager()
+        {
+            if (!Application.isEditor)
+            {
+                if (!_hasBeenCalled)
+                {
+                    if (!File.Exists(_myDocumentsPath))
+                        Directory.CreateDirectory(_myDocumentsPath);
+                    _errorLogPath = _myDocumentsPath + "/ErrorLog.txt";
+                    _playerPrefsPath = _myDocumentsPath + "/PlayerPrefs.txt";
+                    _localGamesPath = _myDocumentsPath + "/LocalGames.txt";
+                    _globalGamesPath = _myDocumentsPath + "/GlobalGames.txt";
+                    _gamesToUploadPath = _myDocumentsPath + "/GamesToUpload.txt";
+                    _hasBeenCalled = true;
+                }
+            }
+            else
+            {
+                _errorLogPath = Application.dataPath + "/ErrorLog.txt";
+                _playerPrefsPath = Application.dataPath + "/PlayerPrefs.txt";
+                _localGamesPath = Application.dataPath + "/LocalGames.txt";
+                _globalGamesPath = Application.dataPath + "/GlobalGames.txt";
+                _gamesToUploadPath = Application.dataPath + "/GamesToUpload.txt";
+            }
+        }
 
         #region Get
-        public static string GetLogPath()
-        {
-            return _logPath;
-        }
         public static string GetErrorLogPath()
         {
             return _errorLogPath;
@@ -41,28 +64,7 @@ namespace Scripts.Managers
             return _gamesToUploadPath;
         }
         #endregion
-
-        #region Log
-        public static void CreateLocalLog()
-        {
-            if (!File.Exists(_logPath))
-                File.WriteAllText(_logPath, "----------------Log----------------\n");
-        }
-        public static void UpdateLocalLog(int levelScore)
-        {
-            PlayerPrefsManager.UpdateTotalScore(levelScore);
-            File.AppendAllText(_logPath, "Score: " + levelScore + "\t- " + WorldTimeAPI.WorldTimeAPI.Instance.GetCurrentDateTime().ToString() + "\n");
-        }
-        public static void ResetLocalLog()
-        {
-            if (File.Exists(_logPath))
-            {
-                File.Delete(_logPath);
-                CreateLocalLog();
-            }
-        }
-        #endregion
-        
+    
         #region Error Log
         public static void CreateErrorLog()
         {
@@ -86,6 +88,7 @@ namespace Scripts.Managers
         #region Player Prefs
         public static void UpdatePlayerPrefsLog(PlayerPrefsModel model)
         {
+            InitLocalLoggerManager();
             File.Delete(_playerPrefsPath);
             string modelString = JsonConvert.SerializeObject(model);
             File.WriteAllText(_playerPrefsPath, modelString);
@@ -98,6 +101,7 @@ namespace Scripts.Managers
         }
         public static bool ExistsPlayerPrefsLog()
         {
+            InitLocalLoggerManager();
             return File.Exists(_playerPrefsPath);
         }
         #endregion
@@ -111,6 +115,7 @@ namespace Scripts.Managers
         }
         public static void ResetLocalGamesLog()
         {
+            InitLocalLoggerManager();
             if (File.Exists(_localGamesPath)) File.Delete(_localGamesPath);
         }
         #endregion
@@ -123,6 +128,7 @@ namespace Scripts.Managers
         }
         public static void ResetGlobalGamesLog()
         {
+            InitLocalLoggerManager();
             if (File.Exists(_globalGamesPath)) File.Delete(_globalGamesPath); 
         }
         #endregion
@@ -135,6 +141,7 @@ namespace Scripts.Managers
         }
         public static void DeleteGamesToUpload()
         {
+            InitLocalLoggerManager();
             if (File.Exists(_gamesToUploadPath)) File.Delete(_gamesToUploadPath);
         } 
         #endregion

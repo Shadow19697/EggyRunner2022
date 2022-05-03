@@ -1588,7 +1588,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4174170944274597574, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: f7cb87b9f655bcd4da47075166d680fe, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 8e6803b3785a4044481a451cc803c346, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -5269,7 +5269,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4174170944274597574, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: aee6b13a76be3dd44aa8cf19ed19a928, type: 3}
+  m_audioClip: {fileID: 8300000, guid: edf9a2a5b97a0da40a26e2a84fb489d5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -8614,7 +8614,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4174170944274597574, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: b0e6985be0aed6943847b829046343b6, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f35bb55b3f2d3bb4f8dd1ae37e354c81, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -10709,16 +10709,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: TABLA DE POSICIONES
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7acb5886e5462214d944f17fb6559239, type: 2}
-  m_sharedMaterial: {fileID: -4204558665923056362, guid: 7acb5886e5462214d944f17fb6559239,
+  m_fontAsset: {fileID: 11400000, guid: 3ec65933844dde344b16f612830974f5, type: 2}
+  m_sharedMaterial: {fileID: -1670181972110975804, guid: 3ec65933844dde344b16f612830974f5,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11114,7 +11114,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4174170944274597574, guid: b85d6d9ea9b6e0b408d05fd742039dd7,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: ea6d897976874d142a48f91080390901, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a465f5fcecd301b4781da16796a68611, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -11374,16 +11374,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: RESULTADOS
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7acb5886e5462214d944f17fb6559239, type: 2}
-  m_sharedMaterial: {fileID: -4204558665923056362, guid: 7acb5886e5462214d944f17fb6559239,
+  m_fontAsset: {fileID: 11400000, guid: 3ec65933844dde344b16f612830974f5, type: 2}
+  m_sharedMaterial: {fileID: -1670181972110975804, guid: 3ec65933844dde344b16f612830974f5,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

@@ -68,7 +68,6 @@ namespace Scripts.Views
             Screen.fullScreen = isFullscreen;
             if (isFullscreen) _settings.fullScreen = 1;
             else _settings.fullScreen = 0;
-            Debug.LogWarning("FULLSCREEN: " + isFullscreen);
         }
         public void SetResolution(int resolutionIndex)
         {
@@ -165,8 +164,8 @@ namespace Scripts.Views
         public void ResetScore()
         {
             PlayerPrefsManager.ResetTotalScore();
-            LocalLoggerManager.ResetLocalLog();
-            Debug.LogError("Se borró el puntaje" + PlayerPrefsManager.GetTotalScore());
+            LocalLoggerManager.ResetLocalGamesLog();
+            Debug.LogWarning("Se borraron las partidas y el puntaje:" + PlayerPrefsManager.GetTotalScore());
         }
     }
 }
