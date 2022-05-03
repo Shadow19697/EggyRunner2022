@@ -15,8 +15,8 @@ namespace Scripts.Controllers.Principals
 
         void Start()
         {
-            //Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             PlayerPrefsManager.InitPlayerPrefs();
             SettingsController.SetVolume(_audioMixer);
             SettingsController.SetVisualSettings(true);

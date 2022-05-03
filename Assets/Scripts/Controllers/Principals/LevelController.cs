@@ -26,8 +26,8 @@ namespace Scripts.Controllers.Principals
 
         void Start()
         {
-            //Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             LocalLoggerManager.InitLocalLoggerManager();
             SettingsController.SetVisualSettings(false);
             _gameOverCanvas.SetActive(false);
