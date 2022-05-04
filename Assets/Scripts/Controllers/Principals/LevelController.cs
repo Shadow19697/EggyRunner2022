@@ -13,7 +13,8 @@ namespace Scripts.Controllers.Principals
         [SerializeField] private ObjectsManager _objectsManager;
         [SerializeField] private EnvironmentController _environmentController;
         [SerializeField] private GameObject _gameOverCanvas;
-        
+        [SerializeField] private Texture2D _cursorTexture;
+
         [SerializeField] private int _streetVelocity;
         [SerializeField] private int _velocityIncrement;
 
@@ -26,8 +27,7 @@ namespace Scripts.Controllers.Principals
 
         void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Cursor.SetCursor(_cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
             LocalLoggerManager.InitLocalLoggerManager();
             SettingsController.SetVisualSettings(false);
             _gameOverCanvas.SetActive(false);

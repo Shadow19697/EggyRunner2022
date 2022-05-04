@@ -8,15 +8,15 @@ namespace Scripts.Controllers.Principals
 {
     public class MainController : MonoBehaviour
     {
-        public AudioMixer _audioMixer;
+        [SerializeField] private AudioMixer _audioMixer;
+        [SerializeField] private Texture2D _cursorTexture;
         
-        private SpecialDateEnum specialEnum;
+        private SpecialDateEnum _specialEnum;
         private static Coroutine _uploadRemainingCoroutine;
 
         void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Cursor.SetCursor(_cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
             PlayerPrefsManager.InitPlayerPrefs();
             SettingsController.SetVolume(_audioMixer);
             SettingsController.SetVisualSettings(true);
@@ -25,10 +25,10 @@ namespace Scripts.Controllers.Principals
             if (_uploadRemainingCoroutine != null) StopCoroutine(_uploadRemainingCoroutine);
             StartCoroutine(DataManager.UploadRemainingGames());
             /*******************************************************/
-            specialEnum = SpecialDate.WichSpecialIs();
+            _specialEnum = SpecialDate.WichSpecialIs();
             Debug.Log("Is First Load? " + PlayerPrefsManager.IsFirstLoad()
                 + "\nResolution: " + PlayerPrefsManager.GetWidth() + " x " + PlayerPrefsManager.GetHeight() + " - Resolution Index: " + PlayerPrefsManager.GetResolutionIndex() + " - FullScreen: " + PlayerPrefsManager.IsFullScreen()
-                + "\nLevel Selected: " + PlayerPrefsManager.GetLevelSelected() + " - Special Date: " + specialEnum
+                + "\nLevel Selected: " + PlayerPrefsManager.GetLevelSelected() + " - Special Date: " + _specialEnum
                 + "\nMusic Value: " + PlayerPrefsManager.GetMusicValue() + " - Sound Value: " + PlayerPrefsManager.GetSoundEffectsValue());
             /*******************************************************/
         }
