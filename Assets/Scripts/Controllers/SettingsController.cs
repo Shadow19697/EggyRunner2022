@@ -26,7 +26,8 @@ namespace Scripts.Controllers
             for (int i = 0; i < PlayerPrefsManager.Resolutions.Length; i++)
             {
                 string option = PlayerPrefsManager.Resolutions[i].width + " x " + PlayerPrefsManager.Resolutions[i].height;
-                PlayerPrefsManager.ListResolutions.Add(option);
+                if(PlayerPrefsManager.ListResolutions.IndexOf(option) < 0)
+                    PlayerPrefsManager.ListResolutions.Add(option);
                 if (PlayerPrefsManager.Resolutions[i].width == Screen.currentResolution.width && PlayerPrefsManager.Resolutions[i].height == Screen.currentResolution.height)
                     currentResolutionIndex = i;
             }
