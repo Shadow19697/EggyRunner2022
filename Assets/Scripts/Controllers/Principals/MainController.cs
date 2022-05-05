@@ -10,7 +10,8 @@ namespace Scripts.Controllers.Principals
     {
         [SerializeField] private AudioMixer _audioMixer;
         [SerializeField] private Texture2D _cursorTexture;
-        
+        [SerializeField] private AudioSource _menuMusic;
+
         private SpecialDateEnum _specialEnum;
         private static Coroutine _uploadRemainingCoroutine;
 
@@ -32,5 +33,22 @@ namespace Scripts.Controllers.Principals
                 + "\nMusic Value: " + PlayerPrefsManager.GetMusicValue() + " - Sound Value: " + PlayerPrefsManager.GetSoundEffectsValue());
             /*******************************************************/
         }
+
+        void OnApplicationFocus(bool hasFocus)
+        {
+            if (!hasFocus)
+                _menuMusic.Pause();
+            else
+                _menuMusic.Play();
+        }
+
+        void OnApplicationPause(bool pauseStatus)
+        {
+            if (pauseStatus)
+                _menuMusic.Pause();
+            else
+                _menuMusic.Play();
+        }
+
     }
 }

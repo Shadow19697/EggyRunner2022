@@ -1607,6 +1607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioMixer: {fileID: 24100000, guid: b85d6d9ea9b6e0b408d05fd742039dd7, type: 2}
   _cursorTexture: {fileID: 2800000, guid: 0cb7b4ab76f3add48bbe682645aec942, type: 3}
+  _menuMusic: {fileID: 155674877}
 --- !u!114 &146808865
 MonoBehaviour:
   m_ObjectHideFlags: 0

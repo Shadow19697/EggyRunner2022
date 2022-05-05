@@ -83,27 +83,5 @@ namespace Scripts.Managers.InGame
             _powerupMusic.Stop();
         }
         #endregion
-
-        #region Sounds
-        public void PlayGameOverSound()
-        {
-            _gameOverSound.Play();
-        }
-
-        public void PlayGrabEggSound()
-        {
-            _grabEggSound.Play();
-        }
-
-        public void PlayGrabPerkSound()
-        {
-            _grabPerkSound.Play();
-        }
-
-        public void PlayJumpSound()
-        {
-            _jumpSound.Play();
-        }
-        #endregion
     }
 }

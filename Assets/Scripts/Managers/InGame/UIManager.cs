@@ -240,6 +240,7 @@ namespace Scripts.Managers.InGame
 
         public void QuitApplication()
         {
+            PlayerPrefsManager.UpdateLevelSelected(0);
             Debug.LogError("Quit");
             Application.Quit();
         }
