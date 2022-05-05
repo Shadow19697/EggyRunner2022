@@ -175,19 +175,19 @@ namespace Scripts.Managers
 
         public static int GetFullScreen()
         {
-            return PlayerPrefs.GetInt(FullScreen, 1);
+            return PlayerPrefs.GetInt(FullScreen, 0);
         }
         #endregion
 
         #region Music & Sound Methods
         public static float GetMusicValue()
         {
-            return PlayerPrefs.GetFloat(MusicValue, 1f);
+            return PlayerPrefs.GetFloat(MusicValue, 0.5f);
         }
 
         public static float GetSoundEffectsValue()
         {
-            return PlayerPrefs.GetFloat(SoundEffectsValue, 1f);
+            return PlayerPrefs.GetFloat(SoundEffectsValue, 0.5f);
         }
 
         public static void UpdateMusicValue(float value)
