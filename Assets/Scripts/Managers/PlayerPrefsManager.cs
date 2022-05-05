@@ -141,12 +141,12 @@ namespace Scripts.Managers
         #region Height & Width Methods
         public static int GetHeight()
         {
-            return PlayerPrefs.GetInt(Height, 0);
+            return PlayerPrefs.GetInt(Height, 480);
         }
 
         public static int GetWidth()
         {
-            return PlayerPrefs.GetInt(Width, 0);
+            return PlayerPrefs.GetInt(Width, 640);
         }
 
         public static void UpdateHeight(int value)

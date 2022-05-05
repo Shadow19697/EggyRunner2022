@@ -1,4 +1,5 @@
 using Scripts.Managers;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -21,13 +22,12 @@ namespace Scripts.Controllers
 
         private static void SetResolutionSettings()
         {
-            PlayerPrefsManager.Resolutions = Screen.resolutions;
+            PlayerPrefsManager.Resolutions = Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }).Distinct().ToArray();
             int currentResolutionIndex = 0;
             for (int i = 0; i < PlayerPrefsManager.Resolutions.Length; i++)
             {
                 string option = PlayerPrefsManager.Resolutions[i].width + " x " + PlayerPrefsManager.Resolutions[i].height;
-                if(PlayerPrefsManager.ListResolutions.IndexOf(option) < 0)
-                    PlayerPrefsManager.ListResolutions.Add(option);
+                PlayerPrefsManager.ListResolutions.Add(option);
                 if (PlayerPrefsManager.Resolutions[i].width == Screen.currentResolution.width && PlayerPrefsManager.Resolutions[i].height == Screen.currentResolution.height)
                     currentResolutionIndex = i;
             }
