@@ -8,7 +8,8 @@ namespace Scripts.Controllers.InGame
         [SerializeField] private CapsuleCollider2D _damageCollider2D;
         [SerializeField] private bool _isGreen;
         [SerializeField] private AudioSource _cryingCovidSound;
-        
+        //[SerializeField] private int _covidSize;
+
         private CapsuleCollider2D _capsuleCollider2D;
         private Transform _transform;
         private Rigidbody2D _rigidbody;
@@ -28,6 +29,15 @@ namespace Scripts.Controllers.InGame
             _rigidbody = GetComponent<Rigidbody2D>();
             _launchAnother = false;
             _obstacleScale = _transform.localScale;
+            //switch (_covidSize)
+            //{
+            //    case 1: _cryingCovidSound.pitch = 1.2f;
+            //        break;
+            //    case 3: _cryingCovidSound.pitch = 0.8f;
+            //        break;
+            //    default: _cryingCovidSound.pitch = 1;
+            //        break;
+            //}
             ResetObstacle();
         }
 

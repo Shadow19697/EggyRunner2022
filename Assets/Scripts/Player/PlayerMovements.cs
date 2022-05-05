@@ -13,27 +13,31 @@ namespace Scripts.Player
         private Rigidbody2D _rigidbody2D;
         private float _inputVertical;
         private bool _onGround;
+        private bool _isSpaceLevel;
 
 
         public void Start()
         {
             _jumpSound.Pause();
-            _rigidbody2D = GetComponent<Rigidbody2D>();
             if (PlayerPrefsManager.GetLevelSelected() == 3)
+                _isSpaceLevel = true;
+            else _isSpaceLevel = false;
+            _rigidbody2D = GetComponent<Rigidbody2D>();
+            if (_isSpaceLevel)
                 _rigidbody2D.gravityScale = 0;
         }
 
         public void Update()
         {
-            if (UIManager.Instance.GetLifesCount() != 0)
+            if (UIManager.Instance.IsPlayerAlive())
             {
-                if (PlayerPrefsManager.GetLevelSelected() == 3)
+                if (_isSpaceLevel)
                     VerticalMove();
                 else
                 {
                     _onGround = CheckGround();
                     if (_onGround)
-                        if (Input.GetButtonDown("Jump"))
+                        if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1"))
                         {
                             _jumpSound.Play();
                             _rigidbody2D.AddForce(Vector2.up * _jumpForce);

@@ -28,7 +28,7 @@ namespace Scripts.Player
 
         private void Update()
         {
-            if (UIManager.Instance.GetLifesCount() == 0 && !_hasDied)
+            if (!UIManager.Instance.IsPlayerAlive() && !_hasDied)
             {
                 _deathSound.Play();
                 _capsuleCollider2D.enabled = false;

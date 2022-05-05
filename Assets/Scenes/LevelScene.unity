@@ -1089,6 +1089,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
         type: 3}
+      propertyPath: _covidSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
+        type: 3}
       propertyPath: _cryingCovidSound
       value: 
       objectReference: {fileID: 2142677154}
@@ -2017,6 +2022,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
         type: 3}
+      propertyPath: _covidSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
+        type: 3}
       propertyPath: _cryingCovidSound
       value: 
       objectReference: {fileID: 2142677154}
@@ -2922,7 +2932,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2104.1096, y: 150}
+    oldSize: {x: 2200, y: 150.39062}
     newSize: {x: 21, y: 1.0048828}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -6882,6 +6892,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
         type: 3}
+      propertyPath: _covidSize
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
+        type: 3}
       propertyPath: _cryingCovidSound
       value: 
       objectReference: {fileID: 2142677154}
@@ -7761,7 +7776,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2104.1096, y: 150}
+    oldSize: {x: 2200, y: 150.39062}
     newSize: {x: 21, y: 1.0048828}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -12431,7 +12446,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 1a7a455125c35f04e8348c64b17d85b4, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -24419,6 +24434,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _isGreen
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
+        type: 3}
+      propertyPath: _covidSize
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5996889024095457622, guid: 7281ea40481d8e043984513752456d3f,
         type: 3}

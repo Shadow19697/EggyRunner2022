@@ -149,9 +149,9 @@ namespace Scripts.Managers.InGame
             if (_lifesCount == 0) _isGameOver = true;
         }
 
-        public int GetLifesCount()
+        public bool IsPlayerAlive()
         {
-            return _lifesCount;
+            return (_lifesCount!=0);
         }
         #endregion
 
@@ -240,8 +240,6 @@ namespace Scripts.Managers.InGame
 
         public void QuitApplication()
         {
-            PlayerPrefsManager.UpdateLevelSelected(0);
-            Debug.LogError("Quit");
             Application.Quit();
         }
 
@@ -255,7 +253,14 @@ namespace Scripts.Managers.InGame
         public void ReturnMenu()
         {
             SceneManager.LoadScene("MainScene");
-        } 
+        }
         #endregion
+
+        private void OnApplicationQuit()
+        {
+            if(!Application.isEditor)
+                PlayerPrefsManager.UpdateLevelSelected(0);
+            Debug.LogError("Quit");
+        }
     }
 }
