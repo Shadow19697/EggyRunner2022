@@ -9,6 +9,7 @@ namespace Scripts.Controllers.InGame
         [SerializeField] private List<GameObject> _backgroundObjects;
         [SerializeField] private List<GameObject> _streetObjects;
         [SerializeField] private List<LevelBackgrounds> _levelsBackground;
+        [SerializeField] private GameObject _bottomBox;
         [System.Serializable]
         public class LevelBackgrounds
         {
@@ -21,15 +22,15 @@ namespace Scripts.Controllers.InGame
         private List<SpriteRenderer> _spriteCompBg;
         private int _lastSpriteIndex = 1;
         private int _bgObjectIndex = 0;
-        private bool _isBackground;
+        private bool _isSpaceLevel;
 
 
         private void Start()
         {
             _levelId = PlayerPrefsManager.GetLevelSelected()-1; //0, 1, 2, 3, 4
+            _isSpaceLevel = _levelId == 2;
             GetComponents();
             SpritesInit();
-            //EnvironmentInit();
         }
 
         private void GetComponents()
@@ -49,13 +50,15 @@ namespace Scripts.Controllers.InGame
             for (int i = 0; i < 2; i++)
             {
                 _spriteCompBg[i].sprite = _levelsBackground[_levelId]._backgrounds[i];
-                if (_levelId != 2)
+                if (!_isSpaceLevel)
                     _streetObjects[i].GetComponent<SpriteRenderer>().sprite = _levelsStreets[_levelId];
                 else
-                {
-                    _streetObjects[i].GetComponent<BoxCollider2D>().enabled = false;
                     _streetObjects[i].GetComponent<SpriteRenderer>().enabled = false;
-                }
+            }
+            if (_isSpaceLevel)
+            {
+                _bottomBox.transform.localPosition = new Vector3(_bottomBox.transform.localPosition.x, _bottomBox.transform.localPosition.y - 300, _bottomBox.transform.localPosition.z);
+                _bottomBox.tag = "Obstacle";
             }
         }
 

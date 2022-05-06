@@ -10,6 +10,7 @@ TagManager:
   - Off Text
   - Toggle Bg
   - Collectable
+  - BottomBox
   layers:
   - Default
   - TransparentFX

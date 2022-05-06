@@ -88,6 +88,7 @@ namespace Scripts.Controllers.Principals
 
         private void GameOver()
         {
+            SoundManager.Instance.PauseLevelMusic();
             _environmentController.MoveEnvironment(0, 0);
             _objectsManager.StopAll();
             if(_showGameOverCanvas == null)
