@@ -8,7 +8,7 @@ namespace Scripts.Controllers.InGame
         [SerializeField] private CapsuleCollider2D _damageCollider2D;
         [SerializeField] private bool _isGreen;
         [SerializeField] private AudioSource _cryingCovidSound;
-        //[SerializeField] private int _covidSize;
+        [SerializeField] private int _covidSize;
 
         private CapsuleCollider2D _capsuleCollider2D;
         private Transform _transform;
@@ -29,15 +29,6 @@ namespace Scripts.Controllers.InGame
             _rigidbody = GetComponent<Rigidbody2D>();
             _launchAnother = false;
             _obstacleScale = _transform.localScale;
-            //switch (_covidSize)
-            //{
-            //    case 1: _cryingCovidSound.pitch = 1.2f;
-            //        break;
-            //    case 3: _cryingCovidSound.pitch = 0.8f;
-            //        break;
-            //    default: _cryingCovidSound.pitch = 1;
-            //        break;
-            //}
             ResetObstacle();
         }
 
@@ -94,6 +85,18 @@ namespace Scripts.Controllers.InGame
         {
             if (collision.CompareTag("Player"))
             {
+                switch (_covidSize)
+                {
+                    case 1:
+                        _cryingCovidSound.pitch = 1.4f;
+                        break;
+                    case 3:
+                        _cryingCovidSound.pitch = 0.8f;
+                        break;
+                    default:
+                        _cryingCovidSound.pitch = 1.1f;
+                        break;
+                }
                 _cryingCovidSound.Play();
                 _transform.localScale = new Vector3(_obstacleScale.x, _obstacleScale.y * 0.3f, _obstacleScale.z);
                 _capsuleCollider2D.enabled = false;
