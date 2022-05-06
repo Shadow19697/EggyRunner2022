@@ -23,8 +23,14 @@ namespace Scripts.Managers.InGame
 
         public void UpdateVelocityMovement(int streetVelocity)
         {
-            if (!_itStarted) _itStarted = true;
+            if (!_itStarted) StartCoroutine(WaitUntilStarts(4));
             _objectsVelocity = streetVelocity * 1.05f;
+        }
+
+        private IEnumerator WaitUntilStarts(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            _itStarted = true;
         }
 
         public void StopAll()
