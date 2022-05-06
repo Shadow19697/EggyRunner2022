@@ -1,4 +1,6 @@
 using Scripts.Managers.InGame;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scripts.Player
@@ -9,6 +11,16 @@ namespace Scripts.Player
         [SerializeField] private ParticleSystem _explosion;
         [SerializeField] private ParticleSystem _deathAnimation;
         [SerializeField] private AudioSource _deathSound;
+        [SerializeField] private GlowObjects _glowObjects;
+
+        [System.Serializable]
+        public class GlowObjects
+        {
+            public List<GameObject> _objects;
+        }
+
+        private static PlayerController _instance;
+        public static PlayerController Instance { get { if (_instance == null) _instance = FindObjectOfType<PlayerController>(); return _instance; } }
 
         private CapsuleCollider2D _capsuleCollider2D;
         private Rigidbody2D _rigidbody2D;
@@ -24,6 +36,7 @@ namespace Scripts.Player
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _hasDied = false;
             _deathSound.Pause();
+            _glowObjects._objects.ForEach(obj => obj.SetActive(false));
         }
 
         private void Update()
@@ -46,6 +59,27 @@ namespace Scripts.Player
                 UIManager.Instance.UpdateLifesCount(-1);
                 PlayerAnimations.PlayExposionAnimation();
             }
+        }
+
+        public IEnumerator GlowAnimation()
+        {
+            _glowObjects._objects.ForEach(obj => obj.SetActive(true));
+            yield return new WaitForSeconds(11);
+            _glowObjects._objects.ForEach(obj => obj.SetActive(false));
+            yield return new WaitForSeconds(0.5f);
+            _glowObjects._objects.ForEach(obj => obj.SetActive(true));
+            yield return new WaitForSeconds(0.5f);
+            _glowObjects._objects.ForEach(obj => obj.SetActive(false));
+            yield return new WaitForSeconds(0.5f);
+            _glowObjects._objects.ForEach(obj => obj.SetActive(true));
+            yield return new WaitForSeconds(0.5f);
+            _glowObjects._objects.ForEach(obj => obj.SetActive(false));
+            yield return new WaitForSeconds(0.5f);
+            _glowObjects._objects.ForEach(obj => obj.SetActive(true));
+            yield return new WaitForSeconds(0.5f);
+            _glowObjects._objects.ForEach(obj => obj.SetActive(false));
+            yield return new WaitForSeconds(0.2f);
+            SoundManager.Instance.PlayLevelMusic();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections;
 using System;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using Scripts.Player;
 
 namespace Scripts.Managers.InGame
 {
@@ -176,15 +177,17 @@ namespace Scripts.Managers.InGame
         public void DisplayImmunity()
         {
             _playingText._upgradeText.text = "INMUNIDAD";
-            StartCoroutine(DisplayImmunityUntil());
-            StartCoroutine(Fade(_playingText._upgradeText, _timeUpgradeActive));
+            StartCoroutine(DisplayImmunityUntil(_timeUpgradeActive+4));
+            StartCoroutine(Fade(_playingText._upgradeText, _timeUpgradeActive+4));
+            StartCoroutine(PlayerController.Instance.GlowAnimation());
+            SoundManager.Instance.PlayPowerupMusic();
         }
 
-        private IEnumerator DisplayImmunityUntil()
+        private IEnumerator DisplayImmunityUntil(float timeActive)
         {
             ObjectsManager.Instance.EnableDamageCollider(false);
             _immunityActivated = true;
-            yield return new WaitForSeconds(_timeUpgradeActive);
+            yield return new WaitForSeconds(timeActive);
             _playingText._upgradeText.text = "";
             ObjectsManager.Instance.EnableDamageCollider(true);
             _immunityActivated = false;

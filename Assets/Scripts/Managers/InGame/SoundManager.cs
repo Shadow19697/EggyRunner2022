@@ -14,10 +14,8 @@ namespace Scripts.Managers.InGame
         [SerializeField] private AudioSource _endingMusic;
         [SerializeField] private AudioSource _powerupMusic;
 
-        [SerializeField] private AudioSource _gameOverSound;
-        [SerializeField] private AudioSource _grabEggSound;
-        [SerializeField] private AudioSource _grabPerkSound;
-        [SerializeField] private AudioSource _jumpSound;
+        private static SoundManager _instance;
+        public static SoundManager Instance { get { if (_instance == null) _instance = FindObjectOfType<SoundManager>(); return _instance; } }
 
         private void Start()
         {
@@ -75,6 +73,7 @@ namespace Scripts.Managers.InGame
 
         public void PlayPowerupMusic()
         {
+            _levelMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].Pause();
             _powerupMusic.Play();
         }
 
