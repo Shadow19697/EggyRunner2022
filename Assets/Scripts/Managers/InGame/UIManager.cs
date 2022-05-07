@@ -38,7 +38,13 @@ namespace Scripts.Managers.InGame
             public TextMeshProUGUI _upgradeText;
         }
 
-        [SerializeField] private List<GameObject> _tipsImages;
+        [SerializeField] private List<LevelTips> _levelTips;
+        
+        [System.Serializable]
+        public class LevelTips
+        {
+            public List<GameObject> _tips;
+        }
 
         [SerializeField] private GameObject _yesButton;
         [SerializeField] private GameObject _playButton;
@@ -55,6 +61,8 @@ namespace Scripts.Managers.InGame
         private bool _gettingScore;
         private bool _immunityActivated;
         private int _timeUpgradeActive = 10;
+        private int _indexOfLevel;
+        private int _indexOfTips;
 
         public static UIManager Instance { get {if(_instance == null) _instance = FindObjectOfType<UIManager>(); return _instance; }}
 
@@ -74,8 +82,10 @@ namespace Scripts.Managers.InGame
             _scoreMultiplier = 1;
             _scoreCounter = 0;
             _playingText._upgradeText.text = "";
-            _tipsImages.ForEach(tip => tip.SetActive(false));
-            _tipsImages[PlayerPrefsManager.GetLevelSelected()-1].SetActive(true);
+            _indexOfTips = 0;
+            _indexOfLevel = PlayerPrefsManager.GetLevelSelected() - 1;
+            _levelTips.ForEach(level => level._tips.ForEach(tip => tip.SetActive(false)));
+            _levelTips[_indexOfLevel]._tips[_indexOfTips].SetActive(true);
             _idleText._localHighscoreText.text = "Mejor Puntaje\nLocal: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
             GetGlobalHighscore(true);
         }
@@ -256,6 +266,22 @@ namespace Scripts.Managers.InGame
         public void ReturnMenu()
         {
             SceneManager.LoadScene("MainScene");
+        }
+
+        public void SideButton(bool isPrev)
+        {
+            _levelTips[_indexOfLevel]._tips[_indexOfTips].SetActive(false);
+            if (isPrev)
+            {
+                if (_indexOfTips > 0) _indexOfTips--;
+                else _indexOfTips = _levelTips[_indexOfLevel]._tips.Count - 1;
+            }
+            else
+            {
+                if (_indexOfTips < _levelTips[_indexOfLevel]._tips.Count - 1) _indexOfTips++;
+                else _indexOfTips = 0;
+            }
+            _levelTips[_indexOfLevel]._tips[_indexOfTips].SetActive(true);
         }
         #endregion
 
