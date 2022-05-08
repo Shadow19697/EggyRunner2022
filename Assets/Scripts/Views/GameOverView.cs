@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using TMPro;
 using Scripts.Managers.InGame;
 using Scripts.Managers;
-using System;
 using Scripts.Controllers.Extensions;
 using Scripts.Models;
 using Scripts.Models.Nested;
@@ -17,11 +16,19 @@ namespace Scripts.Views
     public class GameOverView : MonoBehaviour
     {
         [SerializeField] private GameObject _resultsPanel;
-        [SerializeField] private TextMeshProUGUI _scoreText;
-        [SerializeField] private TextMeshProUGUI _collectableText;
-        [SerializeField] private TextMeshProUGUI _obstacleText;
-        [SerializeField] private TextMeshProUGUI _levelScoreText;
-        [SerializeField] private TextMeshProUGUI _totalScoreText;
+        [SerializeField] private TMPObjects _tmpObjects;
+        [System.Serializable]
+        public class TMPObjects
+        {
+            public TextMeshProUGUI _resultsText;
+            public TextMeshProUGUI _scoreText;
+            public TextMeshProUGUI _collectableText;
+            public TextMeshProUGUI _obstacleText;
+            public TextMeshProUGUI _levelScoreText;
+            public TextMeshProUGUI _totalScoreText;
+            public TextMeshProUGUI _skipText;
+        }
+
         [SerializeField] private InputField _inputField;
         [SerializeField] private GameObject _continueText;
         [SerializeField] private Text _nameText;
@@ -40,7 +47,10 @@ namespace Scripts.Views
         private int _countFPS = 30;
         private float _duration = 1f;
         
-        private Coroutine CountingCoroutine;
+        private Coroutine _countingCoroutine;
+        private Coroutine _showCoroutine;
+        private bool _skip = false;
+        private bool _isSpaceLevel;
 
         private void Start()
         {
@@ -49,42 +59,62 @@ namespace Scripts.Views
             _obstacleCount = UIManager.Instance.GetObstaclesCount();
             _totalScore = PlayerPrefsManager.GetTotalScore();
             _increaseScore = _score + _collectableCount * 200 + _obstacleCount * 50;
-            StartCoroutine(ShowCoroutine());
+            _isSpaceLevel = PlayerPrefsManager.GetLevelSelected() == 3;
+            if (_isSpaceLevel) _tmpObjects._resultsText.text = "PUNTAJE\nNANOSATELITES RECUPERADOS\n\nPUNTAJE DE LA PARTIDA\n\nPUNTOS ACUMULADOS";
+            _tmpObjects._skipText.gameObject.SetActive(true);
+            _tmpObjects._skipText.text = "Presiones [ESPACIO] para saltar conteo";
+            _showCoroutine = StartCoroutine(ShowCoroutine(1));
         }
 
-        private IEnumerator ShowCoroutine()
+        private void Update()
+        {
+            if ((Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1")) && !_skip)
+            {
+                _skip = true;
+                StopAllCoroutines();
+                _showCoroutine = StartCoroutine(ShowCoroutine(0));
+            }
+        }
+
+        private IEnumerator ShowCoroutine(float waitTime)
         {
             SwitchResultsHighscore(true);
-            yield return new WaitForSeconds(1);
-            _scoreText.gameObject.SetActive(true);
-            _scoreText.text = _score.ToString();
-            yield return new WaitForSeconds(1);
-            _collectableText.gameObject.SetActive(true);
-            _collectableText.text = _collectableCount.ToString() + " x 200";
-            yield return new WaitForSeconds(1);
-            _obstacleText.gameObject.SetActive(true);
-            _obstacleText.text = _obstacleCount.ToString() + " x 50";
-            yield return new WaitForSeconds(1);
-            _levelScoreText.gameObject.SetActive(true);
-            _levelScoreText.text = _levelScore.ToString();
-            UpdateText(0, _increaseScore, _levelScoreText);
-            yield return new WaitForSeconds(1f);
-            _totalScoreText.gameObject.SetActive(true);
-            _totalScoreText.text = _totalScore.ToString();
-            yield return new WaitForSeconds(1.5f);
-            UpdateText(_totalScore, _totalScore + _increaseScore, _totalScoreText);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(waitTime);
+            _tmpObjects._scoreText.gameObject.SetActive(true);
+            _tmpObjects._scoreText.text = _score.ToString();
+            yield return new WaitForSeconds(waitTime);
+            _tmpObjects._collectableText.gameObject.SetActive(true);
+            _tmpObjects._collectableText.text = _collectableCount.ToString() + " x 200";
+            if (!_isSpaceLevel)
+            {
+                yield return new WaitForSeconds(waitTime);
+                _tmpObjects._obstacleText.gameObject.SetActive(true);
+                _tmpObjects._obstacleText.text = _obstacleCount.ToString() + " x 50";
+            }
+            yield return new WaitForSeconds(waitTime);
+            _tmpObjects._levelScoreText.gameObject.SetActive(true);
+            _tmpObjects._levelScoreText.text = _levelScore.ToString();
+            if (waitTime > 0) UpdateText(0, _increaseScore, _tmpObjects._levelScoreText);
+            else _tmpObjects._levelScoreText.text = _increaseScore.ToString();
+            yield return new WaitForSeconds(waitTime);
+            _tmpObjects._totalScoreText.gameObject.SetActive(true);
+            _tmpObjects._totalScoreText.text = _totalScore.ToString();
+            yield return new WaitForSeconds(waitTime);
+            if (waitTime > 0) UpdateText(_totalScore, _totalScore + _increaseScore, _tmpObjects._totalScoreText);
+            else _tmpObjects._totalScoreText.text = (_totalScore + _increaseScore).ToString();
+            yield return new WaitForSeconds(waitTime*1.5f);
             _inputField.gameObject.SetActive(true);
             _continueText.SetActive(true);
+            _tmpObjects._skipText.gameObject.SetActive(false);
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_inputField.gameObject);
         }
 
         private void UpdateText(int previousValue, int newValue, TextMeshProUGUI text)
         {
-            if (CountingCoroutine != null)
-                StopCoroutine(CountingCoroutine);
-            CountingCoroutine = StartCoroutine(CountText(previousValue, newValue, text));
+            if (_countingCoroutine != null)
+                StopCoroutine(_countingCoroutine);
+            _countingCoroutine = StartCoroutine(CountText(previousValue, newValue, text));
         }
 
         private IEnumerator CountText(int previousValue, int newValue, TextMeshProUGUI text)
