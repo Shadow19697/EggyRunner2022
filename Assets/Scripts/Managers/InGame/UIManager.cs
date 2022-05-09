@@ -50,19 +50,22 @@ namespace Scripts.Managers.InGame
         [SerializeField] private GameObject _playButton;
         [SerializeField] private GameObject _player;    
         
-        private int _eggCount;
-        private bool _isPlaying;
-        private bool _isGameOver;
-        private static UIManager _instance;
-        private int _lifesCount;
-        private int _obstacleCount;
-        private int _scoreMultiplier;
-        private float _scoreCounter;
-        private bool _gettingScore;
-        private bool _immunityActivated;
+        private int _eggCount = 0;
+        private int _lifesCount = 1;
+        private int _obstacleCount = 0;
+        private int _scoreMultiplier = 1;
         private int _timeUpgradeActive = 10;
         private int _indexOfLevel;
-        private int _indexOfTips;
+        private int _indexOfTips = 0;
+
+        private bool _isPlaying = false;
+        private bool _isGameOver = false;
+        private bool _gettingScore;
+        private bool _immunityActivated;
+
+        private float _scoreCounter = 0;
+
+        private static UIManager _instance;
 
         public static UIManager Instance { get {if(_instance == null) _instance = FindObjectOfType<UIManager>(); return _instance; }}
 
@@ -73,16 +76,8 @@ namespace Scripts.Managers.InGame
 
         private void SetValues()
         {
-            _isPlaying = false;
-            _isGameOver = false;
             _player.SetActive(false);
-            _eggCount = 0;
-            _lifesCount = 1;
-            _obstacleCount = 0;
-            _scoreMultiplier = 1;
-            _scoreCounter = 0;
             _playingText._upgradeText.text = "";
-            _indexOfTips = 0;
             _indexOfLevel = PlayerPrefsManager.GetLevelSelected() - 1;
             _levelTips.ForEach(level => level._tips.ForEach(tip => tip.SetActive(false)));
             _levelTips[_indexOfLevel]._tips[_indexOfTips].SetActive(true);
