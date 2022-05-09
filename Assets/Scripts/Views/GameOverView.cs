@@ -22,6 +22,7 @@ namespace Scripts.Views
             public GameObject _resultsPanel;
             public GameObject _highscorePanel;
             public GameObject _dontSavePanel;
+            public GameObject _cantSavePanel;
         }
         
         [SerializeField] private TMPObjects _tmpObjects;
@@ -44,6 +45,7 @@ namespace Scripts.Views
             public GameObject _return;
             public GameObject _replay;
             public GameObject _yes;
+            public GameObject _accept;
         }
 
         [SerializeField] private InputField _inputField;
@@ -140,8 +142,7 @@ namespace Scripts.Views
             _inputField.gameObject.SetActive(true);
             _continueText.SetActive(true);
             _tmpObjects._skipText.gameObject.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(_inputField.gameObject);
+            SetSelectedButton(_inputField.gameObject);
         }
 
         private void UpdateText(int previousValue, int newValue, TextMeshProUGUI text)
@@ -207,8 +208,7 @@ namespace Scripts.Views
             _buttonsObjects._replay.SetActive(true);
             _buttonsObjects._return.SetActive(true);
             _tmpObjects._skipText.gameObject.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(_buttonsObjects._return);
+            SetSelectedButton(_buttonsObjects._return);
         } 
         #endregion
 
@@ -221,17 +221,30 @@ namespace Scripts.Views
         #region Button Methods
         public void AcceptInput()
         {
-            PlayerPrefsManager.UpdateTotalScore(_increaseScore);
-            DataManager.UploadGame(_nameText.text, _increaseScore, PlayerPrefsManager.GetLevelSelected());
-            SwitchResultsHighscore(false);
-            DisplayHighscores(true);
+            if (!string.IsNullOrWhiteSpace(_nameText.text) && !string.IsNullOrEmpty(_nameText.text))
+            {
+                PlayerPrefsManager.UpdateTotalScore(_increaseScore);
+                DataManager.UploadGame(_nameText.text, _increaseScore, PlayerPrefsManager.GetLevelSelected());
+                SwitchResultsHighscore(false);
+                DisplayHighscores(true);
+            }
+            else
+            {
+                _panels._cantSavePanel.SetActive(true);
+                SetSelectedButton(_buttonsObjects._accept);
+            }
         }
 
         public void CancelInput()
         {
             _panels._dontSavePanel.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(_buttonsObjects._yes);
+            SetSelectedButton(_buttonsObjects._yes);
+        }
+
+        public void AcceptButton()
+        {
+            _panels._cantSavePanel.SetActive(false);
+            SetSelectedButton(_inputField.gameObject);
         }
 
         public void YesButton()
@@ -243,8 +256,7 @@ namespace Scripts.Views
         public void NoButton()
         {
             _panels._dontSavePanel.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(_inputField.gameObject);
+            SetSelectedButton(_inputField.gameObject);
         }
 
         public void ReloadButton()
@@ -257,5 +269,11 @@ namespace Scripts.Views
             SceneManager.LoadScene("MainScene");
         }        
         #endregion
+
+        private void SetSelectedButton(GameObject button)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(button);
+        }
     } 
 }
