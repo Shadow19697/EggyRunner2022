@@ -45,22 +45,27 @@ namespace Scripts.Managers
         #region Get
         public static string GetErrorLogPath()
         {
+            InitLocalLoggerManager();
             return _errorLogPath;
         }
         public static string GetPlayerPrefsPath()
         {
+            InitLocalLoggerManager();
             return _playerPrefsPath;
         }
         public static string GetLocalGamesPath()
         {
+            InitLocalLoggerManager();
             return _localGamesPath;
         }
         public static string GetGlobalGamesPath()
         {
+            InitLocalLoggerManager();
             return _globalGamesPath;
         }
         public static string GetGamesToUploadPath()
         {
+            InitLocalLoggerManager();
             return _gamesToUploadPath;
         }
         #endregion

@@ -15,7 +15,15 @@ namespace Scripts.Views
 {
     public class GameOverView : MonoBehaviour
     {
-        [SerializeField] private GameObject _resultsPanel;
+        [SerializeField] private Panels _panels;
+        [System.Serializable]
+        public class Panels
+        {
+            public GameObject _resultsPanel;
+            public GameObject _highscorePanel;
+            public GameObject _dontSavePanel;
+        }
+        
         [SerializeField] private TMPObjects _tmpObjects;
         [System.Serializable]
         public class TMPObjects
@@ -29,13 +37,19 @@ namespace Scripts.Views
             public TextMeshProUGUI _skipText;
         }
 
+        [SerializeField] private ButtonsObjects _buttonsObjects;
+        [System.Serializable]
+        public class ButtonsObjects
+        {
+            public GameObject _return;
+            public GameObject _replay;
+            public GameObject _yes;
+        }
+
         [SerializeField] private InputField _inputField;
         [SerializeField] private GameObject _continueText;
         [SerializeField] private Text _nameText;
-
-        [SerializeField] private GameObject _highscorePanel;
         [SerializeField] private List<RowController> _rowList;
-        [SerializeField] private List<GameObject> _buttons;
 
         private int _score;
         private int _collectableCount;
@@ -43,10 +57,8 @@ namespace Scripts.Views
         private int _levelScore;
         private int _increaseScore;
         private int _totalScore;
-
         private int _countFPS = 30;
         private float _duration = 1f;
-        
         private Coroutine _countingCoroutine;
         private Coroutine _showCoroutine;
         private bool _skip = false;
@@ -54,28 +66,50 @@ namespace Scripts.Views
 
         private void Start()
         {
-            _score = UIManager.Instance.GetActualScore();
-            _collectableCount = UIManager.Instance.GetEggCount();
-            _obstacleCount = UIManager.Instance.GetObstaclesCount();
-            _totalScore = PlayerPrefsManager.GetTotalScore();
-            _increaseScore = _score + _collectableCount * 200 + _obstacleCount * 50;
-            _isSpaceLevel = PlayerPrefsManager.GetLevelSelected() == 3;
+            SetInitValues();
             if (_isSpaceLevel) _tmpObjects._resultsText.text = "PUNTAJE\nNANOSATELITES RECUPERADOS\n\nPUNTAJE DE LA PARTIDA\n\nPUNTOS ACUMULADOS";
             _tmpObjects._skipText.gameObject.SetActive(true);
             _tmpObjects._skipText.text = "Presiones [ESPACIO] para saltar conteo";
             _showCoroutine = StartCoroutine(ShowCoroutine(1));
         }
 
+        private void SetInitValues()
+        {
+            _score = UIManager.Instance.GetActualScore();
+            _collectableCount = UIManager.Instance.GetEggCount();
+            _obstacleCount = UIManager.Instance.GetObstaclesCount();
+            _totalScore = PlayerPrefsManager.GetTotalScore();
+            _increaseScore = _score + _collectableCount * 200 + _obstacleCount * 50;
+            _isSpaceLevel = PlayerPrefsManager.GetLevelSelected() == 3;
+        }
+
+        [System.Obsolete]
         private void Update()
         {
-            if ((Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1")) && !_skip)
+            if (!_panels._highscorePanel.active) { 
+                if ((Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1")) && !_skip)
+                {
+                    _skip = true;
+                    StopAllCoroutines();
+                    _showCoroutine = StartCoroutine(ShowCoroutine(0));
+                }
+                if (Input.GetButtonDown("Cancel") && !_panels._dontSavePanel.active)
+                    CancelInput();
+                else if ((Input.GetButtonDown("Cancel") && _panels._dontSavePanel.active))
+                    NoButton();
+            }
+            else
             {
-                _skip = true;
-                StopAllCoroutines();
-                _showCoroutine = StartCoroutine(ShowCoroutine(0));
+                if ((Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1")) && _skip)
+                {
+                    _skip = false;
+                    StopAllCoroutines();
+                    StartCoroutine(ShowHighscores(0));
+                }
             }
         }
 
+        #region Show Results Methods
         private IEnumerator ShowCoroutine(float waitTime)
         {
             SwitchResultsHighscore(true);
@@ -102,7 +136,7 @@ namespace Scripts.Views
             yield return new WaitForSeconds(waitTime);
             if (waitTime > 0) UpdateText(_totalScore, _totalScore + _increaseScore, _tmpObjects._totalScoreText);
             else _tmpObjects._totalScoreText.text = (_totalScore + _increaseScore).ToString();
-            yield return new WaitForSeconds(waitTime*1.5f);
+            yield return new WaitForSeconds(waitTime * 1.5f);
             _inputField.gameObject.SetActive(true);
             _continueText.SetActive(true);
             _tmpObjects._skipText.gameObject.SetActive(false);
@@ -130,50 +164,87 @@ namespace Scripts.Views
                 yield return Wait;
             }
         }
+        #endregion
 
-        public void AcceptButton()
+        #region Display Highscores Methods
+        private void DisplayHighscores(bool gameWasSaved)
+        {
+            SetHighscores(gameWasSaved);
+            _rowList.ForEach(row => row.gameObject.SetActive(false));
+            StartCoroutine(ShowHighscores(0.5f));
+            _tmpObjects._skipText.gameObject.SetActive(true);
+        }
+
+        private void SetHighscores(bool gameWasSaved)
+        {
+            _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
+            List<GameOrderedModel> games = new List<GameOrderedModel>();
+            if (gameWasSaved)
+            {
+                GameModel currentGame = new GameModel(_nameText.text, _increaseScore, PlayerPrefsManager.GetLevelSelected());
+                games = DataManager.ReturnGamesWithLast(currentGame);
+            }
+            else
+            {
+                List<GameModel> top3games = DataManager.ReturnGames(true, false, PlayerPrefsManager.GetLevelSelected());
+                for (int i=0; i<3; i++)
+                    games.Add(top3games.Count > i ? new GameOrderedModel((i), top3games[i]) : null);
+            }
+            for (int i = 0; i < games.Count; i++)
+                if (games[i] != null)
+                    _rowList[i].SetLabels((games[i].position + 1).ToString(), games[i].game.name, "Nivel " + games[i].game.level, games[i].game.score.ToString());
+        }
+
+        private IEnumerator ShowHighscores(float waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            _rowList[0].gameObject.SetActive(true);
+            yield return new WaitForSeconds(waitTime);
+            _rowList[1].gameObject.SetActive(true);
+            yield return new WaitForSeconds(waitTime);
+            _rowList[2].gameObject.SetActive(true);
+            yield return new WaitForSeconds(waitTime);
+            _buttonsObjects._replay.SetActive(true);
+            _buttonsObjects._return.SetActive(true);
+            _tmpObjects._skipText.gameObject.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(_buttonsObjects._return);
+        } 
+        #endregion
+
+        private void SwitchResultsHighscore(bool isWriting)
+        {
+            _panels._highscorePanel.SetActive(!isWriting);
+            _panels._resultsPanel.SetActive(isWriting);
+        }
+
+        #region Button Methods
+        public void AcceptInput()
         {
             PlayerPrefsManager.UpdateTotalScore(_increaseScore);
             DataManager.UploadGame(_nameText.text, _increaseScore, PlayerPrefsManager.GetLevelSelected());
             SwitchResultsHighscore(false);
-            DisplayHighscores();
+            DisplayHighscores(true);
         }
 
-        private void DisplayHighscores()
+        public void CancelInput()
         {
-            SetHighscores();
-            _rowList.ForEach(row => row.gameObject.SetActive(false));
-            StartCoroutine(ShowHighscores());
-        }
-
-        private IEnumerator ShowHighscores()
-        {
-            yield return new WaitForSeconds(1);
-            _rowList[0].gameObject.SetActive(true);
-            yield return new WaitForSeconds(1);
-            _rowList[1].gameObject.SetActive(true);
-            yield return new WaitForSeconds(1);
-            _rowList[2].gameObject.SetActive(true);
-            yield return new WaitForSeconds(1);
-            _buttons.ForEach(button => button.gameObject.SetActive(true));
+            _panels._dontSavePanel.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(_buttons[0].gameObject);
+            EventSystem.current.SetSelectedGameObject(_buttonsObjects._yes);
         }
 
-        private void SwitchResultsHighscore(bool isWriting)
+        public void YesButton()
         {
-            _highscorePanel.SetActive(!isWriting);
-            _resultsPanel.SetActive(isWriting);
+            SwitchResultsHighscore(false);
+            DisplayHighscores(false);
         }
 
-        private void SetHighscores()
+        public void NoButton()
         {
-            _rowList.ForEach(row => row.SetLabels("-", "-", "-", "-"));
-            GameModel currentGame = new GameModel(_nameText.text, _increaseScore, PlayerPrefsManager.GetLevelSelected());
-            List<GameOrderedModel> games = DataManager.ReturnGamesWithLast(currentGame);
-            for (int i = 0; i < games.Count; i++)
-                if(games[i] != null)
-                    _rowList[i].SetLabels((games[i].position+1).ToString(), games[i].game.name, "Nivel " + games[i].game.level, games[i].game.score.ToString());
+            _panels._dontSavePanel.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(_inputField.gameObject);
         }
 
         public void ReloadButton()
@@ -184,6 +255,7 @@ namespace Scripts.Views
         public void ReturnToMenuButton()
         {
             SceneManager.LoadScene("MainScene");
-        }
+        }        
+        #endregion
     } 
 }
