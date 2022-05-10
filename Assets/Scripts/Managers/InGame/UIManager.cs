@@ -47,8 +47,16 @@ namespace Scripts.Managers.InGame
             public List<GameObject> _tips;
         }
 
-        [SerializeField] private GameObject _yesButton;
-        [SerializeField] private GameObject _playButton;
+        [SerializeField] private Buttons _buttons;
+
+        [System.Serializable]
+        public class Buttons
+        {
+            public GameObject _pause;
+            public GameObject _yes;
+            public GameObject _play;
+        }
+
         [SerializeField] private GameObject _player;    
         
         private int _eggCount = 0;
@@ -79,6 +87,7 @@ namespace Scripts.Managers.InGame
         private void SetValues()
         {
             _player.SetActive(false);
+            _buttons._pause.SetActive(false);
             _playingText._upgradeText.text = "";
             _indexOfLevel = PlayerPrefsManager.GetLevelSelected() - 1;
             _levelTips.ForEach(level => level._tips.ForEach(tip => tip.SetActive(false)));
@@ -94,13 +103,14 @@ namespace Scripts.Managers.InGame
                 if (Input.GetButtonDown("Cancel") && !_uiCanvas._quitCanvas.active) OpenQuitCanvas();
                 else if (Input.GetButtonDown("Cancel") && _uiCanvas._quitCanvas.active) NoButton();
             }
-            if (_uiCanvas._playingCanvas.active)
+            if (_uiCanvas._playingCanvas.active && !IsGameOver())
             {
                 if (Input.GetButtonDown("Cancel") && !_uiCanvas._menuCanvas.active) OpenMenuCanvas();
                 else if (Input.GetButtonDown("Cancel") && _uiCanvas._menuCanvas.active) StartGame();
             }
             if (_gettingScore)
                 GetGlobalHighscore(false);
+            if(IsGameOver()) _buttons._pause.SetActive(false);
         }
 
         private void GetGlobalHighscore(bool isStart)
@@ -249,19 +259,21 @@ namespace Scripts.Managers.InGame
             else
             {
                 Time.timeScale = 1;
+                _buttons._pause.SetActive(true);
                 _uiCanvas._idleCanvas.SetActive(false);
                 _uiCanvas._menuCanvas.SetActive(false);
                 _isPlaying = true;
                 _isPaused = false;
                 _uiCanvas._playingCanvas.SetActive(true);
                 _player.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(null);
             }
         }
 
         public void OpenQuitCanvas()
         {
             _uiCanvas._quitCanvas.SetActive(true);
-            SetSelectedButton(_yesButton);
+            SetSelectedButton(_buttons._yes);
         }
 
         public void QuitApplication()
@@ -273,7 +285,7 @@ namespace Scripts.Managers.InGame
         public void NoButton()
         {
             _uiCanvas._quitCanvas.SetActive(false);
-            SetSelectedButton(_playButton);
+            SetSelectedButton(_buttons._play);
         }
 
         public void ReturnMenu()
@@ -300,8 +312,9 @@ namespace Scripts.Managers.InGame
         public void OpenMenuCanvas()
         {
             _isPaused = true;
+            _buttons._pause.SetActive(false);
             _uiCanvas._menuCanvas.SetActive(true);
-            SetSelectedButton(_playButton);
+            SetSelectedButton(_buttons._play);
             Time.timeScale = 0;
         }
         #endregion
