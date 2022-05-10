@@ -94,6 +94,12 @@ namespace Scripts.Controllers.Principals
             yield return new WaitForSeconds(1.5f);
             _gameOverCanvas.SetActive(true);
         }
+        private void OnApplicationQuit()
+        {
+            if (!Application.isEditor)
+                PlayerPrefsManager.UpdateLevelSelected(0);
+            Debug.LogError("Quit");
+        }
     }
 }
 

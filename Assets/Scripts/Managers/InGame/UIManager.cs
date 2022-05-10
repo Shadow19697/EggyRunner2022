@@ -60,6 +60,7 @@ namespace Scripts.Managers.InGame
         private int _indexOfTips = 0;
 
         private bool _isPlaying = false;
+        private bool _isPaused = false;
         private bool _isGameOver = false;
         private bool _gettingScore;
         private bool _immunityActivated;
@@ -125,6 +126,11 @@ namespace Scripts.Managers.InGame
         public bool IsGameOver()
         {
             return _isGameOver;
+        }
+
+        public bool IsPaused()
+        {
+            return _isPaused;
         }
 
         #region Actual Score Methods
@@ -246,6 +252,7 @@ namespace Scripts.Managers.InGame
                 _uiCanvas._idleCanvas.SetActive(false);
                 _uiCanvas._menuCanvas.SetActive(false);
                 _isPlaying = true;
+                _isPaused = false;
                 _uiCanvas._playingCanvas.SetActive(true);
                 _player.SetActive(true);
             }
@@ -292,6 +299,7 @@ namespace Scripts.Managers.InGame
 
         public void OpenMenuCanvas()
         {
+            _isPaused = true;
             _uiCanvas._menuCanvas.SetActive(true);
             SetSelectedButton(_playButton);
             Time.timeScale = 0;
@@ -318,11 +326,32 @@ namespace Scripts.Managers.InGame
             EventSystem.current.SetSelectedGameObject(button);
         }
 
-        private void OnApplicationQuit()
+        void OnApplicationFocus(bool hasFocus)
         {
-            if(!Application.isEditor)
-                PlayerPrefsManager.UpdateLevelSelected(0);
-            Debug.LogError("Quit");
+            if (IsPlaying() && !IsGameOver())
+            {
+                if (!hasFocus)
+                {
+                    OpenMenuCanvas();
+                    SoundManager.Instance.PauseLevelMusic();
+                }
+                else
+                    SoundManager.Instance.PlayLevelMusic(); 
+            }
+        }
+
+        void OnApplicationPause(bool pauseStatus)
+        {
+            if (IsPlaying() && !IsGameOver())
+            {
+                if (pauseStatus)
+                {
+                    OpenMenuCanvas();
+                    SoundManager.Instance.PauseLevelMusic();
+                }
+                else
+                    SoundManager.Instance.PlayLevelMusic(); 
+            }
         }
     }
 }

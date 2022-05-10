@@ -29,7 +29,7 @@ namespace Scripts.Player
 
         public void Update()
         {
-            if (UIManager.Instance.IsPlayerAlive())
+            if (UIManager.Instance.IsPlayerAlive() && !UIManager.Instance.IsPaused())
             {
                 if (_isSpaceLevel)
                     VerticalMove();
