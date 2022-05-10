@@ -24,6 +24,9 @@ namespace Scripts.Controllers.InGame
         private int _bgObjectIndex = 0;
         private bool _isSpaceLevel;
 
+        private static EnvironmentController _instance;
+
+        public static EnvironmentController Instance { get { if (_instance == null) _instance = FindObjectOfType<EnvironmentController>(); return _instance; } }
 
         private void Start()
         {

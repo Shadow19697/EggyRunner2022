@@ -9,21 +9,18 @@ namespace Scripts.Controllers.Principals
 {
     public class LevelController : MonoBehaviour
     {
-        [SerializeField] private SoundManager _soundManager;
-        [SerializeField] private ObjectsManager _objectsManager;
-        [SerializeField] private EnvironmentController _environmentController;
         [SerializeField] private GameObject _gameOverCanvas;
         [SerializeField] private Texture2D _cursorTexture;
 
         [SerializeField] private int _streetVelocity;
         [SerializeField] private int _velocityIncrement;
 
-        private int _counter;
+        private Coroutine _showGameOverCanvas = null;
         private LevelStateEnum _state;
         private int _backgroundVelocity;
-        private int _gear;
-        private int _intervalIncrement;
-        private Coroutine _showGameOverCanvas;
+        private int _counter = 0;
+        private int _gear = 1;
+        private int _intervalIncrement = 200;
 
         void Start()
         {
@@ -32,11 +29,7 @@ namespace Scripts.Controllers.Principals
             SettingsController.SetVisualSettings(false);
             _gameOverCanvas.SetActive(false);
             _state = LevelStateEnum.IdleStart;
-            _counter = 0;
             _backgroundVelocity = _streetVelocity - 5;
-            _gear = 1;
-            _intervalIncrement = 200;
-            _showGameOverCanvas = null;
         }
 
         private void FixedUpdate()
@@ -58,21 +51,22 @@ namespace Scripts.Controllers.Principals
             if (UIManager.Instance.IsPlaying())
             {
                 _state = LevelStateEnum.Playing;
-                _soundManager.PlayLevelMusic();
+                SoundManager.Instance.PlayLevelMusic();
             }
         }
 
+        [System.Obsolete]
         private void Playing()
         {
             UpdateVelocity();
-            _environmentController.MoveEnvironment(_backgroundVelocity, _streetVelocity);
-            _objectsManager.UpdateVelocityMovement(_streetVelocity);
+            EnvironmentController.Instance.MoveEnvironment(_backgroundVelocity, _streetVelocity);
+            ObjectsManager.Instance.UpdateVelocityMovement(_streetVelocity);
             UIManager.Instance.UpdateActualScore();
             _counter = UIManager.Instance.GetActualScore();
             if (UIManager.Instance.IsGameOver())
             {
                 _state = LevelStateEnum.GameOver;
-                _soundManager.PauseLevelMusic();
+                SoundManager.Instance.PauseLevelMusic();
             }
         }
 
@@ -89,8 +83,8 @@ namespace Scripts.Controllers.Principals
         private void GameOver()
         {
             SoundManager.Instance.PauseLevelMusic();
-            _environmentController.MoveEnvironment(0, 0);
-            _objectsManager.StopAll();
+            EnvironmentController.Instance.MoveEnvironment(0, 0);
+            ObjectsManager.Instance.StopAll();
             if(_showGameOverCanvas == null)
                 _showGameOverCanvas = StartCoroutine(ShowGameOverCanvas());
         }

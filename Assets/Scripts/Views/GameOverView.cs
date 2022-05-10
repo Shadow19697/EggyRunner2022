@@ -71,7 +71,6 @@ namespace Scripts.Views
             SetInitValues();
             if (_isSpaceLevel) _tmpObjects._resultsText.text = "PUNTAJE\nNANOSATELITES RECUPERADOS\n\nPUNTAJE DE LA PARTIDA\n\nPUNTOS ACUMULADOS";
             _tmpObjects._skipText.gameObject.SetActive(true);
-            _tmpObjects._skipText.text = "Presiones [ESPACIO] para saltar conteo";
             _showCoroutine = StartCoroutine(ShowCoroutine(1));
         }
 

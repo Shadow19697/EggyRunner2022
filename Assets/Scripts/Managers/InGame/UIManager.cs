@@ -16,6 +16,7 @@ namespace Scripts.Managers.InGame
         public class UICanvas
         {
             public GameObject _idleCanvas;
+            public GameObject _menuCanvas;
             public GameObject _playingCanvas;
             public GameObject _quitCanvas;
         }
@@ -91,6 +92,11 @@ namespace Scripts.Managers.InGame
             if (_uiCanvas._idleCanvas.active) {
                 if (Input.GetButtonDown("Cancel") && !_uiCanvas._quitCanvas.active) OpenQuitCanvas();
                 else if (Input.GetButtonDown("Cancel") && _uiCanvas._quitCanvas.active) NoButton();
+            }
+            if (_uiCanvas._playingCanvas.active)
+            {
+                if (Input.GetButtonDown("Cancel") && !_uiCanvas._menuCanvas.active) OpenMenuCanvas();
+                else if (Input.GetButtonDown("Cancel") && _uiCanvas._menuCanvas.active) StartGame();
             }
             if (_gettingScore)
                 GetGlobalHighscore(false);
@@ -232,30 +238,35 @@ namespace Scripts.Managers.InGame
         #region Buttons Methods
         public void StartGame()
         {
-            _uiCanvas._idleCanvas.SetActive(false);
-            //TO DO: ANIMACION QUE SE DESACTIVA EL MENU;
-            _isPlaying = true;
-            _uiCanvas._playingCanvas.SetActive(true);
-            _player.SetActive(true);
+            if (_isPlaying)
+                StartCoroutine(ResumeGameDelayed());
+            else
+            {
+                Time.timeScale = 1;
+                _uiCanvas._idleCanvas.SetActive(false);
+                _uiCanvas._menuCanvas.SetActive(false);
+                _isPlaying = true;
+                _uiCanvas._playingCanvas.SetActive(true);
+                _player.SetActive(true);
+            }
         }
 
         public void OpenQuitCanvas()
         {
             _uiCanvas._quitCanvas.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(_yesButton);
+            SetSelectedButton(_yesButton);
         }
 
         public void QuitApplication()
         {
+            Debug.LogError("Quit");
             Application.Quit();
         }
 
         public void NoButton()
         {
             _uiCanvas._quitCanvas.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(_playButton);
+            SetSelectedButton(_playButton);
         }
 
         public void ReturnMenu()
@@ -278,7 +289,34 @@ namespace Scripts.Managers.InGame
             }
             _levelTips[_indexOfLevel]._tips[_indexOfTips].SetActive(true);
         }
+
+        public void OpenMenuCanvas()
+        {
+            _uiCanvas._menuCanvas.SetActive(true);
+            SetSelectedButton(_playButton);
+            Time.timeScale = 0;
+        }
         #endregion
+
+        private IEnumerator ResumeGameDelayed()
+        {
+            _playingText._upgradeText.gameObject.SetActive(true);
+            _uiCanvas._menuCanvas.SetActive(false);
+            for (int i = 3; i > 0; i--)
+            {
+                _playingText._upgradeText.text = i.ToString();
+                yield return new WaitForSecondsRealtime(1);
+            }
+            _isPlaying = false;
+            _playingText._upgradeText.text = "";
+            StartGame();
+        }
+
+        private void SetSelectedButton(GameObject button)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(button);
+        }
 
         private void OnApplicationQuit()
         {
