@@ -15,10 +15,12 @@ namespace Scripts.Managers.InGame
         [System.Serializable]
         public class UICanvas
         {
+            public List<GameObject> _cinematics;
             public GameObject _idleCanvas;
             public GameObject _menuCanvas;
             public GameObject _playingCanvas;
             public GameObject _quitCanvas;
+            public GameObject _blackBorders;
         }
         [SerializeField] private IdleText _idleText;
         [System.Serializable]
@@ -67,6 +69,7 @@ namespace Scripts.Managers.InGame
         private int _indexOfLevel;
         private int _indexOfTips = 0;
 
+        private bool _isCinematic = true;
         private bool _isPlaying = false;
         private bool _isPaused = false;
         private bool _isGameOver = false;
@@ -89,44 +92,77 @@ namespace Scripts.Managers.InGame
             _player.SetActive(false);
             _buttons._pause.SetActive(false);
             _playingText._upgradeText.text = "";
+            _idleText._globalHighscoreText.text = "";
+            _idleText._localHighscoreText.text = "";
             _indexOfLevel = PlayerPrefsManager.GetLevelSelected() - 1;
+            _uiCanvas._cinematics.ForEach(cinematic => cinematic.SetActive(false));
             _levelTips.ForEach(level => level._tips.ForEach(tip => tip.SetActive(false)));
-            _levelTips[_indexOfLevel]._tips[_indexOfTips].SetActive(true);
-            _idleText._localHighscoreText.text = "Mejor Puntaje\nLocal: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
-            GetGlobalHighscore(true);
-        }
-
-        [Obsolete]
-        private void Update()
-        {
-            if (_uiCanvas._idleCanvas.active) {
-                if (Input.GetButtonDown("Cancel") && !_uiCanvas._quitCanvas.active) OpenQuitCanvas();
-                else if (Input.GetButtonDown("Cancel") && _uiCanvas._quitCanvas.active) NoButton();
-            }
-            if (_uiCanvas._playingCanvas.active && !IsGameOver())
-            {
-                if (Input.GetButtonDown("Cancel") && !_uiCanvas._menuCanvas.active) OpenMenuCanvas();
-                else if (Input.GetButtonDown("Cancel") && _uiCanvas._menuCanvas.active) StartGame();
-            }
-            if (_gettingScore)
-                GetGlobalHighscore(false);
-            if(IsGameOver()) _buttons._pause.SetActive(false);
+            _uiCanvas._menuCanvas.SetActive(false);
+            _uiCanvas._playingCanvas.SetActive(false);
+            _uiCanvas._cinematics[_indexOfLevel].SetActive(true);
+            _uiCanvas._blackBorders.SetActive(true);
         }
 
         private void GetGlobalHighscore(bool isStart)
         {
-            try {
+            try
+            {
                 _idleText._globalHighscoreText.text = "Mejor Puntaje\nGlobal: " + DataManager.GetGlobalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
                 _gettingScore = false;
             }
-            catch {
-                if (isStart) {
+            catch
+            {
+                if (isStart)
+                {
                     HttpConnectionManager.Instance.ReturnGames(false);
                     _gettingScore = true;
                 }
                 _idleText._globalHighscoreText.text = "Esperando\npuntaje global...";
             }
-        }        
+        }
+
+        [Obsolete]
+        private void Update()
+        {
+            if (_isCinematic)
+            {
+                if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1") || !SoundManager.Instance.IsCinematicPlaying())
+                    DisplayIdleCanvas();
+            }
+            else
+            {
+                if (_uiCanvas._idleCanvas.active)
+                {
+                    if (Input.GetButtonDown("Cancel") && !_uiCanvas._quitCanvas.active) OpenQuitCanvas();
+                    else if (Input.GetButtonDown("Cancel") && _uiCanvas._quitCanvas.active) NoButton();
+                }
+                if (_uiCanvas._playingCanvas.active && !IsGameOver())
+                {
+                    if (Input.GetButtonDown("Cancel") && !_uiCanvas._menuCanvas.active) OpenMenuCanvas();
+                    else if (Input.GetButtonDown("Cancel") && _uiCanvas._menuCanvas.active) StartGame();
+                }
+                if (_gettingScore)
+                    GetGlobalHighscore(false);
+                if (IsGameOver()) _buttons._pause.SetActive(false);
+            }
+        }
+
+        private void DisplayIdleCanvas()
+        {
+            _isCinematic = false;
+            _uiCanvas._cinematics[_indexOfLevel].SetActive(false);
+            _uiCanvas._blackBorders.SetActive(false);
+            _uiCanvas._idleCanvas.SetActive(true);
+            _uiCanvas._menuCanvas.SetActive(true);
+            _levelTips[_indexOfLevel]._tips[_indexOfTips].SetActive(true);
+            _idleText._localHighscoreText.text = "Mejor Puntaje\nLocal: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
+            GetGlobalHighscore(true);
+        }
+
+        public bool IsCinematicPlaying()
+        {
+            return _isCinematic;
+        }
 
         public bool IsPlaying()
         {

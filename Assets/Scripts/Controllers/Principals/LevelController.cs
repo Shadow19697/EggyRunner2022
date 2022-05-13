@@ -11,6 +11,8 @@ namespace Scripts.Controllers.Principals
     {
         [SerializeField] private GameObject _gameOverCanvas;
         [SerializeField] private Texture2D _cursorTexture;
+        [SerializeField] private GameObject _enviromentController;
+        [SerializeField] private GameObject _objectsManager;
 
         [SerializeField] private int _streetVelocity;
         [SerializeField] private int _velocityIncrement;
@@ -28,14 +30,20 @@ namespace Scripts.Controllers.Principals
             LocalLoggerManager.InitLocalLoggerManager();
             SettingsController.SetVisualSettings(false);
             _gameOverCanvas.SetActive(false);
-            _state = LevelStateEnum.IdleStart;
+            _state = LevelStateEnum.Cinematic;
             _backgroundVelocity = _streetVelocity - 5;
+            _enviromentController.SetActive(false);
+            _objectsManager.SetActive(false);
+            SoundManager.Instance.PlayCinematicMusic();
         }
 
+        [System.Obsolete]
         private void FixedUpdate()
         {
             switch (_state)
             {
+                case LevelStateEnum.Cinematic: Cinematic();
+                    break;
                 case LevelStateEnum.IdleStart: IdleStart();
                     break;
                 case LevelStateEnum.Playing: Playing();
@@ -43,6 +51,17 @@ namespace Scripts.Controllers.Principals
                 case LevelStateEnum.GameOver: GameOver();
                     break;
                 default: break;
+            }
+        }
+
+        private void Cinematic()
+        {
+            if (!UIManager.Instance.IsCinematicPlaying())
+            {
+                _state = LevelStateEnum.IdleStart;
+                SoundManager.Instance.StopCinematicMusic();
+                _enviromentController.SetActive(true);
+                _objectsManager.SetActive(true);
             }
         }
 

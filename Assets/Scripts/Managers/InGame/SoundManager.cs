@@ -10,7 +10,7 @@ namespace Scripts.Managers.InGame
         [SerializeField] private AudioMixer _audioMixer;
 
         [SerializeField] private List<AudioSource> _levelMusic;
-        [SerializeField] private AudioSource _cinematicMusic;
+        [SerializeField] private List<AudioSource> _cinematicMusic;
         [SerializeField] private AudioSource _endingMusic;
         [SerializeField] private AudioSource _powerupMusic;
 
@@ -53,12 +53,17 @@ namespace Scripts.Managers.InGame
 
         public void PlayCinematicMusic()
         {
-            _cinematicMusic.Play();
+            _cinematicMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].Play();
         }
 
         public void StopCinematicMusic()
         {
-            _cinematicMusic.Stop();
+            _cinematicMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].Stop();
+        }
+
+        public bool IsCinematicPlaying()
+        {
+            return _cinematicMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].isPlaying;
         }
 
         public void PlayEndingMusic()
