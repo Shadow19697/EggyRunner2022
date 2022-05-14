@@ -8,7 +8,9 @@ namespace Scripts.Controllers.InGame
     {
         [SerializeField] private List<GameObject> _backgroundObjects;
         [SerializeField] private List<GameObject> _streetObjects;
+        [SerializeField] private GameObject _skyObject;
         [SerializeField] private List<LevelBackgrounds> _levelsBackground;
+        [SerializeField] private List<Sprite> _skiesBackground;
         [SerializeField] private GameObject _bottomBox;
         [System.Serializable]
         public class LevelBackgrounds
@@ -20,6 +22,7 @@ namespace Scripts.Controllers.InGame
         private int _levelId;
         private List<Rigidbody2D> _rigidbodys;
         private List<SpriteRenderer> _spriteCompBg;
+        private SpriteRenderer _skyComponent;
         private int _lastSpriteIndex = 1;
         private int _bgObjectIndex = 0;
         private bool _isSpaceLevel;
@@ -46,6 +49,7 @@ namespace Scripts.Controllers.InGame
             _spriteCompBg = new List<SpriteRenderer>();
             _spriteCompBg.Add(_backgroundObjects[0].GetComponent<SpriteRenderer>());
             _spriteCompBg.Add(_backgroundObjects[1].GetComponent<SpriteRenderer>());
+            _skyComponent = _skyObject.GetComponent<SpriteRenderer>();
         }
 
         private void SpritesInit()
@@ -58,6 +62,7 @@ namespace Scripts.Controllers.InGame
                 else
                     _streetObjects[i].GetComponent<SpriteRenderer>().enabled = false;
             }
+            _skyComponent.sprite = _skiesBackground[_levelId];
             if (_isSpaceLevel)
             {
                 _bottomBox.transform.localPosition = new Vector3(_bottomBox.transform.localPosition.x, _bottomBox.transform.localPosition.y - 300, _bottomBox.transform.localPosition.z);

@@ -23,8 +23,8 @@ namespace Scripts.Managers
                 StreamReader file = new StreamReader(LocalLoggerManager.GetLocalGamesPath());
                 var Json = file.ReadToEnd();
                 file.Close();
-                Debug.Log("Se cargaron las jugadas guardadas");
                 _localGames = JsonConvert.DeserializeObject<List<GameModel>>(Json);
+                Debug.Log("Se cargaron las jugadas guardadas");
             }
             catch
             {
@@ -191,12 +191,20 @@ namespace Scripts.Managers
         {
             if (games.Count > 0)
             {
-                var _game = (from game in games
-                             where game.level.Equals(level)
-                             orderby game.score descending
-                             select game).Take(1);
-                if (_game != null) return _game.ToList<GameModel>()[0].score;
-                else return 0;
+                try
+                {
+                    var _game = (from game in games
+                                 where game.level.Equals(level)
+                                 orderby game.score descending
+                                 select game).Take(1);
+
+                    if (_game != null) return _game.ToList<GameModel>()[0].score;
+                }
+                catch
+                {
+                    return 0;
+                }
+                return 0;
             }
             else return 0;
         }

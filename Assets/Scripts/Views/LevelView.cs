@@ -14,7 +14,7 @@ namespace Scripts.Views
         [SerializeField] private List<TextMeshProUGUI> _levelLabels;
 
         private int oldScore;
-        private int _pointsForUnlock = 5000;
+        private int _pointsForUnlock = 10000;
 
         private void Start()
         {
@@ -40,20 +40,17 @@ namespace Scripts.Views
             int score = PlayerPrefsManager.GetTotalScore();
             int levels = 1;
             _levelButtons.ForEach(button => button.interactable = false);
-            /*
-            if (score >= _pointsForUnlock && score < _pointsForUnlock*2) levels = 2;
-            if (score >= _pointsForUnlock*2 && score < _pointsForUnlock*3) levels = 3;
+            if (score >= _pointsForUnlock) levels = 2;
+            /*if (score >= _pointsForUnlock*2 && score < _pointsForUnlock*3) levels = 3;
             if (score >= _pointsForUnlock*3 && score < _pointsForUnlock*4) levels = 4;
             if (score >= _pointsForUnlock*4) levels = 5;
+            */
             for (int i = 0; i < levels-1; i++)
                 _levelButtons[i].interactable = true;
-            */
         }
 
         private void UpdateButtonsLabels()
         {
-            _levelLabels.ForEach(label => label.text = "BLOQUEADO");
-            /*
             int levelScore = _pointsForUnlock;
             int levelNumber = 2;
             _levelLabels.ForEach(label =>
@@ -66,7 +63,10 @@ namespace Scripts.Views
                 levelScore = levelScore + _pointsForUnlock;
                 levelNumber++;
             });
-            */
+            //-----------------------------ERASE--------------------------
+            for(int i = 1; i<4; i++)
+                _levelLabels[i].text = "BLOQUEADO";
+            //------------------------------------------------------------
         }
 
         public void LevelSelected(int id)
