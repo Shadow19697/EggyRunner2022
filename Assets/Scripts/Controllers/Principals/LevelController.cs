@@ -85,6 +85,7 @@ namespace Scripts.Controllers.Principals
             if (UIManager.Instance.IsGameOver())
             {
                 _state = LevelStateEnum.GameOver;
+                UIManager.Instance.SetWhiteScoreText();
                 SoundManager.Instance.PauseLevelMusic();
             }
         }

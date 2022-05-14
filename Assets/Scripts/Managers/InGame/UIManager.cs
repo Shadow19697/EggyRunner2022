@@ -76,6 +76,10 @@ namespace Scripts.Managers.InGame
         private bool _gettingScore;
         private bool _immunityActivated;
 
+        private Color32 _white = new Color32(255, 255, 255, 255);
+        private Color32 _cian = new Color32(91, 217, 231, 255);
+        private Color32 _magenta = new Color32(243, 87, 174, 255);
+
         private float _scoreCounter = 0;
 
         private static UIManager _instance;
@@ -94,6 +98,9 @@ namespace Scripts.Managers.InGame
             _playingText._upgradeText.text = "";
             _idleText._globalHighscoreText.text = "";
             _idleText._localHighscoreText.text = "";
+            _playingText._eggCountText.text = "x0";
+            _playingText._lifesCountText.text = "x1";
+            _playingText._obstacleCountText.text = "x0";
             _indexOfLevel = PlayerPrefsManager.GetLevelSelected() - 1;
             _uiCanvas._cinematics.ForEach(cinematic => cinematic.SetActive(false));
             _levelTips.ForEach(level => level._tips.ForEach(tip => tip.SetActive(false)));
@@ -182,6 +189,15 @@ namespace Scripts.Managers.InGame
         #region Actual Score Methods
         public void UpdateActualScore()
         {
+            switch (_scoreMultiplier)
+            {
+                case 2: _playingText._actualScoreText.color = _cian;
+                    break;
+                case 3: _playingText._actualScoreText.color = _magenta;
+                    break;
+                default: _playingText._actualScoreText.color = _white;
+                    break;
+            }
             _scoreCounter += Time.deltaTime * 9 * _scoreMultiplier;
             _playingText._actualScoreText.text = "Puntaje: " + (int)_scoreCounter;
         }
@@ -189,6 +205,11 @@ namespace Scripts.Managers.InGame
         public int GetActualScore()
         {
             return (int)_scoreCounter;
+        }
+
+        public void SetWhiteScoreText()
+        {
+            _playingText._actualScoreText.color = _white;
         }
         #endregion
 
