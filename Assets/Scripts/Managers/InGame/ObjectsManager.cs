@@ -1,5 +1,4 @@
 using Scripts.Controllers.InGame;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +8,14 @@ namespace Scripts.Managers.InGame
     public class ObjectsManager : MonoBehaviour
     {
         [SerializeField] private CollectableController _collectable;
-        [SerializeField] private List<Scripts.Controllers.InGame.ObstacleController> _obstacles;
+        //[SerializeField] private List<Scripts.Controllers.InGame.ObstacleController> _obstacles;
+
+        [SerializeField] private List<Obstacles> _levelsObstacles;
+        [System.Serializable]
+        public class Obstacles
+        {
+            public List<Scripts.Controllers.InGame.ObstacleController> _obstacles;
+        }
 
         private static ObjectsManager _instance;
         public static ObjectsManager Instance { get { if (_instance == null) _instance = FindObjectOfType<ObjectsManager>(); return _instance; } }
@@ -20,6 +26,14 @@ namespace Scripts.Managers.InGame
         private bool _readyToLaunch = true;
         private Coroutine _moveCollectable;
         private int _index;
+        private int _currentLevelIndex;
+        private List<Scripts.Controllers.InGame.ObstacleController> _currentLevelObstacles;
+
+        private void Start()
+        {
+            _currentLevelIndex = PlayerPrefsManager.GetLevelSelected() - 1;
+            _currentLevelObstacles = _levelsObstacles[_currentLevelIndex]._obstacles;
+        }
 
         public void UpdateVelocityMovement(int streetVelocity)
         {
@@ -49,6 +63,7 @@ namespace Scripts.Managers.InGame
 
         }
 
+        #region Collectable Methods
         private void ManageCollectable(bool stop)
         {
             if (!stop)
@@ -57,9 +72,9 @@ namespace Scripts.Managers.InGame
                     if (_moveCollectable == null)
                         _moveCollectable = StartCoroutine(MoveCollectable());
             }
-            else 
-                if(_moveCollectable!=null)
-                    StopCoroutine(_moveCollectable);
+            else
+                if (_moveCollectable != null)
+                StopCoroutine(_moveCollectable);
         }
 
         private IEnumerator MoveCollectable()
@@ -68,18 +83,20 @@ namespace Scripts.Managers.InGame
             _collectable.MoveCollectable(_objectsVelocity);
             _moveCollectable = null;
         }
+        #endregion
 
+        #region Obstacle Methods
         private void ManageObstacles()
         {
             if (_readyToLaunch)
             {
-                _index = UnityEngine.Random.Range(0, _obstacles.Count);
-                if (_obstacles[_index].IsReady())
+                _index = UnityEngine.Random.Range(0, _currentLevelObstacles.Count);
+                if (_currentLevelObstacles[_index].IsReady())
                     MoveObstacle();
             }
             else
             {
-                if (_obstacles[_index].LaunchAnother())
+                if (_currentLevelObstacles[_index].LaunchAnother())
                     _readyToLaunch = true;
             }
         }
@@ -87,14 +104,16 @@ namespace Scripts.Managers.InGame
         private void MoveObstacle()
         {
             _readyToLaunch = false;
-            _obstacles[_index].MoveObstacle(_objectsVelocity);
+            _currentLevelObstacles[_index].MoveObstacle(_objectsVelocity);
         }
 
         public void EnableDamageCollider(bool value)
         {
-            _obstacles.ForEach(obstacle => {
+            _currentLevelObstacles.ForEach(obstacle =>
+            {
                 obstacle.GetDamageCollider().enabled = value;
             });
-        }
+        } 
+        #endregion
     } 
 }

@@ -38,6 +38,7 @@ namespace Scripts.Controllers.InGame
                 _launchAnother = true;
             if ((int)this.transform.localPosition.x <= -1200)
                 ResetObstacle();
+            if (!_isGreen) _transform.Rotate(0, 0, 360 * Time.deltaTime);
         }
 
         private void ResetObstacle()
@@ -73,7 +74,7 @@ namespace Scripts.Controllers.InGame
         {
             _isReady = false;
             _launchAnother = false;
-            _rigidbody.velocity = new Vector2(-velocity, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2((!_isGreen && velocity == 10.5f) ? -(velocity + 1) : -velocity, _rigidbody.velocity.y);
         }
 
         public CapsuleCollider2D GetDamageCollider()
