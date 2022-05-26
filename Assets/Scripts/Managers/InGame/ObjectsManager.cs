@@ -111,7 +111,7 @@ namespace Scripts.Managers.InGame
         {
             _currentLevelObstacles.ForEach(obstacle =>
             {
-                obstacle.GetDamageCollider().enabled = value;
+                if(!obstacle.WasSmashed()) obstacle.GetDamageCollider().enabled = value;
             });
         } 
         #endregion

@@ -14,7 +14,8 @@ namespace Scripts.Controllers.InGame
         private Transform _transform;
         private Rigidbody2D _rigidbody;
         private bool _isReady;
-        private bool _launchAnother;
+        private bool _launchAnother = false;
+        private bool _wasSmashed;
         private int[] _randomPosY = new int[] { -200, -300 };
         private Vector3 _obstacleScale;
 
@@ -27,7 +28,6 @@ namespace Scripts.Controllers.InGame
             }
             _transform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody2D>();
-            _launchAnother = false;
             _obstacleScale = _transform.localScale;
             ResetObstacle();
         }
@@ -38,7 +38,7 @@ namespace Scripts.Controllers.InGame
                 _launchAnother = true;
             if ((int)this.transform.localPosition.x <= -1200)
                 ResetObstacle();
-            if (!_isGreen) _transform.Rotate(0, 0, 360 * Time.deltaTime);
+            if (!_isGreen) _transform.Rotate(0, 0, 180 * Time.deltaTime);
         }
 
         private void ResetObstacle()
@@ -53,6 +53,7 @@ namespace Scripts.Controllers.InGame
             else _damageCollider2D.enabled = true;
             _rigidbody.velocity = new Vector2(0, 0);
             _isReady = true;
+            _wasSmashed = false;
         }
 
         private int SetPositionY()
@@ -68,6 +69,11 @@ namespace Scripts.Controllers.InGame
         public bool LaunchAnother()
         {
             return _launchAnother;
+        }
+
+        public bool WasSmashed()
+        {
+            return _wasSmashed;
         }
 
         public void MoveObstacle(float velocity)
@@ -102,6 +108,7 @@ namespace Scripts.Controllers.InGame
                 _transform.localScale = new Vector3(_obstacleScale.x, _obstacleScale.y * 0.3f, _obstacleScale.z);
                 _capsuleCollider2D.enabled = false;
                 _damageCollider2D.enabled = false;
+                _wasSmashed = true;
                 _rigidbody.AddForce(Vector2.down * 20);
                 UIManager.Instance.AddObstacleCount();
             }

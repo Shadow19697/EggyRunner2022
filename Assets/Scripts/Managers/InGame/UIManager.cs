@@ -369,6 +369,7 @@ namespace Scripts.Managers.InGame
 
         public void OpenMenuCanvas()
         {
+            SoundManager.Instance.PausePowerupMusic();
             _isPaused = true;
             _buttons._pause.SetActive(false);
             _uiCanvas._menuCanvas.SetActive(true);
