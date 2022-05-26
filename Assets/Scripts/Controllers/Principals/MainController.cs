@@ -18,9 +18,9 @@ namespace Scripts.Controllers.Principals
         void Start()
         {
             Cursor.SetCursor(_cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
+            SettingsController.SetVisualSettings(true);
             PlayerPrefsManager.InitPlayerPrefs();
             SettingsController.SetVolume(_audioMixer);
-            SettingsController.SetVisualSettings(true);
             LocalLoggerManager.InitLocalLoggerManager();
             HttpConnectionManager.Instance.ReturnGames(false);
             if (_uploadRemainingCoroutine != null) StopCoroutine(_uploadRemainingCoroutine);

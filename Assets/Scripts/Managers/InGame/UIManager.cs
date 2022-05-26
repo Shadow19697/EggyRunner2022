@@ -39,6 +39,7 @@ namespace Scripts.Managers.InGame
             public TextMeshProUGUI _eggCountText;
             public TextMeshProUGUI _obstacleCountText;
             public TextMeshProUGUI _upgradeText;
+            public TextMeshProUGUI _countdownText;
         }
 
         [SerializeField] private List<LevelTips> _levelTips;
@@ -264,7 +265,7 @@ namespace Scripts.Managers.InGame
             StartCoroutine(DisplayImmunityUntil(_timeUpgradeActive+4));
             StartCoroutine(Fade(_playingText._upgradeText, _timeUpgradeActive+4));
             StartCoroutine(PlayerController.Instance.GlowAnimation());
-            SoundManager.Instance.PlayPowerupMusic();
+            SoundManager.Instance.PlayPowerupMusic(true);
         }
 
         private IEnumerator DisplayImmunityUntil(float timeActive)
@@ -378,15 +379,16 @@ namespace Scripts.Managers.InGame
 
         private IEnumerator ResumeGameDelayed()
         {
-            _playingText._upgradeText.gameObject.SetActive(true);
+            _playingText._countdownText.gameObject.SetActive(true);
             _uiCanvas._menuCanvas.SetActive(false);
             for (int i = 3; i > 0; i--)
             {
-                _playingText._upgradeText.text = i.ToString();
+                _playingText._countdownText.text = i.ToString();
                 yield return new WaitForSecondsRealtime(1);
             }
             _isPlaying = false;
-            _playingText._upgradeText.text = "";
+            _playingText._countdownText.text = "";
+            SoundManager.Instance.PlayPowerupMusic(false);
             StartGame();
         }
 
@@ -403,10 +405,10 @@ namespace Scripts.Managers.InGame
                 if (!hasFocus)
                 {
                     OpenMenuCanvas();
-                    SoundManager.Instance.PauseLevelMusic();
+                    SoundManager.Instance.PauseMusic();
                 }
                 else
-                    SoundManager.Instance.PlayLevelMusic(); 
+                    SoundManager.Instance.PlayMusic(); 
             }
         }
 
@@ -417,10 +419,10 @@ namespace Scripts.Managers.InGame
                 if (pauseStatus)
                 {
                     OpenMenuCanvas();
-                    SoundManager.Instance.PauseLevelMusic();
+                    SoundManager.Instance.PauseMusic();
                 }
                 else
-                    SoundManager.Instance.PlayLevelMusic(); 
+                    SoundManager.Instance.PlayMusic(); 
             }
         }
     }

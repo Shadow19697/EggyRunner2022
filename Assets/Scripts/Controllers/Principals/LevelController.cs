@@ -28,7 +28,6 @@ namespace Scripts.Controllers.Principals
         {
             Cursor.SetCursor(_cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
             LocalLoggerManager.InitLocalLoggerManager();
-            SettingsController.SetVisualSettings(false);
             _gameOverCanvas.SetActive(false);
             _state = LevelStateEnum.Cinematic;
             _backgroundVelocity = _streetVelocity - 5;

@@ -14,6 +14,9 @@ namespace Scripts.Managers.InGame
         [SerializeField] private AudioSource _endingMusic;
         [SerializeField] private AudioSource _powerupMusic;
 
+        private bool _isMusicPlaying = true;
+        private bool _isPowerUpPlaying = false;
+
         private static SoundManager _instance;
         public static SoundManager Instance { get { if (_instance == null) _instance = FindObjectOfType<SoundManager>(); return _instance; } }
 
@@ -41,14 +44,48 @@ namespace Scripts.Managers.InGame
         }
 
         #region Music
+        public void PlayMusic()
+        {
+            if (_isMusicPlaying)
+                PlayLevelMusic();
+        }
+
+        public void PauseMusic()
+        {
+            PauseLevelMusic();
+            PausePowerupMusic();
+        }
         public void PlayLevelMusic()
         {
             _levelMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].Play();
+            _isMusicPlaying = true;
+            _isPowerUpPlaying = false;
         }
 
         public void PauseLevelMusic()
         {
             _levelMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].Pause();
+        }
+
+        public void PlayPowerupMusic(bool vaccineGrabed)
+        {
+            if (vaccineGrabed || _isPowerUpPlaying)
+            {
+                _levelMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].Pause();
+                _powerupMusic.Play();
+                _isMusicPlaying = false;
+                _isPowerUpPlaying = true;
+            }
+        }
+
+        public void PausePowerupMusic()
+        {
+            if (IsPowerUpPlaying()) _powerupMusic.Pause();
+        }
+
+        public bool IsPowerUpPlaying()
+        {
+            return _powerupMusic.isPlaying;
         }
 
         public void PlayCinematicMusic()
@@ -66,6 +103,7 @@ namespace Scripts.Managers.InGame
             return _cinematicMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].isPlaying;
         }
 
+
         public void PlayEndingMusic()
         {
             _endingMusic.Play();
@@ -76,16 +114,7 @@ namespace Scripts.Managers.InGame
             _endingMusic.Stop();
         }
 
-        public void PlayPowerupMusic()
-        {
-            _levelMusic[(PlayerPrefsManager.GetLevelSelected() - 1)].Pause();
-            _powerupMusic.Play();
-        }
-
-        public void StopPowerupMusic()
-        {
-            _powerupMusic.Stop();
-        }
+        
         #endregion
     }
 }

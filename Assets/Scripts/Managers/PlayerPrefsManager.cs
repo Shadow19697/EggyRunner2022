@@ -30,6 +30,7 @@ namespace Scripts.Managers
             }
             else
             {
+                PlayerPrefs.DeleteAll();
                 _model.firstLoad = GetFirstLoad();
                 _model.totalScore = GetTotalScore();
                 _model.levelSelected = GetLevelSelected();
@@ -141,12 +142,12 @@ namespace Scripts.Managers
         #region Height & Width Methods
         public static int GetHeight()
         {
-            return PlayerPrefs.GetInt(Height, 480);
+            return PlayerPrefs.GetInt(Height, 600);
         }
 
         public static int GetWidth()
         {
-            return PlayerPrefs.GetInt(Width, 640);
+            return PlayerPrefs.GetInt(Width, 800);
         }
 
         public static void UpdateHeight(int value)
