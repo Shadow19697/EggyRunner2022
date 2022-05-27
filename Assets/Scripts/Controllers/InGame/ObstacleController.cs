@@ -1,3 +1,4 @@
+using Scripts.Managers;
 using Scripts.Managers.InGame;
 using UnityEngine;
 
@@ -36,15 +37,15 @@ namespace Scripts.Controllers.InGame
         {
             if ((int)this.transform.localPosition.x <= - (UnityEngine.Random.Range(200, 500)))
                 _launchAnother = true;
-            if ((int)this.transform.localPosition.x <= -1200)
+            if (((PlayerPrefsManager.GetLevelSelected() != 3) && (int)this.transform.localPosition.x <= -1200) || (PlayerPrefsManager.GetLevelSelected() == 3) && (int)this.transform.localPosition.x <= -2000)
                 ResetObstacle();
-            if (!_isGreen) _transform.Rotate(0, 0, 180 * Time.deltaTime);
+            if (!_isGreen) _transform.Rotate(0, 0, 30 * Time.deltaTime);
         }
 
         private void ResetObstacle()
         {
             this.transform.localPosition = new Vector3(
-                1200,
+                (PlayerPrefsManager.GetLevelSelected() == 3) ? 3000 : 1200,
                 SetPositionY(),
                 this.transform.localPosition.z);
             _transform.localScale = _obstacleScale;

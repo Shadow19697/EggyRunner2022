@@ -1,4 +1,5 @@
 using Scripts.Enums;
+using Scripts.Managers;
 using Scripts.Managers.InGame;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Scripts.Controllers.InGame
         [SerializeField] private List<Sprite> _activeSprite; //0: SickEgg, 1: Life, 2: x2, 3: x3, 4: Immunity
         [SerializeField] private Sprite _healthyEggSprite;
         [SerializeField] private Sprite _emptySprite;
+        [SerializeField] private Sprite _nanosatelliteSprite;
         [SerializeField] private ParticleSystem _explosion;
         [SerializeField] private AudioSource _grabUpgradeSound;
         [SerializeField] private AudioSource _grabEggSound;
@@ -20,6 +22,7 @@ namespace Scripts.Controllers.InGame
         private int[] _randomPosY = new int[] { 0, -100, -200, -300};
         private CollectableTypeEnum _typeOfCollectable;
         private bool _isReady;
+        private bool _isSpace;
 
         private void Start()
         {
@@ -30,6 +33,7 @@ namespace Scripts.Controllers.InGame
             _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
             ResetCollectable();
             _explosion.Pause();
+            _isSpace = PlayerPrefsManager.GetLevelSelected() == 3;
         }
 
         private void Update()
@@ -52,8 +56,11 @@ namespace Scripts.Controllers.InGame
                 this.transform.localPosition.z);
             switch(UnityEngine.Random.Range(0, 5))
             {
-                case 0: _currentSprite.sprite = _activeSprite[0];
-                    _typeOfCollectable = CollectableTypeEnum.SickEgg;
+                case 0: if (!_isSpace)
+                            _currentSprite.sprite = _activeSprite[0];
+                        else
+                            _currentSprite.sprite = _nanosatelliteSprite;
+                    _typeOfCollectable = CollectableTypeEnum.Collectable;
                     break;
                 case 1: _currentSprite.sprite = _activeSprite[1];
                     _typeOfCollectable = CollectableTypeEnum.Life;
@@ -96,9 +103,12 @@ namespace Scripts.Controllers.InGame
                 _currentSprite.sprite = _emptySprite;
                 switch (_typeOfCollectable)
                 {
-                    case CollectableTypeEnum.SickEgg:
+                    case CollectableTypeEnum.Collectable:
                         _grabEggSound.Play();
-                        _currentSprite.sprite = _healthyEggSprite;
+                        if (!_isSpace)
+                            _currentSprite.sprite = _healthyEggSprite;
+                        else
+                            _currentSprite.sprite = _emptySprite;
                         UIManager.Instance.UpdateEggCount();
                         break;
                     case CollectableTypeEnum.Life:

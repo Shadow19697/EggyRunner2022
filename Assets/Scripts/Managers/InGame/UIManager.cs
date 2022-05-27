@@ -6,6 +6,7 @@ using System;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using Scripts.Player;
+using UnityEngine.UI;
 
 namespace Scripts.Managers.InGame
 {
@@ -60,8 +61,17 @@ namespace Scripts.Managers.InGame
             public GameObject _play;
         }
 
-        [SerializeField] private GameObject _player;    
-        
+        [SerializeField] private GameObject _player;
+
+        [SerializeField] private PlayingUI _playingUi;
+        [System.Serializable]
+        public class PlayingUI
+        {
+            public Sprite _nanosatelliteSprite;
+            public GameObject _collectableImage;
+            public GameObject _obstacleGameObject;
+        }
+
         private int _eggCount = 0;
         private int _lifesCount = 1;
         private int _obstacleCount = 0;
@@ -103,6 +113,8 @@ namespace Scripts.Managers.InGame
             _playingText._lifesCountText.text = "x1";
             _playingText._obstacleCountText.text = "x0";
             _indexOfLevel = PlayerPrefsManager.GetLevelSelected() - 1;
+            if(_indexOfLevel > 1) _playingUi._obstacleGameObject.SetActive(false);
+            if (_indexOfLevel == 2) _playingUi._collectableImage.GetComponent<Image>().sprite = _playingUi._nanosatelliteSprite;
             _uiCanvas._cinematics.ForEach(cinematic => cinematic.SetActive(false));
             _levelTips.ForEach(level => level._tips.ForEach(tip => tip.SetActive(false)));
             _uiCanvas._menuCanvas.SetActive(false);
