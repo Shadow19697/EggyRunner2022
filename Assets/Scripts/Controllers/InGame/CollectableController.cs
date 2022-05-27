@@ -55,7 +55,7 @@ namespace Scripts.Controllers.InGame
                 1300,
                 SetPositionY(),
                 this.transform.localPosition.z);
-            switch(0)
+            switch(UnityEngine.Random.Range(0,5))
             {
                 case 0: if (!_isSpace)
                             _currentSprite.sprite = _activeSprite[0];
