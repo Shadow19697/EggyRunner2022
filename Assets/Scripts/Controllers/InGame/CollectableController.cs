@@ -20,12 +20,14 @@ namespace Scripts.Controllers.InGame
         private SpriteRenderer _currentSprite;
         private CapsuleCollider2D _capsuleCollider2D;
         private int[] _randomPosY = new int[] { 0, -100, -200, -300};
+        private int[] _randomPosYSpace = new int[] { 200, 100, 0, -100, -200, -300 };
         private CollectableTypeEnum _typeOfCollectable;
         private bool _isReady;
         private bool _isSpace;
 
         private void Start()
         {
+            _isSpace = PlayerPrefsManager.GetLevelSelected() == 3;
             _grabEggSound.Pause();
             _grabUpgradeSound.Pause();
             _rigidbody = GetComponent<Rigidbody2D>();
@@ -33,7 +35,6 @@ namespace Scripts.Controllers.InGame
             _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
             ResetCollectable();
             _explosion.Pause();
-            _isSpace = PlayerPrefsManager.GetLevelSelected() == 3;
         }
 
         private void Update()
@@ -54,7 +55,7 @@ namespace Scripts.Controllers.InGame
                 1300,
                 SetPositionY(),
                 this.transform.localPosition.z);
-            switch(UnityEngine.Random.Range(0, 5))
+            switch(0)
             {
                 case 0: if (!_isSpace)
                             _currentSprite.sprite = _activeSprite[0];
@@ -85,7 +86,8 @@ namespace Scripts.Controllers.InGame
 
         private int SetPositionY()
         {
-            return _randomPosY[UnityEngine.Random.Range(0,_randomPosY.Length)];
+            if(!_isSpace) return _randomPosY[UnityEngine.Random.Range(0,_randomPosY.Length)];
+            else return _randomPosYSpace[UnityEngine.Random.Range(0, _randomPosYSpace.Length)];
         }
 
         public bool IsReady()

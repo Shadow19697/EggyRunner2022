@@ -17,7 +17,9 @@ namespace Scripts.Controllers.InGame
         private bool _isReady;
         private bool _launchAnother = false;
         private bool _wasSmashed;
+        private bool _isSpace;
         private int[] _randomPosY = new int[] { -200, -300 };
+        private int[] _randomPosYSpace = new int[] { 100, -100, -300 };
         private Vector3 _obstacleScale;
 
         private void Start()
@@ -27,6 +29,7 @@ namespace Scripts.Controllers.InGame
                 _cryingCovidSound.Pause();
                 _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
             }
+            _isSpace = PlayerPrefsManager.GetLevelSelected() == 3;
             _transform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody2D>();
             _obstacleScale = _transform.localScale;
@@ -37,9 +40,9 @@ namespace Scripts.Controllers.InGame
         {
             if ((int)this.transform.localPosition.x <= - (UnityEngine.Random.Range(200, 500)))
                 _launchAnother = true;
-            if (((PlayerPrefsManager.GetLevelSelected() != 3) && (int)this.transform.localPosition.x <= -1200) || (PlayerPrefsManager.GetLevelSelected() == 3) && (int)this.transform.localPosition.x <= -2000)
+            if ((!_isSpace && (int)this.transform.localPosition.x <= -1200) || (_isSpace && (int)this.transform.localPosition.x <= -2000))
                 ResetObstacle();
-            if (!_isGreen) _transform.Rotate(0, 0, 30 * Time.deltaTime);
+            if (!_isGreen) _transform.Rotate(0, 0, 40 * Time.deltaTime);
         }
 
         private void ResetObstacle()
@@ -59,7 +62,8 @@ namespace Scripts.Controllers.InGame
 
         private int SetPositionY()
         {
-            return _randomPosY[UnityEngine.Random.Range(0, _randomPosY.Length)];
+            if(!_isSpace) return _randomPosY[UnityEngine.Random.Range(0, _randomPosY.Length)];
+            else return _randomPosYSpace[UnityEngine.Random.Range(0, _randomPosYSpace.Length)];
         }
 
         public bool IsReady()
