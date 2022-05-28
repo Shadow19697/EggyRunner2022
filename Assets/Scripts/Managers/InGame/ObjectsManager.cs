@@ -8,13 +8,12 @@ namespace Scripts.Managers.InGame
     public class ObjectsManager : MonoBehaviour
     {
         [SerializeField] private CollectableController _collectable;
-        //[SerializeField] private List<Scripts.Controllers.InGame.ObstacleController> _obstacles;
 
         [SerializeField] private List<Obstacles> _levelsObstacles;
         [System.Serializable]
         public class Obstacles
         {
-            public List<Scripts.Controllers.InGame.ObstacleController> _obstacles;
+            public List<ObstacleController> _obstacles;
         }
 
         private static ObjectsManager _instance;
@@ -27,11 +26,13 @@ namespace Scripts.Managers.InGame
         private Coroutine _moveCollectable;
         private int _index;
         private int _currentLevelIndex;
-        private List<Scripts.Controllers.InGame.ObstacleController> _currentLevelObstacles;
+        private List<ObstacleController> _currentLevelObstacles;
 
         private void Start()
         {
             _currentLevelIndex = PlayerPrefsManager.GetLevelSelected() - 1;
+            _levelsObstacles.ForEach(levelObstacle => levelObstacle._obstacles.ForEach(obstacle => obstacle.gameObject.SetActive(false)));
+            _levelsObstacles[_currentLevelIndex]._obstacles.ForEach(obstacle => obstacle.gameObject.SetActive(true));
             _currentLevelObstacles = _levelsObstacles[_currentLevelIndex]._obstacles;
         }
 
@@ -79,7 +80,7 @@ namespace Scripts.Managers.InGame
 
         private IEnumerator MoveCollectable()
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(15, 20));
+            yield return new WaitForSeconds((_currentLevelIndex != 2) ? UnityEngine.Random.Range(15, 20) : 15);
             _collectable.MoveCollectable(_objectsVelocity);
             _moveCollectable = null;
         }

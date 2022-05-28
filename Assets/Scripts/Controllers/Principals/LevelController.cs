@@ -20,9 +20,10 @@ namespace Scripts.Controllers.Principals
         private Coroutine _showGameOverCanvas = null;
         private LevelStateEnum _state;
         private int _backgroundVelocity;
-        private int _counter = 0;
         private int _gear = 1;
-        private int _intervalIncrement = 200;
+        private int _intervalIncrement = 23;
+        private float _timePlaying = 0;
+        private bool _isSpace;
 
         void Start()
         {
@@ -30,6 +31,8 @@ namespace Scripts.Controllers.Principals
             LocalLoggerManager.InitLocalLoggerManager();
             _gameOverCanvas.SetActive(false);
             _state = LevelStateEnum.Cinematic;
+            _isSpace = PlayerPrefsManager.GetLevelSelected() == 3;
+            if (_isSpace) _streetVelocity = _streetVelocity - 4;
             _backgroundVelocity = _streetVelocity - 5;
             _enviromentController.SetActive(false);
             _objectsManager.SetActive(false);
@@ -80,7 +83,7 @@ namespace Scripts.Controllers.Principals
             EnvironmentController.Instance.MoveEnvironment(_backgroundVelocity, _streetVelocity);
             ObjectsManager.Instance.UpdateVelocityMovement(_streetVelocity);
             UIManager.Instance.UpdateActualScore();
-            _counter = UIManager.Instance.GetActualScore();
+            _timePlaying += Time.deltaTime;
             if (UIManager.Instance.IsGameOver())
             {
                 _state = LevelStateEnum.GameOver;
@@ -91,8 +94,9 @@ namespace Scripts.Controllers.Principals
 
         private void UpdateVelocity()
         {
-            if(_counter == (_intervalIncrement*_gear) && _gear < 7)
+            if((int)_timePlaying == (_intervalIncrement*_gear) && _gear < 7)
             {
+                Debug.LogWarning("Increment");
                 if (_gear == 5) _velocityIncrement--;
                 _streetVelocity += _velocityIncrement;
                 _gear++;
@@ -101,7 +105,7 @@ namespace Scripts.Controllers.Principals
 
         private void GameOver()
         {
-            SoundManager.Instance.PauseLevelMusic();
+            SoundManager.Instance.PauseMusic();
             EnvironmentController.Instance.MoveEnvironment(0, 0);
             ObjectsManager.Instance.StopAll();
             if(_showGameOverCanvas == null)

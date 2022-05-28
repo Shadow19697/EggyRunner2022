@@ -24,7 +24,9 @@ namespace Scripts.Player
             {
                 new AnyStateAnimation("Idle"),
                 new AnyStateAnimation("Jump"),
-                new AnyStateAnimation("Fall")
+                new AnyStateAnimation("Fall"),
+                new AnyStateAnimation("FallSpace"),
+                new AnyStateAnimation("JumpSpace"),
             };
             _anyStateAnimator.AddAnimations(animations);
         }
@@ -40,6 +42,14 @@ namespace Scripts.Player
         public static void PlayFallAnimation()
         {
             _anyStateAnimator.TryPlayAnimation("Fall");
+        }
+        public static void PlayFallSpaceAnimation()
+        {
+            _anyStateAnimator.TryPlayAnimation("FallSpace");
+        }
+        public static void PlayJumpSpaceAnimation()
+        {
+            _anyStateAnimator.TryPlayAnimation("JumpSpace");
         }
         public static void PlayDeathAnimation()
         {

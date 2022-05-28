@@ -23,6 +23,7 @@ namespace Scripts.Player
         public static PlayerController Instance { get { if (_instance == null) _instance = FindObjectOfType<PlayerController>(); return _instance; } }
 
         private CapsuleCollider2D _capsuleCollider2D;
+        private CircleCollider2D _circleCollider2D;
         private Rigidbody2D _rigidbody2D;
         private bool _hasDied;
 
@@ -33,6 +34,7 @@ namespace Scripts.Player
             PlayerAnimations.DeathAnimation = _deathAnimation;
             PlayerAnimations.InitAnimations();
             _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+            _circleCollider2D = GetComponent<CircleCollider2D>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _hasDied = false;
             _deathSound.Pause();
@@ -45,6 +47,7 @@ namespace Scripts.Player
             {
                 _deathSound.Play();
                 _capsuleCollider2D.enabled = false;
+                _circleCollider2D.enabled = false;
                 _rig.SetActive(false);
                 _rigidbody2D.bodyType = RigidbodyType2D.Static;
                 _hasDied = true;

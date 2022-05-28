@@ -19,7 +19,7 @@ namespace Scripts.Controllers.InGame
         private bool _wasSmashed;
         private bool _isSpace;
         private int[] _randomPosY = new int[] { -200, -300 };
-        private int[] _randomPosYSpace = new int[] { 100, -100, -300 };
+        private int[] _randomPosYSpace = new int[] { 120, -120, -320 };
         private Vector3 _obstacleScale;
 
         private void Start()
@@ -38,7 +38,7 @@ namespace Scripts.Controllers.InGame
 
         private void Update()
         {
-            if ((int)this.transform.localPosition.x <= - (UnityEngine.Random.Range(200, 500)))
+            if ((!_isSpace && (int)this.transform.localPosition.x <= - (UnityEngine.Random.Range(200, 500))) || (_isSpace && (int)this.transform.localPosition.x <= (UnityEngine.Random.Range(200, 400))))
                 _launchAnother = true;
             if ((!_isSpace && (int)this.transform.localPosition.x <= -1200) || (_isSpace && (int)this.transform.localPosition.x <= -2000))
                 ResetObstacle();
@@ -85,6 +85,7 @@ namespace Scripts.Controllers.InGame
         {
             _isReady = false;
             _launchAnother = false;
+            //if (_isSpace) velocity = velocity - 3;
             _rigidbody.velocity = new Vector2((!_isGreen && velocity == 10.5f) ? -(velocity + 1) : -velocity, _rigidbody.velocity.y);
         }
 
