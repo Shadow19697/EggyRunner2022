@@ -24,7 +24,7 @@ namespace Scripts.Player
             _rigidbody2D = GetComponent<Rigidbody2D>();
             if (_isSpaceLevel)
             {
-                _rigidbody2D.gravityScale = 1;
+                _rigidbody2D.gravityScale = 0.8f;
                 _rigidbody2D.mass = 0.2f;
                 _jumpForce = 60;
             }

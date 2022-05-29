@@ -1,6 +1,7 @@
 using Scripts.Managers;
 using Scripts.Managers.InGame;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Scripts.Controllers.InGame
 {
@@ -11,9 +12,15 @@ namespace Scripts.Controllers.InGame
         [SerializeField] private AudioSource _cryingCovidSound;
         [SerializeField] private int _covidSize;
 
+        [SerializeField] private bool _isAsteroid;
+        [SerializeField] private AudioSource _asteroidDestroyedSound;
+        [SerializeField] private ParticleSystem _asteroidsParticles;
+        [SerializeField] private GameObject _this;
+
         private CapsuleCollider2D _capsuleCollider2D;
         private Transform _transform;
         private Rigidbody2D _rigidbody;
+        private Image _currentSprite;
         private bool _isReady;
         private bool _launchAnother = false;
         private bool _wasSmashed;
@@ -24,10 +31,18 @@ namespace Scripts.Controllers.InGame
 
         private void Start()
         {
-            if (_isGreen)
+            if (_isGreen || _isAsteroid)
             {
-                _cryingCovidSound.Pause();
                 _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+                if (_isGreen)
+                    _cryingCovidSound.Pause();
+                else
+                {
+                    //_asteroidDestroyedSound.Pause();------------------------------------------------------------------------------------
+                    _asteroidsParticles.Pause();
+                    _capsuleCollider2D.enabled = false;
+                    _currentSprite = _this.GetComponent<Image>();
+                }
             }
             _isSpace = PlayerPrefsManager.GetLevelSelected() == 3;
             _transform = GetComponent<Transform>();
@@ -42,7 +57,7 @@ namespace Scripts.Controllers.InGame
                 _launchAnother = true;
             if ((!_isSpace && (int)this.transform.localPosition.x <= -1200) || (_isSpace && (int)this.transform.localPosition.x <= -2000))
                 ResetObstacle();
-            if (!_isGreen) _transform.Rotate(0, 0, 40 * Time.deltaTime);
+            if (!_isGreen) _transform.Rotate(0, 0, 35 * Time.deltaTime);
         }
 
         private void ResetObstacle()
@@ -53,8 +68,17 @@ namespace Scripts.Controllers.InGame
                 this.transform.localPosition.z);
             _transform.localScale = _obstacleScale;
             if (_isGreen) _capsuleCollider2D.enabled = true;
-            if (UIManager.Instance.IsImmunityActivated()) _damageCollider2D.enabled = false;
-            else _damageCollider2D.enabled = true;
+            if (UIManager.Instance.IsImmunityActivated())
+            {
+                _damageCollider2D.enabled = false;
+                if (_isAsteroid) _capsuleCollider2D.enabled = true;
+            }
+            else
+            {
+                _damageCollider2D.enabled = true;
+                if(_isAsteroid) _capsuleCollider2D.enabled = false;
+            }
+            if (_isAsteroid) _currentSprite.enabled = true;
             _rigidbody.velocity = new Vector2(0, 0);
             _isReady = true;
             _wasSmashed = false;
@@ -81,11 +105,15 @@ namespace Scripts.Controllers.InGame
             return _wasSmashed;
         }
 
+        public bool IsAsteroid()
+        {
+            return _isAsteroid;
+        }
+
         public void MoveObstacle(float velocity)
         {
             _isReady = false;
             _launchAnother = false;
-            //if (_isSpace) velocity = velocity - 3;
             _rigidbody.velocity = new Vector2((!_isGreen && velocity == 10.5f) ? -(velocity + 1) : -velocity, _rigidbody.velocity.y);
         }
 
@@ -94,28 +122,41 @@ namespace Scripts.Controllers.InGame
             return _damageCollider2D;
         }
 
+        public CapsuleCollider2D GetCapsuleCollider()
+        {
+            return _capsuleCollider2D;
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("Player"))
             {
-                switch (_covidSize)
+                if (!_isAsteroid)
                 {
-                    case 1:
-                        _cryingCovidSound.pitch = 1.4f;
-                        break;
-                    case 3:
-                        _cryingCovidSound.pitch = 0.8f;
-                        break;
-                    default:
-                        _cryingCovidSound.pitch = 1.1f;
-                        break;
+                    switch (_covidSize)
+                    {
+                        case 1:
+                            _cryingCovidSound.pitch = 1.4f;
+                            break;
+                        case 3:
+                            _cryingCovidSound.pitch = 0.8f;
+                            break;
+                        default:
+                            _cryingCovidSound.pitch = 1.1f;
+                            break;
+                    }
+                    _cryingCovidSound.Play();
+                    _transform.localScale = new Vector3(_obstacleScale.x, _obstacleScale.y * 0.3f, _obstacleScale.z);
                 }
-                _cryingCovidSound.Play();
-                _transform.localScale = new Vector3(_obstacleScale.x, _obstacleScale.y * 0.3f, _obstacleScale.z);
+                else
+                {
+                    //_asteroidDestroyedSound.Play();----------------------------------------------------------------------------------------------
+                    _asteroidsParticles.Play();
+                    _currentSprite.enabled = false;
+                }
                 _capsuleCollider2D.enabled = false;
                 _damageCollider2D.enabled = false;
                 _wasSmashed = true;
-                _rigidbody.AddForce(Vector2.down * 20);
                 UIManager.Instance.AddObstacleCount();
             }
         }

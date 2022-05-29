@@ -96,7 +96,7 @@ namespace Scripts.Controllers.Principals
         {
             if((int)_timePlaying == (_intervalIncrement*_gear) && _gear < 7)
             {
-                Debug.LogWarning("Increment");
+                Debug.LogWarning("Increment " + _gear);
                 if (_gear == 5) _velocityIncrement--;
                 _streetVelocity += _velocityIncrement;
                 _gear++;

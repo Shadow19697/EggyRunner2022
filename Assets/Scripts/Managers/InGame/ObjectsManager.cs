@@ -112,7 +112,11 @@ namespace Scripts.Managers.InGame
         {
             _currentLevelObstacles.ForEach(obstacle =>
             {
-                if(!obstacle.WasSmashed()) obstacle.GetDamageCollider().enabled = value;
+                if (!obstacle.WasSmashed())
+                {
+                    obstacle.GetDamageCollider().enabled = value;
+                    if (obstacle.IsAsteroid()) obstacle.GetCapsuleCollider().enabled = !value;
+                }
             });
         } 
         #endregion

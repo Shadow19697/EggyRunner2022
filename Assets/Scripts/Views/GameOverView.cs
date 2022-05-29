@@ -69,7 +69,7 @@ namespace Scripts.Views
         private void Start()
         {
             SetInitValues();
-            if (_isSpaceLevel) _tmpObjects._resultsText.text = "PUNTAJE\nNANOSATELITES RECUPERADOS\n\nPUNTAJE DE LA PARTIDA\n\nPUNTOS ACUMULADOS";
+            if (_isSpaceLevel) _tmpObjects._resultsText.text = "PUNTAJE\nNANOSATELITES RECUPERADOS\nASTEROIDES DESTRUIDOS\nPUNTAJE DE LA PARTIDA\n\nPUNTOS ACUMULADOS";
             _tmpObjects._skipText.gameObject.SetActive(true);
             _showCoroutine = StartCoroutine(ShowCoroutine(1));
         }
@@ -80,8 +80,9 @@ namespace Scripts.Views
             _collectableCount = UIManager.Instance.GetEggCount();
             _obstacleCount = UIManager.Instance.GetObstaclesCount();
             _totalScore = PlayerPrefsManager.GetTotalScore();
-            _increaseScore = _score + _collectableCount * 200 + _obstacleCount * 50;
             _isSpaceLevel = PlayerPrefsManager.GetLevelSelected() == 3;
+            _increaseScore = _score + _collectableCount * 200 + _obstacleCount * ((!_isSpaceLevel) ? 50 : 400);
+
         }
 
         [System.Obsolete]
@@ -125,6 +126,12 @@ namespace Scripts.Views
                 yield return new WaitForSeconds(waitTime);
                 _tmpObjects._obstacleText.gameObject.SetActive(true);
                 _tmpObjects._obstacleText.text = _obstacleCount.ToString() + " x 50";
+            }
+            else
+            {
+                yield return new WaitForSeconds(waitTime);
+                _tmpObjects._obstacleText.gameObject.SetActive(true);
+                _tmpObjects._obstacleText.text = _obstacleCount.ToString() + " x 400";
             }
             yield return new WaitForSeconds(waitTime);
             _tmpObjects._levelScoreText.gameObject.SetActive(true);
