@@ -21,7 +21,7 @@ namespace Scripts.Controllers.Principals
         private LevelStateEnum _state;
         private int _backgroundVelocity;
         private int _gear = 1;
-        private int _intervalIncrement = 23;
+        private int _intervalIncrement = 22;
         private float _timePlaying = 0;
         private bool _isSpace;
 

@@ -60,6 +60,7 @@ namespace Scripts.Views
         private int _increaseScore;
         private int _totalScore;
         private int _countFPS = 30;
+        private int _obstacleMultiplier;
         private float _duration = 1f;
         private Coroutine _countingCoroutine;
         private Coroutine _showCoroutine;
@@ -81,7 +82,16 @@ namespace Scripts.Views
             _obstacleCount = UIManager.Instance.GetObstaclesCount();
             _totalScore = PlayerPrefsManager.GetTotalScore();
             _isSpaceLevel = PlayerPrefsManager.GetLevelSelected() == 3;
-            _increaseScore = _score + _collectableCount * 200 + _obstacleCount * ((!_isSpaceLevel) ? 50 : 400);
+            switch (PlayerPrefsManager.GetLevelSelected())
+            {
+                case 2: _obstacleMultiplier = 100;
+                    break;
+                case 3: _obstacleMultiplier = 300;
+                    break;
+                default: _obstacleMultiplier = 50;
+                    break;
+            }
+            _increaseScore = _score + _collectableCount * 200 + _obstacleCount * _obstacleMultiplier;
 
         }
 
@@ -121,18 +131,9 @@ namespace Scripts.Views
             yield return new WaitForSeconds(waitTime);
             _tmpObjects._collectableText.gameObject.SetActive(true);
             _tmpObjects._collectableText.text = _collectableCount.ToString() + " x 200";
-            if (!_isSpaceLevel)
-            {
-                yield return new WaitForSeconds(waitTime);
-                _tmpObjects._obstacleText.gameObject.SetActive(true);
-                _tmpObjects._obstacleText.text = _obstacleCount.ToString() + " x 50";
-            }
-            else
-            {
-                yield return new WaitForSeconds(waitTime);
-                _tmpObjects._obstacleText.gameObject.SetActive(true);
-                _tmpObjects._obstacleText.text = _obstacleCount.ToString() + " x 400";
-            }
+            yield return new WaitForSeconds(waitTime);
+            _tmpObjects._obstacleText.gameObject.SetActive(true);
+            _tmpObjects._obstacleText.text = _obstacleCount.ToString() + " x " + _obstacleMultiplier;
             yield return new WaitForSeconds(waitTime);
             _tmpObjects._levelScoreText.gameObject.SetActive(true);
             _tmpObjects._levelScoreText.text = _levelScore.ToString();
