@@ -41,7 +41,7 @@ namespace Scripts.Views
             int levels = 1;
             _levelButtons.ForEach(button => button.interactable = false);
             if (score >= _pointsForUnlock) levels = 2;
-            /*if (score >= _pointsForUnlock*2 && score < _pointsForUnlock*3) levels = 3;
+            if (score >= _pointsForUnlock*2 && score < _pointsForUnlock*3) levels = 3;
             /*if (score >= _pointsForUnlock*3 && score < _pointsForUnlock*4) levels = 4;
             /*if (score >= _pointsForUnlock*4) levels = 5;
             */
@@ -64,7 +64,7 @@ namespace Scripts.Views
                 levelNumber++;
             });
             //-----------------------------ERASE--------------------------
-            for(int i = 1; i<4; i++)
+            for(int i = 2; i<4; i++)
                 _levelLabels[i].text = "BLOQUEADO";
             //------------------------------------------------------------
         }

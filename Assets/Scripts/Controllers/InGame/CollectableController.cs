@@ -12,6 +12,7 @@ namespace Scripts.Controllers.InGame
         [SerializeField] private Sprite _healthyEggSprite;
         [SerializeField] private Sprite _emptySprite;
         [SerializeField] private Sprite _nanosatelliteSprite;
+        [SerializeField] private Sprite _shieldSprite;
         [SerializeField] private ParticleSystem _explosion;
         [SerializeField] private AudioSource _grabUpgradeSound;
         [SerializeField] private AudioSource _grabEggSound;
@@ -75,7 +76,10 @@ namespace Scripts.Controllers.InGame
                     _typeOfCollectable = CollectableTypeEnum.x3;
                     break;
                 default:
-                    _currentSprite.sprite = _activeSprite[4];
+                    if (!_isSpace)
+                        _currentSprite.sprite = _activeSprite[4];
+                    else
+                        _currentSprite.sprite = _shieldSprite;
                     _typeOfCollectable = CollectableTypeEnum.Immunity;
                     break;
             }

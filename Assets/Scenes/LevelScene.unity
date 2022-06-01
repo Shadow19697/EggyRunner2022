@@ -5196,7 +5196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &640067739
 Transform:
   m_ObjectHideFlags: 0
@@ -15350,7 +15350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1711613636
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17831,7 +17831,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 1761d9a38c7a62b4cbfdcbbc7115fa36, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eae18b49dac749046a75c7dc2dbb160e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -17864,6 +17864,7 @@ MonoBehaviour:
   _emptySprite: {fileID: 21300000, guid: 26b91d117330f024d877e2b4eb370ffd, type: 3}
   _nanosatelliteSprite: {fileID: 21300000, guid: 742f1a8b20e0c5b449552167466063d9,
     type: 3}
+  _shieldSprite: {fileID: 21300000, guid: eae18b49dac749046a75c7dc2dbb160e, type: 3}
   _explosion: {fileID: 6392953765140351467}
   _grabUpgradeSound: {fileID: 137952707}
   _grabEggSound: {fileID: 1812976968}
