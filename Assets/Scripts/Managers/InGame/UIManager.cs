@@ -29,6 +29,7 @@ namespace Scripts.Managers.InGame
         {
             public TextMeshProUGUI _localHighscoreText;
             public TextMeshProUGUI _globalHighscoreText;
+            public TextMeshProUGUI _tipsText;
         }
 
         [SerializeField] private PlayingText _playingText;
@@ -181,6 +182,7 @@ namespace Scripts.Managers.InGame
             _uiCanvas._idleCanvas.SetActive(true);
             _uiCanvas._menuCanvas.SetActive(true);
             _levelTips[_indexOfLevel]._tips[_indexOfTips].SetActive(true);
+            _idleText._tipsText.text = "CONSEJOS (" + (_indexOfTips + 1) + "/" + (_levelTips[_indexOfLevel]._tips.Count) + ")"; 
             _idleText._localHighscoreText.text = "Mejor Puntaje\nLocal: " + DataManager.GetLocalHighscoreOfLevel(PlayerPrefsManager.GetLevelSelected());
             GetGlobalHighscore(true);
         }
@@ -217,7 +219,7 @@ namespace Scripts.Managers.InGame
                 default: _playingText._actualScoreText.color = _white;
                     break;
             }
-            _scoreCounter += (_indexOfLevel + 1 != 3) ? Time.deltaTime * 9 * _scoreMultiplier : Time.deltaTime * 9 * _scoreMultiplier * 2.5f;
+            _scoreCounter += (_indexOfLevel + 1 != 3) ? Time.deltaTime * 9 * _scoreMultiplier : Time.deltaTime * 9 * _scoreMultiplier * 2f;
             _playingText._actualScoreText.text = "Puntaje: " + (int)_scoreCounter;
         }
 
@@ -383,6 +385,7 @@ namespace Scripts.Managers.InGame
                 else _indexOfTips = 0;
             }
             _levelTips[_indexOfLevel]._tips[_indexOfTips].SetActive(true);
+            _idleText._tipsText.text = "CONSEJOS (" + (_indexOfTips + 1) + "/" + (_levelTips[_indexOfLevel]._tips.Count) + ")";
         }
 
         public void OpenMenuCanvas()

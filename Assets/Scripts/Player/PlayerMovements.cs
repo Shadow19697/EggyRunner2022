@@ -48,7 +48,7 @@ namespace Scripts.Player
                 _rigidbody2D.AddForce(Vector2.up * _jumpForce);
                 _jumpSound.Play();
             }
-            if (Input.GetKeyDown("down") || Input.GetButtonDown("Fire2")) _rigidbody2D.AddForce(Vector2.down * 0.5f * _jumpForce);
+            if (Input.GetKeyDown("down") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("PullDown")) _rigidbody2D.AddForce(Vector2.down * 0.5f * _jumpForce);
             if (_rigidbody2D.velocity.y < -2)
                 PlayerAnimations.PlayFallSpaceAnimation();
             else if (_rigidbody2D.velocity.y > 1)
