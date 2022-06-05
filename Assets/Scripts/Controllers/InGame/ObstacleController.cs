@@ -63,7 +63,7 @@ namespace Scripts.Controllers.InGame
         private void ResetObstacle()
         {
             this.transform.localPosition = new Vector3(
-                (PlayerPrefsManager.GetLevelSelected() == 3) ? 3000 : 1200,
+                (PlayerPrefsManager.GetLevelSelected() == 3) ? 2800 : 1200,
                 SetPositionY(),
                 this.transform.localPosition.z);
             _transform.localScale = _obstacleScale;

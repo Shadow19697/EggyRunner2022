@@ -65,9 +65,11 @@ namespace Scripts.Controllers.InGame
             _skyComponent.sprite = _skiesBackground[_levelId];
             if (_isSpaceLevel)
             {
+                _rigidbodys[1].transform.localPosition = new Vector3(_rigidbodys[1].transform.localPosition.x+50, _rigidbodys[1].transform.localPosition.y, _rigidbodys[1].transform.localPosition.z);
                 _bottomBox.transform.localPosition = new Vector3(_bottomBox.transform.localPosition.x, _bottomBox.transform.localPosition.y - 300, _bottomBox.transform.localPosition.z);
                 _bottomBox.tag = "Obstacle";
             }
+            
         }
 
         private void SetBackgroundSprite()
@@ -95,10 +97,10 @@ namespace Scripts.Controllers.InGame
                     -velocity,
                     _rigidbodys[offset].velocity.y);
             if (offset >= 2) offset -= 2;
-            if((int)list[offset].transform.localPosition.x <= -2000)
+            if((int)list[offset].transform.localPosition.x <= ((_isSpaceLevel) ? -2048 :-2000))
             {
                 list[offset].transform.localPosition = new Vector3(
-                    2050,
+                    (_isSpaceLevel) ? 2150 : 2050,
                     list[offset].transform.localPosition.y,
                     list[offset].transform.localPosition.z);
                 if (list[offset].transform.localPosition.y > -10) SetBackgroundSprite();

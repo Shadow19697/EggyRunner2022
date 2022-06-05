@@ -219,7 +219,7 @@ namespace Scripts.Managers.InGame
                 default: _playingText._actualScoreText.color = _white;
                     break;
             }
-            _scoreCounter += (_indexOfLevel + 1 != 3) ? Time.deltaTime * 9 * _scoreMultiplier : Time.deltaTime * 9 * _scoreMultiplier * 2f;
+            _scoreCounter += (_indexOfLevel + 1 != 3) ? Time.deltaTime * 9 * _scoreMultiplier : Time.deltaTime * 9 * _scoreMultiplier * 1.7f;
             _playingText._actualScoreText.text = "Puntaje: " + (int)_scoreCounter;
         }
 
