@@ -121,6 +121,7 @@ namespace Scripts.Controllers.Principals
         {
             if (!Application.isEditor)
                 PlayerPrefsManager.UpdateLevelSelected(0);
+            PlayerPrefsManager.UpdateCinematicSeen(false);
             Debug.LogError("Quit");
         }
     }

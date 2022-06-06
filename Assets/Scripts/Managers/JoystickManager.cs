@@ -9,6 +9,8 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject _joystickButtons;
         [SerializeField] private GameObject _menuCanvas;
+        [SerializeField] private GameObject _gameOverCanvas;
+        [SerializeField] private bool _isLevelScene;
 
         private List<KeyCode> _keysToScan;
         private enum State { JoystickUsed, KeyboardUsed };
@@ -30,8 +32,9 @@ namespace Scripts.Managers
                 ScanJoystick();
             else
                 ScanKeyboard();
-            if(UIManager.Instance.IsPlaying())
-                ScanJoystick();
+            if(_isLevelScene)
+                if(UIManager.Instance.IsPlaying())
+                    ScanJoystick();
         }
 
         private void ScanJoystick()
@@ -54,17 +57,9 @@ namespace Scripts.Managers
         [Obsolete]
         private void SetVisible(bool isJoystick)
         {
-            if (!UIManager.Instance.IsPlaying())
+            if (_isLevelScene)
             {
-                if (isJoystick)
-                    _state = State.JoystickUsed;
-                else
-                    _state = State.KeyboardUsed;
-                _joystickButtons.SetActive(isJoystick);
-            }
-            else
-            {
-                if (_menuCanvas.active)
+                if (!UIManager.Instance.IsPlaying())
                 {
                     if (isJoystick)
                         _state = State.JoystickUsed;
@@ -73,7 +68,26 @@ namespace Scripts.Managers
                     _joystickButtons.SetActive(isJoystick);
                 }
                 else
-                    _joystickButtons.SetActive(false);
+                {
+                    if (_menuCanvas.active || _gameOverCanvas.active)
+                    {
+                        if (isJoystick)
+                            _state = State.JoystickUsed;
+                        else
+                            _state = State.KeyboardUsed;
+                        _joystickButtons.SetActive(isJoystick);
+                    }
+                    else
+                        _joystickButtons.SetActive(false);
+                }
+            }
+            else
+            {
+                if (isJoystick)
+                    _state = State.JoystickUsed;
+                else
+                    _state = State.KeyboardUsed;
+                _joystickButtons.SetActive(isJoystick);
             }
         }
     } 

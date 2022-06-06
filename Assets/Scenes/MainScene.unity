@@ -1657,6 +1657,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _joystickButtons: {fileID: 642319749}
+  _menuCanvas: {fileID: 0}
+  _isLevelScene: 0
 --- !u!1001 &149596440
 PrefabInstance:
   m_ObjectHideFlags: 0

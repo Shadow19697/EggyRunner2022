@@ -17,13 +17,15 @@ namespace Scripts.Managers
                                 Width = "width",
                                 FullScreen = "fullScreen",
                                 MusicValue = "musicValue",
-                                SoundEffectsValue = "soundEffectsValue";
+                                SoundEffectsValue = "soundEffectsValue",
+                                CinematicSeen = "cinematicSeen";
 
         public static Resolution[] Resolutions;
         public static List<string> ListResolutions = new List<string>();
 
         public static void InitPlayerPrefs()
         {
+            UpdateCinematicSeen(false);
             if (LocalLoggerManager.ExistsPlayerPrefsLog())
             {
                 ReadModel();
@@ -201,6 +203,20 @@ namespace Scripts.Managers
             PlayerPrefs.SetFloat(SoundEffectsValue, value);
         }
         #endregion
+
+        #region Cinematic Methods
+        public static bool WasTheCinematicSeen()
+        {
+            if (PlayerPrefs.GetInt(CinematicSeen, 0) == 1) return true;
+            else return false;
+        }
+
+        public static void UpdateCinematicSeen(bool value)
+        {
+            PlayerPrefs.SetInt(CinematicSeen, (value) ? 1 : 0);
+        }
+        #endregion
+
 
         public static void UpdateSettingsValues(SettingsModel _newSettings)
         {

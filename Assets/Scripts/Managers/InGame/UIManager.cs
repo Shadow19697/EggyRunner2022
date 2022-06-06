@@ -153,7 +153,7 @@ namespace Scripts.Managers.InGame
         {
             if (_isCinematic)
             {
-                if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1") || !SoundManager.Instance.IsCinematicPlaying())
+                if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1") || !SoundManager.Instance.IsCinematicPlaying() || PlayerPrefsManager.WasTheCinematicSeen())
                     DisplayIdleCanvas();
             }
             else
@@ -176,6 +176,7 @@ namespace Scripts.Managers.InGame
 
         private void DisplayIdleCanvas()
         {
+            PlayerPrefsManager.UpdateCinematicSeen(true);
             _isCinematic = false;
             _uiCanvas._cinematics[_indexOfLevel].SetActive(false);
             _uiCanvas._blackBorders.SetActive(false);
