@@ -8,6 +8,8 @@ namespace Scripts.Player
     {
         [SerializeField] private int _jumpForce;
         [SerializeField] private AudioSource _jumpSound;
+        [SerializeField] private AudioSource _pullUpSound;
+        [SerializeField] private AudioSource _pullDownSound;
 
         private Rigidbody2D _rigidbody2D;
         private float _inputVertical;
@@ -18,6 +20,8 @@ namespace Scripts.Player
         public void Start()
         {
             _jumpSound.Pause();
+            _pullDownSound.Pause();
+            _pullUpSound.Pause();
             if (PlayerPrefsManager.GetLevelSelected() == 3)
                 _isSpaceLevel = true;
             else _isSpaceLevel = false;
@@ -46,9 +50,13 @@ namespace Scripts.Player
             if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1"))
             {
                 _rigidbody2D.AddForce(Vector2.up * _jumpForce);
-                _jumpSound.Play();
+                _pullUpSound.Play();
             }
-            if (Input.GetKeyDown("down") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("PullDown")) _rigidbody2D.AddForce(Vector2.down * 0.5f * _jumpForce);
+            if (Input.GetKeyDown("down") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("PullDown"))
+            {
+                _rigidbody2D.AddForce(Vector2.down * 0.5f * _jumpForce);
+                _pullDownSound.Play();
+            }
             if (_rigidbody2D.velocity.y < -2)
                 PlayerAnimations.PlayFallSpaceAnimation();
             else if (_rigidbody2D.velocity.y > 1)

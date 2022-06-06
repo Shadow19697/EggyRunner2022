@@ -97,7 +97,7 @@ namespace Scripts.Controllers.InGame
                     -velocity,
                     _rigidbodys[offset].velocity.y);
             if (offset >= 2) offset -= 2;
-            if((int)list[offset].transform.localPosition.x <= ((_isSpaceLevel) ? -2048 :-2000))
+            if((int)list[offset].transform.localPosition.x <= ((_isSpaceLevel) ? -2040 :-2000))
             {
                 list[offset].transform.localPosition = new Vector3(
                     (_isSpaceLevel) ? 2150 : 2050,

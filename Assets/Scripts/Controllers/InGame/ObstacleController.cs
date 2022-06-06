@@ -38,7 +38,7 @@ namespace Scripts.Controllers.InGame
                     _cryingCovidSound.Pause();
                 else
                 {
-                    //_asteroidDestroyedSound.Pause();------------------------------------------------------------------------------------
+                    _asteroidDestroyedSound.Pause();
                     _asteroidsParticles.Pause();
                     _capsuleCollider2D.enabled = false;
                     _currentSprite = _this.GetComponent<Image>();
@@ -150,7 +150,7 @@ namespace Scripts.Controllers.InGame
                 }
                 else
                 {
-                    //_asteroidDestroyedSound.Play();----------------------------------------------------------------------------------------------
+                    _asteroidDestroyedSound.Play();
                     _asteroidsParticles.Play();
                     _currentSprite.enabled = false;
                 }
