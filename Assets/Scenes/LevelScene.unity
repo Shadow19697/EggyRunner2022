@@ -3207,6 +3207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _joystickButtons: {fileID: 56092912997190308}
+  _menuCanvas: {fileID: 832676381}
 --- !u!1 &348117472
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,5 @@
+using Scripts.Managers.InGame;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +8,7 @@ namespace Scripts.Managers
     public class JoystickManager : MonoBehaviour
     {
         [SerializeField] private GameObject _joystickButtons;
+        [SerializeField] private GameObject _menuCanvas;
 
         private List<KeyCode> _keysToScan;
         private enum State { JoystickUsed, KeyboardUsed };
@@ -29,6 +30,8 @@ namespace Scripts.Managers
                 ScanJoystick();
             else
                 ScanKeyboard();
+            if(UIManager.Instance.IsPlaying())
+                ScanJoystick();
         }
 
         private void ScanJoystick()
@@ -48,13 +51,30 @@ namespace Scripts.Managers
             }
         }
 
+        [Obsolete]
         private void SetVisible(bool isJoystick)
         {
-            if (isJoystick)
-                _state = State.JoystickUsed;
+            if (!UIManager.Instance.IsPlaying())
+            {
+                if (isJoystick)
+                    _state = State.JoystickUsed;
+                else
+                    _state = State.KeyboardUsed;
+                _joystickButtons.SetActive(isJoystick);
+            }
             else
-                _state = State.KeyboardUsed;
-            _joystickButtons.SetActive(isJoystick);
+            {
+                if (_menuCanvas.active)
+                {
+                    if (isJoystick)
+                        _state = State.JoystickUsed;
+                    else
+                        _state = State.KeyboardUsed;
+                    _joystickButtons.SetActive(isJoystick);
+                }
+                else
+                    _joystickButtons.SetActive(false);
+            }
         }
     } 
 }
