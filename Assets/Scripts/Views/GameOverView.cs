@@ -215,7 +215,7 @@ namespace Scripts.Views
             _buttonsObjects._replay.SetActive(true);
             _buttonsObjects._return.SetActive(true);
             _tmpObjects._skipText.gameObject.SetActive(false);
-            SetSelectedButton(_buttonsObjects._return);
+            SetSelectedButton(_buttonsObjects._replay);
         } 
         #endregion
 
