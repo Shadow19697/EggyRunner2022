@@ -18,8 +18,8 @@ namespace Scripts.Controllers.Principals
         void Start()
         {
             Cursor.SetCursor(_cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
-            SettingsController.SetVisualSettings(true);
             PlayerPrefsManager.InitPlayerPrefs();
+            SettingsController.SetVisualSettings(true);
             SettingsController.SetVolume(_audioMixer);
             LocalLoggerManager.InitLocalLoggerManager();
             HttpConnectionManager.Instance.ReturnGames(false);

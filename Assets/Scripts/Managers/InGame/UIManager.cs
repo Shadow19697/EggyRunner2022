@@ -251,14 +251,21 @@ namespace Scripts.Managers.InGame
         #region Lifes Count Methods
         public void UpdateLifesCount(int value)
         {
-            _lifesCount += value;
-            _playingText._lifesCountText.text = "x" + _lifesCount.ToString();
-            if (_lifesCount == 0) _isGameOver = true;
+            if (_lifesCount + value >= 0)
+            {
+                _lifesCount += value;
+                _playingText._lifesCountText.text = "x" + _lifesCount.ToString();
+            }
+            if (_lifesCount <= 0)
+            {
+                _isGameOver = true;
+                ObjectsManager.Instance.EnableDamageCollider(false);
+            }
         }
 
         public bool IsPlayerAlive()
         {
-            return (_lifesCount!=0);
+            return !_isGameOver;
         }
         #endregion
 
