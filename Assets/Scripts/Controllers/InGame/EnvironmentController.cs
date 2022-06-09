@@ -67,7 +67,7 @@ namespace Scripts.Controllers.InGame
             {
                 _rigidbodys[1].transform.localPosition = new Vector3(_rigidbodys[1].transform.localPosition.x+50, _rigidbodys[1].transform.localPosition.y, _rigidbodys[1].transform.localPosition.z);
                 _bottomBox.transform.localPosition = new Vector3(_bottomBox.transform.localPosition.x, _bottomBox.transform.localPosition.y - 300, _bottomBox.transform.localPosition.z);
-                _bottomBox.tag = "Obstacle";
+                _bottomBox.tag = "ObstacleGround";
             }
             
         }

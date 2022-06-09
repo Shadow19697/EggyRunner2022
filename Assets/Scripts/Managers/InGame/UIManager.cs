@@ -92,7 +92,7 @@ namespace Scripts.Managers.InGame
 
         private Color32 _white = new Color32(255, 255, 255, 255);
         private Color32 _cian = new Color32(91, 217, 231, 255);
-        private Color32 _magenta = new Color32(243, 87, 174, 255);
+        private Color32 _orange = new Color32(228, 194, 13, 255);
 
         private float _scoreCounter = 0;
 
@@ -215,7 +215,7 @@ namespace Scripts.Managers.InGame
             {
                 case 2: _playingText._actualScoreText.color = _cian;
                     break;
-                case 3: _playingText._actualScoreText.color = _magenta;
+                case 3: _playingText._actualScoreText.color = _orange;
                     break;
                 default: _playingText._actualScoreText.color = _white;
                     break;

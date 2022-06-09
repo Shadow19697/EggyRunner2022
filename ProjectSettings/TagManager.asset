@@ -11,6 +11,7 @@ TagManager:
   - Toggle Bg
   - Collectable
   - BottomBox
+  - ObstacleGround
   layers:
   - Default
   - TransparentFX

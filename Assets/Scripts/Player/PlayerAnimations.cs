@@ -53,10 +53,10 @@ namespace Scripts.Player
         }
         public static void PlayDeathAnimation()
         {
-            PlayExposionAnimation();
+            PlayExplosionAnimation();
             _deathAnimation.Play();
         }
-        public static void PlayExposionAnimation()
+        public static void PlayExplosionAnimation()
         {
             _explosion.Play();
         }

@@ -1,3 +1,4 @@
+using Scripts.Controllers.InGame;
 using Scripts.Managers.InGame;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,10 +58,12 @@ namespace Scripts.Player
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.collider.CompareTag("Obstacle"))
+            if (collision.collider.CompareTag("Obstacle") || collision.collider.CompareTag("ObstacleGround"))
             {
                 UIManager.Instance.UpdateLifesCount(-1);
-                PlayerAnimations.PlayExposionAnimation();
+                PlayerAnimations.PlayExplosionAnimation();
+                if (collision.collider.CompareTag("Obstacle"))
+                    collision.collider.enabled = false;
             }
         }
 
