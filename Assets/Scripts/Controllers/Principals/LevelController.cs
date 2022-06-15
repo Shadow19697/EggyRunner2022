@@ -32,8 +32,13 @@ namespace Scripts.Controllers.Principals
             _gameOverCanvas.SetActive(false);
             _state = LevelStateEnum.Cinematic;
             _isSpace = PlayerPrefsManager.GetLevelSelected() == 3;
-            if (_isSpace) _streetVelocity = _streetVelocity - 4;
-            _backgroundVelocity = _streetVelocity - 5;
+            if (_isSpace)
+            {
+                _streetVelocity = _streetVelocity - 4;
+                _backgroundVelocity = _streetVelocity - 5;
+            }
+            else
+                _backgroundVelocity = _streetVelocity - 9;
             _enviromentController.SetActive(false);
             _objectsManager.SetActive(false);
             SoundManager.Instance.PlayCinematicMusic();

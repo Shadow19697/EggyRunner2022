@@ -376,6 +376,8 @@ namespace Scripts.Managers.InGame
 
         public void ReturnMenu()
         {
+            if(_isPaused) Time.timeScale = 1;
+            PlayerPrefsManager.UpdateCinematicSeen(false);
             SceneManager.LoadScene("MainScene");
         }
 
